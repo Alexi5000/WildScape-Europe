@@ -1,0 +1,64 @@
+{
+  "amenities": [
+    {
+      "id": "aurora_viewing",
+      "name": "Aurora Viewing",
+      "icon": "✨",
+      "category": "nature"
+    },
+    {
+      "id": "hiking_trails",
+      "name": "Hiking Trails",
+      "icon": "🥾",
+      "category": "activity"
+    },
+    {
+      "id": "fishing",
+      "name": "Fishing",
+      "icon": "🎣",
+      "category": "activity"
+    },
+    {
+      "id": "wildlife_watching",
+      "name": "Wildlife Watching",
+      "icon": "🦌",
+      "category": "nature"
+    },
+    {
+      "id": "mountain_views",
+      "name": "Mountain Views",
+      "icon": "🏔️",
+      "category": "scenery"
+    },
+    {
+      "id": "beach_access",
+      "name": "Beach Access",
+      "icon": "🏖️",
+      "category": "location"
+    },
+    {
+      "id": "surfing",
+      "name": "Surfing",
+      "icon": "🏄",
+      "category": "activity"
+    },
+    {
+      "id": "stargazing",
+      "name": "Stargazing",
+      "icon": "⭐",
+      "category": "nature"
+    },
+    {
+      "id": "photography",
+      "name": "Photography",
+      "icon": "📸",
+      "category": "activity"
+    },
+    {
+      "id": "kayaking",
+      "name": "Kayaking",
+      "icon": "🛶",
+      "category": "activity"
+    }
+  ]
+}

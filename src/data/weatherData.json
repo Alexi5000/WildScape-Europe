@@ -1,0 +1,32 @@
+{
+  "current": {
+    "temperature": 15,
+    "condition": "clear",
+    "wind_speed": 10,
+    "humidity": 65,
+    "aurora_probability": 25
+  },
+  "forecast": [
+    {
+      "date": "2024-01-15",
+      "temperature_high": 18,
+      "temperature_low": 8,
+      "condition": "clear",
+      "precipitation_chance": 10
+    },
+    {
+      "date": "2024-01-16",
+      "temperature_high": 16,
+      "temperature_low": 6,
+      "condition": "cloudy",
+      "precipitation_chance": 30
+    },
+    {
+      "date": "2024-01-17",
+      "temperature_high": 12,
+      "temperature_low": 4,
+      "condition": "rain",
+      "precipitation_chance": 80
+    }
+  ]
+}

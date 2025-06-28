@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/tent-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Discover Europe's most breathtaking camping destinations with immersive 3D terrain maps and real-time weather visualization" />
+    <meta name="keywords" content="camping, europe, 3d maps, outdoor, adventure, nature, wilderness, aurora, mountains" />
+    <meta name="author" content="WildScape Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wildscape-europe.vercel.app/" />
+    <meta property="og:title" content="WildScape Europe - Immersive Camping Discovery" />
+    <meta property="og:description" content="Discover Europe's most breathtaking camping destinations with immersive 3D terrain maps and real-time weather visualization" />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://wildscape-europe.vercel.app/" />
+    <meta property="twitter:title" content="WildScape Europe - Immersive Camping Discovery" />
+    <meta property="twitter:description" content="Discover Europe's most breathtaking camping destinations with immersive 3D terrain maps and real-time weather visualization" />
+    <meta property="twitter:image" content="/og-image.jpg" />
+
+    <title>WildScape Europe - Immersive Camping Discovery Platform</title>
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" as="style" />
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#059669" />
+    
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

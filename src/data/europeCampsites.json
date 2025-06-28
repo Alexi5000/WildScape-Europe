@@ -1,0 +1,189 @@
+[
+  {
+    "id": "camp_001",
+    "name": "Aurora Valley Wilderness",
+    "location": {
+      "country": "Norway",
+      "region": "Lofoten Islands",
+      "coordinates": [13.6000, 68.1500],
+      "elevation": 245
+    },
+    "description": "Experience the northern lights from your tent in this pristine wilderness location with breathtaking mountain views.",
+    "amenities": ["aurora_viewing", "hiking_trails", "fishing", "wildlife_watching", "mountain_climbing"],
+    "difficulty": "moderate",
+    "capacity": 12,
+    "price_per_night": 45,
+    "images": [
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
+    ],
+    "weather": {
+      "current": "clear",
+      "temperature": -2,
+      "wind_speed": 15,
+      "aurora_probability": 85
+    },
+    "availability": {
+      "2024-01-15": true,
+      "2024-01-16": false,
+      "2024-01-17": true
+    },
+    "rating": 4.8,
+    "reviews_count": 127
+  },
+  {
+    "id": "camp_002",
+    "name": "Alpine Meadow Retreat",
+    "location": {
+      "country": "Switzerland",
+      "region": "Bernese Alps",
+      "coordinates": [7.7500, 46.5500],
+      "elevation": 1850
+    },
+    "description": "High-altitude camping surrounded by wildflower meadows and snow-capped peaks.",
+    "amenities": ["mountain_views", "hiking_trails", "wildflowers", "photography", "stargazing"],
+    "difficulty": "challenging",
+    "capacity": 8,
+    "price_per_night": 65,
+    "images": [
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
+    ],
+    "weather": {
+      "current": "cloudy",
+      "temperature": 8,
+      "wind_speed": 12
+    },
+    "availability": {
+      "2024-01-15": true,
+      "2024-01-16": true,
+      "2024-01-17": false
+    },
+    "rating": 4.9,
+    "reviews_count": 89
+  },
+  {
+    "id": "camp_003",
+    "name": "Coastal Dunes Paradise",
+    "location": {
+      "country": "Portugal",
+      "region": "Algarve Coast",
+      "coordinates": [-8.9500, 37.0200],
+      "elevation": 25
+    },
+    "description": "Beachfront camping with golden sand dunes and crystal-clear Atlantic waters.",
+    "amenities": ["beach_access", "surfing", "fishing", "sunset_views", "water_sports"],
+    "difficulty": "easy",
+    "capacity": 20,
+    "price_per_night": 35,
+    "images": [
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
+    ],
+    "weather": {
+      "current": "clear",
+      "temperature": 22,
+      "wind_speed": 8
+    },
+    "availability": {
+      "2024-01-15": true,
+      "2024-01-16": true,
+      "2024-01-17": true
+    },
+    "rating": 4.6,
+    "reviews_count": 203
+  },
+  {
+    "id": "camp_004",
+    "name": "Black Forest Sanctuary",
+    "location": {
+      "country": "Germany",
+      "region": "Black Forest",
+      "coordinates": [8.2000, 48.0000],
+      "elevation": 680
+    },
+    "description": "Deep forest camping among ancient pines with mystical fog and wildlife encounters.",
+    "amenities": ["forest_trails", "wildlife_watching", "mushroom_foraging", "meditation", "photography"],
+    "difficulty": "moderate",
+    "capacity": 15,
+    "price_per_night": 40,
+    "images": [
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
+    ],
+    "weather": {
+      "current": "fog",
+      "temperature": 12,
+      "wind_speed": 5
+    },
+    "availability": {
+      "2024-01-15": false,
+      "2024-01-16": true,
+      "2024-01-17": true
+    },
+    "rating": 4.7,
+    "reviews_count": 156
+  },
+  {
+    "id": "camp_005",
+    "name": "Fjord Edge Adventure",
+    "location": {
+      "country": "Norway",
+      "region": "Geirangerfjord",
+      "coordinates": [7.2000, 62.1000],
+      "elevation": 150
+    },
+    "description": "Dramatic fjord camping with waterfalls cascading from towering cliffs.",
+    "amenities": ["waterfall_views", "kayaking", "fishing", "hiking_trails", "photography"],
+    "difficulty": "moderate",
+    "capacity": 10,
+    "price_per_night": 55,
+    "images": [
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
+    ],
+    "weather": {
+      "current": "rain",
+      "temperature": 15,
+      "wind_speed": 18
+    },
+    "availability": {
+      "2024-01-15": true,
+      "2024-01-16": true,
+      "2024-01-17": false
+    },
+    "rating": 4.9,
+    "reviews_count": 94
+  },
+  {
+    "id": "camp_006",
+    "name": "Tuscany Hills Retreat",
+    "location": {
+      "country": "Italy",
+      "region": "Tuscany",
+      "coordinates": [11.2500, 43.7700],
+      "elevation": 420
+    },
+    "description": "Rolling hills camping among vineyards and olive groves with stunning sunset views.",
+    "amenities": ["vineyard_tours", "wine_tasting", "cooking_classes", "cycling", "sunset_views"],
+    "difficulty": "easy",
+    "capacity": 18,
+    "price_per_night": 50,
+    "images": [
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
+    ],
+    "weather": {
+      "current": "clear",
+      "temperature": 25,
+      "wind_speed": 6
+    },
+    "availability": {
+      "2024-01-15": true,
+      "2024-01-16": false,
+      "2024-01-17": true
+    },
+    "rating": 4.8,
+    "reviews_count": 178
+  }
+]
