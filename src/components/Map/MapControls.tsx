@@ -4,9 +4,7 @@ import {
   ZoomIn, 
   ZoomOut, 
   RotateCcw, 
-  Layers, 
-  Cloud, 
-  Settings 
+  Cloud 
 } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
 

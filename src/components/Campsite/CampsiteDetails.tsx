@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, MapPin, Star, Euro, Users, Mountain } from 'lucide-react';
 import { Campsite } from '@/types/campsite';
-import { useCampsiteStore } from '@/store/campsiteStore';
 import { WeatherIcon } from '../UI/WeatherIcon';
 
 interface CampsiteDetailsProps {
@@ -11,10 +10,6 @@ interface CampsiteDetailsProps {
 }
 
 export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onClose }) => {
-  const availableDates = Object.entries(campsite.availability)
-    .filter(([_, available]) => available)
-    .map(([date]) => date);
-
   return (
     <AnimatePresence>
       <motion.div
