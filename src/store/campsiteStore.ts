@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Campsite, CampsiteFilter } from '@/types/campsite';
+import { Campsite, CampsiteFilter, SearchFilters } from '@/types/campsite';
 import campsitesData from '@/data/europeCampsites.json';
 
 interface CampsiteStore {
@@ -15,6 +15,7 @@ interface CampsiteStore {
   setSelectedCampsite: (campsite: Campsite | null) => void;
   setFilters: (filters: CampsiteFilter) => void;
   setSearchQuery: (query: string) => void;
+  setSearchFilters: (filters: SearchFilters) => void;
   applyFilters: () => void;
   loadCampsites: () => Promise<void>;
 }
@@ -45,6 +46,20 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
     get().applyFilters();
   },
 
+  setSearchFilters: (searchFilters) => {
+    // Convert SearchFilters to CampsiteFilter format
+    const filters: CampsiteFilter = {
+      country: searchFilters.location || undefined,
+      difficulty: searchFilters.difficulty !== 'any' ? searchFilters.difficulty : undefined,
+      amenities: searchFilters.amenities.length > 0 ? searchFilters.amenities : undefined,
+      priceRange: searchFilters.priceRange[1] < 200 ? searchFilters.priceRange : undefined,
+      capacity: searchFilters.guests > 2 ? searchFilters.guests : undefined,
+    };
+    
+    set({ filters });
+    get().applyFilters();
+  },
+
   applyFilters: () => {
     const { campsites, filters, searchQuery } = get();
     
@@ -62,7 +77,7 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       }
 
       // Country filter
-      if (filters.country && campsite.location.country !== filters.country) {
+      if (filters.country && campsite.location.country.toLowerCase() !== filters.country.toLowerCase()) {
         return false;
       }
 

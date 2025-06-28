@@ -1,28 +1,45 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const AuroraParticles = () => {
   const ref = useRef<THREE.Points>(null);
+  const sphereRef = useRef<THREE.Mesh>(null);
   
   const particles = useMemo(() => {
-    const positions = new Float32Array(5000 * 3);
-    const colors = new Float32Array(5000 * 3);
+    const positions = new Float32Array(8000 * 3);
+    const colors = new Float32Array(8000 * 3);
     
-    for (let i = 0; i < 5000; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 100;
-      positions[i * 3 + 1] = Math.random() * 50;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+    for (let i = 0; i < 8000; i++) {
+      // Create aurora wave pattern
+      const x = (Math.random() - 0.5) * 200;
+      const y = Math.random() * 80 + 20;
+      const z = (Math.random() - 0.5) * 200;
       
-      // Aurora colors: purple, green, blue
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y + Math.sin(x * 0.01) * 20;
+      positions[i * 3 + 2] = z;
+      
+      // Aurora colors with intensity variation
+      const intensity = Math.random() * 0.8 + 0.2;
       const colorChoice = Math.random();
-      if (colorChoice < 0.33) {
-        colors[i * 3] = 0.5; colors[i * 3 + 1] = 0.0; colors[i * 3 + 2] = 1.0; // Purple
-      } else if (colorChoice < 0.66) {
-        colors[i * 3] = 0.0; colors[i * 3 + 1] = 1.0; colors[i * 3 + 2] = 0.5; // Green
+      
+      if (colorChoice < 0.4) {
+        // Green aurora
+        colors[i * 3] = 0.0;
+        colors[i * 3 + 1] = intensity;
+        colors[i * 3 + 2] = intensity * 0.3;
+      } else if (colorChoice < 0.7) {
+        // Purple aurora
+        colors[i * 3] = intensity * 0.8;
+        colors[i * 3 + 1] = 0.0;
+        colors[i * 3 + 2] = intensity;
       } else {
-        colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.5; colors[i * 3 + 2] = 1.0; // Blue
+        // Blue aurora
+        colors[i * 3] = 0.0;
+        colors[i * 3 + 1] = intensity * 0.5;
+        colors[i * 3 + 2] = intensity;
       }
     }
     
@@ -31,95 +48,53 @@ const AuroraParticles = () => {
   
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.05;
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.02;
+      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.1;
+      
+      // Animate aurora waves
+      const positions = ref.current.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < positions.length; i += 3) {
+        positions[i + 1] += Math.sin(state.clock.elapsedTime + positions[i] * 0.01) * 0.1;
+      }
+      ref.current.geometry.attributes.position.needsUpdate = true;
     }
   });
   
   return (
-    <Points ref={ref} positions={particles.positions} colors={particles.colors}>
-      <PointMaterial
-        size={0.5}
-        vertexColors
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-        blending={THREE.AdditiveBlending}
-      />
-    </Points>
+    <>
+      <Points ref={ref} positions={particles.positions} colors={particles.colors}>
+        <PointMaterial
+          size={1.5}
+          vertexColors
+          transparent
+          opacity={0.6}
+          sizeAttenuation
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
+      
+      {/* Atmospheric glow */}
+      <mesh ref={sphereRef} position={[0, 0, -50]}>
+        <sphereGeometry args={[100, 32, 32]} />
+        <meshBasicMaterial 
+          color="#8B5CF6" 
+          transparent 
+          opacity={0.1}
+          side={THREE.BackSide}
+        />
+      </mesh>
+    </>
   );
 };
 
-const AuroraWaves = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  const geometry = useMemo(() => {
-    const geo = new THREE.PlaneGeometry(200, 100, 100, 50);
-    return geo;
-  }, []);
-
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uColorA: { value: new THREE.Color('#8B5CF6') },
-        uColorB: { value: new THREE.Color('#06D6A0') },
-      },
-      vertexShader: `
-        uniform float uTime;
-        varying vec2 vUv;
-        varying float vWave;
-        
-        void main() {
-          vUv = uv;
-          
-          vec3 pos = position;
-          float wave1 = sin(pos.x * 0.02 + uTime * 0.5) * 10.0;
-          float wave2 = sin(pos.x * 0.03 + uTime * 0.3) * 5.0;
-          
-          pos.z += wave1 + wave2;
-          vWave = wave1 + wave2;
-          
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 uColorA;
-        uniform vec3 uColorB;
-        varying vec2 vUv;
-        varying float vWave;
-        
-        void main() {
-          float mixStrength = (vWave + 15.0) / 30.0;
-          vec3 color = mix(uColorA, uColorB, mixStrength);
-          
-          float alpha = sin(vUv.y * 3.14159) * 0.3;
-          gl_FragColor = vec4(color, alpha);
-        }
-      `,
-      transparent: true,
-      side: THREE.DoubleSide,
-    });
-  }, []);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      material.uniforms.uTime.value = state.clock.elapsedTime;
-    }
-  });
-
+export const AuroraBackground = () => {
   return (
-    <mesh ref={meshRef} geometry={geometry} material={material} position={[0, 0, -50]} />
-  );
-};
-
-export const AuroraBackground: React.FC = () => {
-  return (
-    <div className="fixed inset-0 -z-10 bg-gradient-to-b from-dark via-purple-900/20 to-dark">
-      <Canvas camera={{ position: [0, 0, 30], fov: 75 }}>
-        <ambientLight intensity={0.1} />
+    <div className="fixed inset-0 -z-10">
+      <Canvas camera={{ position: [0, 0, 50], fov: 75 }}>
+        <ambientLight intensity={0.2} />
+        <pointLight position={[0, 50, 0]} intensity={0.5} color="#8B5CF6" />
         <AuroraParticles />
-        <AuroraWaves />
+        <fog attach="fog" args={['#0F172A', 50, 200]} />
       </Canvas>
     </div>
   );

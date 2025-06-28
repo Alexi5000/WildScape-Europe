@@ -6,24 +6,49 @@ import { useUIStore } from './store/uiStore';
 // Components
 import { AuroraBackground } from './components/Hero/AuroraBackground';
 import { HeroContent } from './components/Hero/HeroContent';
-import { FloatingCTA } from './components/Hero/FloatingCTA';
 import { ForestParallax } from './components/Background/ForestParallax';
-import { WeatherSystem } from './components/Background/WeatherSystem';
+import { WeatherParticles } from './components/Map/WeatherParticles';
 import { Terrain3DMap } from './components/Map/Terrain3DMap';
 import { MorphingSearchBar } from './components/Search/MorphingSearchBar';
-import { FilterPanel } from './components/Search/FilterPanel';
 import { SearchResults } from './components/Search/SearchResults';
 import { CampsiteDetails } from './components/Campsite/CampsiteDetails';
 import { ThemeToggle } from './components/UI/ThemeToggle';
 
 function App() {
-  const { loadCampsites, selectedCampsite, setSelectedCampsite } = useCampsiteStore();
-  const { theme, weatherEffectsEnabled } = useUIStore();
+  const { 
+    loadCampsites, 
+    filteredCampsites, 
+    selectedCampsite, 
+    setSelectedCampsite,
+    setSearchQuery,
+    setSearchFilters
+  } = useCampsiteStore();
+  
+  const { 
+    theme, 
+    weatherEffectsEnabled, 
+    currentWeatherCondition,
+    setCurrentWeatherCondition 
+  } = useUIStore();
+  
   const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map'>('hero');
 
   useEffect(() => {
     loadCampsites();
   }, [loadCampsites]);
+
+  // Cycle through weather conditions for demo
+  useEffect(() => {
+    const weatherCycle = ['clear', 'rain', 'snow', 'fog'] as const;
+    let currentIndex = 0;
+    
+    const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % weatherCycle.length;
+      setCurrentWeatherCondition(weatherCycle[currentIndex]);
+    }, 10000); // Change every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [setCurrentWeatherCondition]);
 
   const handleExploreClick = () => {
     setCurrentView('explore');
@@ -37,6 +62,15 @@ function App() {
     setCurrentView('hero');
   };
 
+  const handleSearch = ({ query, filters }: { query: string; filters: any }) => {
+    setSearchQuery(query);
+    setSearchFilters(filters);
+  };
+
+  const handleFilterChange = (filters: any) => {
+    setSearchFilters(filters);
+  };
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
       theme === 'dark' ? 'bg-dark text-white' : 'bg-light text-gray-900'
@@ -47,10 +81,14 @@ function App() {
           <>
             <AuroraBackground />
             <ForestParallax />
-            {weatherEffectsEnabled && <WeatherSystem enabled />}
           </>
         )}
       </AnimatePresence>
+
+      {/* Global Weather Effects */}
+      {weatherEffectsEnabled && (
+        <WeatherParticles weather={currentWeatherCondition} intensity={0.8} />
+      )}
 
       {/* Theme Toggle */}
       <div className="fixed top-6 right-6 z-40">
@@ -67,8 +105,7 @@ function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <HeroContent onSearchClick={handleExploreClick} />
-            <FloatingCTA onExploreClick={handleExploreClick} />
+            <HeroContent onExploreClick={handleExploreClick} />
           </motion.div>
         )}
 
@@ -96,8 +133,10 @@ function App() {
                   </h1>
                 </div>
                 <div className="flex items-center gap-4">
-                  <MorphingSearchBar />
-                  <FilterPanel />
+                  <MorphingSearchBar 
+                    onSearch={handleSearch}
+                    onFilterChange={handleFilterChange}
+                  />
                   <button
                     onClick={handleMapView}
                     className="px-6 py-3 bg-secondary hover:bg-secondary/90 text-white rounded-lg transition-colors"
@@ -134,15 +173,20 @@ function App() {
                 <h1 className="text-2xl font-bold text-white">3D Terrain Map</h1>
               </div>
               <div className="flex items-center gap-4">
-                <MorphingSearchBar />
-                <FilterPanel />
+                <MorphingSearchBar 
+                  onSearch={handleSearch}
+                  onFilterChange={handleFilterChange}
+                />
               </div>
             </div>
 
             {/* Map Container */}
             <div className="flex-1">
               <Terrain3DMap 
+                campsites={filteredCampsites}
                 onCampsiteSelect={(campsite) => setSelectedCampsite(campsite)}
+                selectedCampsite={selectedCampsite}
+                currentWeatherCondition={currentWeatherCondition}
               />
             </div>
           </motion.div>

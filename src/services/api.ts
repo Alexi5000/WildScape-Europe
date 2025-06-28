@@ -31,44 +31,6 @@ export class ApiService {
     return weatherData as WeatherData;
   }
 
-  async searchCampsites(query: string): Promise<Campsite[]> {
-    await this.delay(400);
-    const campsites = campsitesData as Campsite[];
-    
-    if (!query.trim()) return campsites;
-    
-    const searchTerm = query.toLowerCase();
-    return campsites.filter(campsite => 
-      campsite.name.toLowerCase().includes(searchTerm) ||
-      campsite.location.country.toLowerCase().includes(searchTerm) ||
-      campsite.location.region.toLowerCase().includes(searchTerm) ||
-      campsite.description.toLowerCase().includes(searchTerm)
-    );
-  }
-
-  async getSuggestions(query: string): Promise<string[]> {
-    await this.delay(200);
-    
-    if (!query.trim()) return [];
-    
-    const suggestions = [
-      'Norway Aurora Camping',
-      'Swiss Alpine Retreats',
-      'Portuguese Coastal Sites',
-      'German Forest Camping',
-      'Italian Vineyard Stays',
-      'Fjord Edge Adventures',
-      'Mountain View Campsites',
-      'Beach Access Locations',
-      'Wildlife Watching Spots',
-      'Photography Destinations'
-    ];
-
-    return suggestions.filter(s => 
-      s.toLowerCase().includes(query.toLowerCase())
-    ).slice(0, 5);
-  }
-
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }

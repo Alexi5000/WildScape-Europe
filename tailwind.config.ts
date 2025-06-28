@@ -22,7 +22,7 @@ export default {
         display: ['Poppins', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'aurora': 'aurora 20s ease-in-out infinite',
+        'aurora': 'aurora 8s ease-in-out infinite',
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'morph': 'morph 0.5s ease-in-out',
@@ -37,8 +37,8 @@ export default {
           '50%': { transform: 'translateY(-10px)' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.5)' },
-          '100%': { boxShadow: '0 0 30px rgba(139, 92, 246, 0.8)' },
+          '0%': { boxShadow: '0 0 20px rgba(5, 150, 105, 0.3)' },
+          '100%': { boxShadow: '0 0 40px rgba(5, 150, 105, 0.6)' },
         },
         morph: {
           '0%': { borderRadius: '50px' },

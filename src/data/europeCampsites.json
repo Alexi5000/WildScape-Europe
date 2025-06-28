@@ -8,14 +8,15 @@
       "coordinates": [13.6000, 68.1500],
       "elevation": 245
     },
-    "description": "Experience the northern lights from your tent in this pristine wilderness location with breathtaking mountain views.",
-    "amenities": ["aurora_viewing", "hiking_trails", "fishing", "wildlife_watching", "mountain_climbing"],
+    "description": "Experience the northern lights from your tent in this pristine wilderness location with unobstructed views of the Arctic sky.",
+    "amenities": ["aurora_viewing", "hiking_trails", "fishing", "wildlife_watching", "photography_spots"],
     "difficulty": "moderate",
     "capacity": 12,
     "price_per_night": 45,
     "images": [
       "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
-      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
+      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
+      "https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg"
     ],
     "weather": {
       "current": "clear",
@@ -26,22 +27,46 @@
     "availability": {
       "2024-01-15": true,
       "2024-01-16": false,
-      "2024-01-17": true
+      "2024-01-17": true,
+      "2024-01-18": true,
+      "2024-01-19": false,
+      "2024-01-20": true
     },
     "rating": 4.8,
-    "reviews_count": 127
+    "reviews": [
+      {
+        "id": "rev_001",
+        "user": "Sarah M.",
+        "rating": 5,
+        "comment": "Absolutely magical! Saw the northern lights on both nights.",
+        "date": "2024-01-10"
+      },
+      {
+        "id": "rev_002",
+        "user": "Erik L.",
+        "rating": 4,
+        "comment": "Great location but can get very cold. Bring proper gear!",
+        "date": "2024-01-08"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": true,
+      "has_hot_springs": false,
+      "has_lake_access": false,
+      "has_mountain_views": true
+    }
   },
   {
-    "id": "camp_002",
-    "name": "Alpine Meadow Retreat",
+    "id": "camp_002", 
+    "name": "Alpine Serenity Base",
     "location": {
       "country": "Switzerland",
-      "region": "Bernese Alps",
-      "coordinates": [7.7500, 46.5500],
-      "elevation": 1850
+      "region": "Bernese Oberland",
+      "coordinates": [7.9875, 46.5583],
+      "elevation": 1650
     },
-    "description": "High-altitude camping surrounded by wildflower meadows and snow-capped peaks.",
-    "amenities": ["mountain_views", "hiking_trails", "wildflowers", "photography", "stargazing"],
+    "description": "High-altitude camping with panoramic views of the Eiger, Mönch, and Jungfrau peaks.",
+    "amenities": ["mountain_views", "hiking_trails", "rock_climbing", "stargazing", "alpine_flora"],
     "difficulty": "challenging",
     "capacity": 8,
     "price_per_night": 65,
@@ -50,48 +75,84 @@
       "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
     ],
     "weather": {
-      "current": "cloudy",
+      "current": "clear",
       "temperature": 8,
-      "wind_speed": 12
+      "wind_speed": 12,
+      "aurora_probability": 0
     },
     "availability": {
       "2024-01-15": true,
       "2024-01-16": true,
-      "2024-01-17": false
+      "2024-01-17": false,
+      "2024-01-18": true,
+      "2024-01-19": true,
+      "2024-01-20": false
     },
     "rating": 4.9,
-    "reviews_count": 89
+    "reviews": [
+      {
+        "id": "rev_003",
+        "user": "Maria K.",
+        "rating": 5,
+        "comment": "Breathtaking views! Perfect for experienced hikers.",
+        "date": "2024-01-12"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": false,
+      "has_hot_springs": false,
+      "has_lake_access": false,
+      "has_mountain_views": true
+    }
   },
   {
     "id": "camp_003",
-    "name": "Coastal Dunes Paradise",
+    "name": "Midnight Sun Fjord",
     "location": {
-      "country": "Portugal",
-      "region": "Algarve Coast",
-      "coordinates": [-8.9500, 37.0200],
-      "elevation": 25
+      "country": "Norway", 
+      "region": "Nordkapp",
+      "coordinates": [25.7844, 71.1694],
+      "elevation": 120
     },
-    "description": "Beachfront camping with golden sand dunes and crystal-clear Atlantic waters.",
-    "amenities": ["beach_access", "surfing", "fishing", "sunset_views", "water_sports"],
-    "difficulty": "easy",
-    "capacity": 20,
-    "price_per_night": 35,
+    "description": "Experience the midnight sun phenomenon while camping on dramatic fjord cliffs.",
+    "amenities": ["midnight_sun", "fjord_views", "bird_watching", "kayaking", "fishing"],
+    "difficulty": "moderate",
+    "capacity": 15,
+    "price_per_night": 55,
     "images": [
-      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
-      "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
+      "https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg",
+      "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
     ],
     "weather": {
-      "current": "clear",
-      "temperature": 22,
-      "wind_speed": 8
+      "current": "fog",
+      "temperature": 12,
+      "wind_speed": 20,
+      "aurora_probability": 60
     },
     "availability": {
-      "2024-01-15": true,
+      "2024-01-15": false,
       "2024-01-16": true,
-      "2024-01-17": true
+      "2024-01-17": true,
+      "2024-01-18": false,
+      "2024-01-19": true,
+      "2024-01-20": true
     },
-    "rating": 4.6,
-    "reviews_count": 203
+    "rating": 4.7,
+    "reviews": [
+      {
+        "id": "rev_004",
+        "user": "Hans N.",
+        "rating": 5,
+        "comment": "The midnight sun is incredible! Unforgettable experience.",
+        "date": "2024-01-09"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": true,
+      "has_hot_springs": false,
+      "has_lake_access": true,
+      "has_mountain_views": true
+    }
   },
   {
     "id": "camp_004",
@@ -104,9 +165,9 @@
     },
     "description": "Deep forest camping among ancient pines with mystical fog and wildlife encounters.",
     "amenities": ["forest_trails", "wildlife_watching", "mushroom_foraging", "meditation", "photography"],
-    "difficulty": "moderate",
-    "capacity": 15,
-    "price_per_night": 40,
+    "difficulty": "easy",
+    "capacity": 20,
+    "price_per_night": 35,
     "images": [
       "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
       "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg"
@@ -117,43 +178,77 @@
       "wind_speed": 5
     },
     "availability": {
-      "2024-01-15": false,
+      "2024-01-15": true,
       "2024-01-16": true,
-      "2024-01-17": true
+      "2024-01-17": true,
+      "2024-01-18": true,
+      "2024-01-19": false,
+      "2024-01-20": true
     },
-    "rating": 4.7,
-    "reviews_count": 156
+    "rating": 4.6,
+    "reviews": [
+      {
+        "id": "rev_005",
+        "user": "Anna S.",
+        "rating": 4,
+        "comment": "Peaceful and serene. Great for families.",
+        "date": "2024-01-11"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": false,
+      "has_hot_springs": false,
+      "has_lake_access": false,
+      "has_mountain_views": false
+    }
   },
   {
     "id": "camp_005",
-    "name": "Fjord Edge Adventure",
+    "name": "Coastal Dunes Paradise",
     "location": {
-      "country": "Norway",
-      "region": "Geirangerfjord",
-      "coordinates": [7.2000, 62.1000],
-      "elevation": 150
+      "country": "Portugal",
+      "region": "Algarve Coast",
+      "coordinates": [-8.9500, 37.0200],
+      "elevation": 25
     },
-    "description": "Dramatic fjord camping with waterfalls cascading from towering cliffs.",
-    "amenities": ["waterfall_views", "kayaking", "fishing", "hiking_trails", "photography"],
-    "difficulty": "moderate",
-    "capacity": 10,
-    "price_per_night": 55,
+    "description": "Beachfront camping with golden sand dunes and crystal-clear Atlantic waters.",
+    "amenities": ["beach_access", "surfing", "fishing", "sunset_views", "water_sports"],
+    "difficulty": "easy",
+    "capacity": 25,
+    "price_per_night": 40,
     "images": [
       "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
       "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg"
     ],
     "weather": {
-      "current": "rain",
-      "temperature": 15,
-      "wind_speed": 18
+      "current": "clear",
+      "temperature": 22,
+      "wind_speed": 8
     },
     "availability": {
       "2024-01-15": true,
       "2024-01-16": true,
-      "2024-01-17": false
+      "2024-01-17": true,
+      "2024-01-18": false,
+      "2024-01-19": true,
+      "2024-01-20": true
     },
-    "rating": 4.9,
-    "reviews_count": 94
+    "rating": 4.5,
+    "reviews": [
+      {
+        "id": "rev_006",
+        "user": "Carlos R.",
+        "rating": 5,
+        "comment": "Perfect beach camping! Great waves for surfing.",
+        "date": "2024-01-13"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": false,
+      "has_hot_springs": false,
+      "has_lake_access": false,
+      "has_mountain_views": false
+    }
   },
   {
     "id": "camp_006",
@@ -181,9 +276,26 @@
     "availability": {
       "2024-01-15": true,
       "2024-01-16": false,
-      "2024-01-17": true
+      "2024-01-17": true,
+      "2024-01-18": true,
+      "2024-01-19": true,
+      "2024-01-20": false
     },
     "rating": 4.8,
-    "reviews_count": 178
+    "reviews": [
+      {
+        "id": "rev_007",
+        "user": "Isabella F.",
+        "rating": 5,
+        "comment": "Romantic and beautiful! The wine tasting was amazing.",
+        "date": "2024-01-14"
+      }
+    ],
+    "features": {
+      "has_aurora_viewing": false,
+      "has_hot_springs": false,
+      "has_lake_access": false,
+      "has_mountain_views": true
+    }
   }
 ]

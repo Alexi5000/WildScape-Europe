@@ -1,119 +1,116 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import { useParticleSystem } from '@/hooks/useThree';
 
 interface WeatherParticlesProps {
-  condition: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
+  weather: 'rain' | 'snow' | 'fog' | 'clear';
   intensity?: number;
 }
 
-const RainParticles = ({ count = 500 }: { count?: number }) => {
-  const { particlesRef, positions } = useParticleSystem(count);
-
-  return (
-    <Points ref={particlesRef} positions={positions}>
-      <PointMaterial
-        size={0.1}
-        color="#3B82F6"
-        transparent
-        opacity={0.6}
-        sizeAttenuation
-      />
-    </Points>
-  );
-};
-
-const SnowParticles = ({ count = 300 }: { count?: number }) => {
-  const { particlesRef, positions } = useParticleSystem(count);
-
-  return (
-    <Points ref={particlesRef} positions={positions}>
-      <PointMaterial
-        size={0.3}
-        color="#FFFFFF"
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-      />
-    </Points>
-  );
-};
-
-const FogParticles = ({ count = 100 }: { count?: number }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+const ParticleSystem = ({ weather, intensity = 1 }: WeatherParticlesProps) => {
+  const ref = useRef<THREE.Points>(null);
   
-  const geometry = useMemo(() => {
-    return new THREE.SphereGeometry(50, 32, 32);
-  }, []);
-
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uOpacity: { value: 0.1 },
-      },
-      vertexShader: `
-        uniform float uTime;
-        varying vec3 vPosition;
-        
-        void main() {
-          vPosition = position;
-          vec3 pos = position;
-          pos.y += sin(pos.x * 0.1 + uTime) * 2.0;
-          pos.x += cos(pos.z * 0.1 + uTime) * 1.0;
+  const particles = useMemo(() => {
+    const count = weather === 'clear' ? 0 : 2000 * intensity;
+    const positions = new Float32Array(count * 3);
+    const velocities = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    
+    for (let i = 0; i < count; i++) {
+      // Position
+      positions[i * 3] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 1] = Math.random() * 100;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+      
+      // Velocity based on weather type
+      switch (weather) {
+        case 'rain':
+          velocities[i * 3] = (Math.random() - 0.5) * 0.1;
+          velocities[i * 3 + 1] = -Math.random() * 2 - 1;
+          velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+          // Blue-white color for rain
+          colors[i * 3] = 0.7;
+          colors[i * 3 + 1] = 0.8;
+          colors[i * 3 + 2] = 1.0;
+          break;
           
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uOpacity;
-        varying vec3 vPosition;
-        
-        void main() {
-          float alpha = uOpacity * (1.0 - length(vPosition) / 50.0);
-          gl_FragColor = vec4(0.8, 0.8, 0.9, alpha);
-        }
-      `,
-      transparent: true,
-      side: THREE.DoubleSide,
-    });
-  }, []);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      material.uniforms.uTime.value = state.clock.elapsedTime * 0.5;
+        case 'snow':
+          velocities[i * 3] = (Math.random() - 0.5) * 0.2;
+          velocities[i * 3 + 1] = -Math.random() * 0.5 - 0.2;
+          velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.2;
+          // White color for snow
+          colors[i * 3] = 1.0;
+          colors[i * 3 + 1] = 1.0;
+          colors[i * 3 + 2] = 1.0;
+          break;
+          
+        case 'fog':
+          velocities[i * 3] = (Math.random() - 0.5) * 0.05;
+          velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
+          velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+          // Gray color for fog
+          colors[i * 3] = 0.8;
+          colors[i * 3 + 1] = 0.8;
+          colors[i * 3 + 2] = 0.8;
+          break;
+      }
     }
+    
+    return { positions, velocities, colors, count };
+  }, [weather, intensity]);
+  
+  useFrame(() => {
+    if (!ref.current || weather === 'clear') return;
+    
+    const positions = ref.current.geometry.attributes.position.array as Float32Array;
+    
+    for (let i = 0; i < particles.count; i++) {
+      // Update positions based on velocities
+      positions[i * 3] += particles.velocities[i * 3];
+      positions[i * 3 + 1] += particles.velocities[i * 3 + 1];
+      positions[i * 3 + 2] += particles.velocities[i * 3 + 2];
+      
+      // Reset particles that fall below the ground
+      if (positions[i * 3 + 1] < -10) {
+        positions[i * 3] = (Math.random() - 0.5) * 100;
+        positions[i * 3 + 1] = 50;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+      }
+      
+      // Wrap particles horizontally
+      if (Math.abs(positions[i * 3]) > 50) {
+        positions[i * 3] = -positions[i * 3];
+      }
+      if (Math.abs(positions[i * 3 + 2]) > 50) {
+        positions[i * 3 + 2] = -positions[i * 3 + 2];
+      }
+    }
+    
+    ref.current.geometry.attributes.position.needsUpdate = true;
   });
-
-  return <mesh ref={meshRef} geometry={geometry} material={material} />;
+  
+  if (weather === 'clear' || particles.count === 0) return null;
+  
+  return (
+    <Points ref={ref} positions={particles.positions} colors={particles.colors}>
+      <PointMaterial
+        size={weather === 'fog' ? 3 : 1}
+        vertexColors
+        transparent
+        opacity={weather === 'fog' ? 0.3 : 0.8}
+        sizeAttenuation
+        blending={weather === 'fog' ? THREE.NormalBlending : THREE.AdditiveBlending}
+      />
+    </Points>
+  );
 };
 
-export const WeatherParticles: React.FC<WeatherParticlesProps> = ({ 
-  condition, 
-  intensity = 1 
-}) => {
-  const renderParticles = () => {
-    switch (condition) {
-      case 'rain':
-        return <RainParticles count={Math.floor(500 * intensity)} />;
-      case 'snow':
-        return <SnowParticles count={Math.floor(300 * intensity)} />;
-      case 'fog':
-        return <FogParticles />;
-      default:
-        return null;
-    }
-  };
-
-  if (condition === 'clear') return null;
-
+export const WeatherParticles = ({ weather, intensity }: WeatherParticlesProps) => {
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="fixed inset-0 pointer-events-none z-20">
       <Canvas camera={{ position: [0, 0, 30], fov: 75 }}>
-        <ambientLight intensity={0.2} />
-        {renderParticles()}
+        <ParticleSystem weather={weather} intensity={intensity} />
       </Canvas>
     </div>
   );
