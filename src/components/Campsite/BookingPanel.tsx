@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Users, Euro, Check } from 'lucide-react';
+import { Calendar, Users, Check } from 'lucide-react';
 import { Campsite } from '@/types/campsite';
 
 interface BookingPanelProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Star, Euro, Users, Mountain, Calendar, Cloud } from 'lucide-react';
+import { X, MapPin, Star, Euro, Users, Mountain } from 'lucide-react';
 import { Campsite } from '@/types/campsite';
 import { useCampsiteStore } from '@/store/campsiteStore';
 import { WeatherIcon } from '../UI/WeatherIcon';
