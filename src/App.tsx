@@ -17,7 +17,7 @@ import { ThemeToggle } from './components/UI/ThemeToggle';
 function App() {
   const { 
     loadCampsites, 
-    filteredCampsites, 
+    filteredCampsites = [], // Default to empty array
     selectedCampsite, 
     setSelectedCampsite,
     setSearchQuery,
@@ -25,20 +25,34 @@ function App() {
   } = useCampsiteStore();
   
   const { 
-    theme, 
-    weatherEffectsEnabled, 
-    currentWeatherCondition,
+    theme = 'dark', // Default theme
+    weatherEffectsEnabled = true, // Default value
+    currentWeatherCondition = 'clear', // Default condition
     setCurrentWeatherCondition 
   } = useUIStore();
   
   const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map'>('hero');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadCampsites();
+    const initializeApp = async () => {
+      try {
+        setIsLoading(true);
+        await loadCampsites();
+      } catch (error) {
+        console.error('Failed to load campsites:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeApp();
   }, [loadCampsites]);
 
   // Cycle through weather conditions for demo
   useEffect(() => {
+    if (!setCurrentWeatherCondition) return; // Guard against undefined
+
     const weatherCycle = ['clear', 'rain', 'snow', 'fog'] as const;
     let currentIndex = 0;
     
@@ -63,13 +77,25 @@ function App() {
   };
 
   const handleSearch = ({ query, filters }: { query: string; filters: any }) => {
-    setSearchQuery(query);
-    setSearchFilters(filters);
+    if (setSearchQuery) setSearchQuery(query);
+    if (setSearchFilters) setSearchFilters(filters);
   };
 
   const handleFilterChange = (filters: any) => {
-    setSearchFilters(filters);
+    if (setSearchFilters) setSearchFilters(filters);
   };
+
+  // Show loading state while app initializes
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white">Loading WildScape...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
@@ -184,7 +210,7 @@ function App() {
             <div className="flex-1">
               <Terrain3DMap 
                 campsites={filteredCampsites}
-                onCampsiteSelect={(campsite) => setSelectedCampsite(campsite)}
+                onCampsiteSelect={(campsite) => setSelectedCampsite?.(campsite)}
                 selectedCampsite={selectedCampsite}
                 currentWeatherCondition={currentWeatherCondition}
               />
@@ -198,7 +224,7 @@ function App() {
         {selectedCampsite && (
           <CampsiteDetails
             campsite={selectedCampsite}
-            onClose={() => setSelectedCampsite(null)}
+            onClose={() => setSelectedCampsite?.(null)}
           />
         )}
       </AnimatePresence>

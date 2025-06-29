@@ -23,7 +23,7 @@ interface UIStore {
   setPerformanceMode: (mode: 'high' | 'medium' | 'low') => void;
 }
 
-export const useUIStore = create<UIStore>((set) => ({
+export const useUIStore = create<UIStore>((set, get) => ({
   theme: 'dark',
   sidebarOpen: false,
   mapViewState: {
@@ -37,10 +37,47 @@ export const useUIStore = create<UIStore>((set) => ({
   currentWeatherCondition: 'clear',
   performanceMode: 'high',
 
-  setTheme: (theme) => set({ theme }),
-  setSidebarOpen: (open) => set({ sidebarOpen: open }),
-  setMapViewState: (viewState) => set({ mapViewState: viewState }),
-  setWeatherEffectsEnabled: (enabled) => set({ weatherEffectsEnabled: enabled }),
-  setCurrentWeatherCondition: (condition) => set({ currentWeatherCondition: condition }),
-  setPerformanceMode: (mode) => set({ performanceMode: mode }),
+  setTheme: (theme) => {
+    if (theme === 'light' || theme === 'dark') {
+      set({ theme });
+    }
+  },
+
+  setSidebarOpen: (open) => {
+    if (typeof open === 'boolean') {
+      set({ sidebarOpen: open });
+    }
+  },
+
+  setMapViewState: (viewState) => {
+    if (viewState && typeof viewState === 'object') {
+      const currentState = get().mapViewState;
+      set({ 
+        mapViewState: {
+          ...currentState,
+          ...viewState
+        }
+      });
+    }
+  },
+
+  setWeatherEffectsEnabled: (enabled) => {
+    if (typeof enabled === 'boolean') {
+      set({ weatherEffectsEnabled: enabled });
+    }
+  },
+
+  setCurrentWeatherCondition: (condition) => {
+    const validConditions = ['clear', 'rain', 'snow', 'fog'];
+    if (validConditions.includes(condition)) {
+      set({ currentWeatherCondition: condition });
+    }
+  },
+
+  setPerformanceMode: (mode) => {
+    const validModes = ['high', 'medium', 'low'];
+    if (validModes.includes(mode)) {
+      set({ performanceMode: mode });
+    }
+  },
 }));
