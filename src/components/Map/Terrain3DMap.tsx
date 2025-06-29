@@ -11,7 +11,7 @@ interface Terrain3DMapProps {
   campsites: Campsite[];
   onCampsiteSelect: (campsite: Campsite) => void;
   selectedCampsite?: Campsite | null;
-  currentWeatherCondition?: 'clear' | 'rain' | 'snow' | 'fog';
+  currentWeatherCondition?: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
 }
 
 export const Terrain3DMap = ({ 
@@ -204,7 +204,8 @@ export const Terrain3DMap = ({
     rain: '☔',
     snow: '❄️',
     fog: '🌫️',
-    clear: '☀️'
+    clear: '☀️',
+    cloudy: '☁️'
   };
 
   return (

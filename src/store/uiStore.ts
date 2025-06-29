@@ -11,7 +11,7 @@ interface UIStore {
     bearing: number;
   };
   weatherEffectsEnabled: boolean;
-  currentWeatherCondition: 'clear' | 'rain' | 'snow' | 'fog';
+  currentWeatherCondition: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
   performanceMode: 'high' | 'medium' | 'low';
   
   // Actions
@@ -19,7 +19,7 @@ interface UIStore {
   setSidebarOpen: (open: boolean) => void;
   setMapViewState: (viewState: any) => void;
   setWeatherEffectsEnabled: (enabled: boolean) => void;
-  setCurrentWeatherCondition: (condition: 'clear' | 'rain' | 'snow' | 'fog') => void;
+  setCurrentWeatherCondition: (condition: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy') => void;
   setPerformanceMode: (mode: 'high' | 'medium' | 'low') => void;
 }
 
@@ -68,7 +68,7 @@ export const useUIStore = create<UIStore>((set, get) => ({
   },
 
   setCurrentWeatherCondition: (condition) => {
-    const validConditions = ['clear', 'rain', 'snow', 'fog'];
+    const validConditions = ['clear', 'rain', 'snow', 'fog', 'cloudy'];
     if (validConditions.includes(condition)) {
       set({ currentWeatherCondition: condition });
     }

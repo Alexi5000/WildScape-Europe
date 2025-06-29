@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     if (!setCurrentWeatherCondition) return; // Guard against undefined
 
-    const weatherCycle = ['clear', 'rain', 'snow', 'fog'] as const;
+    const weatherCycle = ['clear', 'rain', 'snow', 'fog', 'cloudy'] as const;
     let currentIndex = 0;
     
     const interval = setInterval(() => {
@@ -113,7 +113,7 @@ function App() {
 
       {/* Global Weather Effects */}
       {weatherEffectsEnabled && (
-        <WeatherParticles weather={currentWeatherCondition} intensity={0.8} />
+        <WeatherParticles condition={currentWeatherCondition} intensity={0.8} />
       )}
 
       {/* Theme Toggle */}

@@ -30,3 +30,8 @@ export interface WeatherParticle {
   size: number;
   opacity: number;
 }
+
+export interface WeatherParticlesProps {
+  condition: "clear" | "rain" | "snow" | "fog" | "cloudy";
+  intensity: number;
+}

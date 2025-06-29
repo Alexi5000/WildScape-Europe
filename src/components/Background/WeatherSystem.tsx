@@ -41,6 +41,10 @@ export const WeatherSystem: React.FC<WeatherSystemProps> = ({
       {currentCondition === 'snow' && (
         <div className="absolute inset-0 bg-blue-100/10" />
       )}
+
+      {currentCondition === 'cloudy' && (
+        <div className="absolute inset-0 bg-gray-400/5" />
+      )}
     </div>
   );
 };
