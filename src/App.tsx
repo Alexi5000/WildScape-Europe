@@ -13,11 +13,17 @@ import { MorphingSearchBar } from './components/Search/MorphingSearchBar';
 import { SearchResults } from './components/Search/SearchResults';
 import { CampsiteDetails } from './components/Campsite/CampsiteDetails';
 import { ThemeToggle } from './components/UI/ThemeToggle';
+import { NotificationCenter } from './components/UI/NotificationCenter';
+import { UserDashboard } from './components/Dashboard/UserDashboard';
+
+// Services
+import { enhancedApiService } from './services/enhancedApi';
+import { realTimeService } from './services/realTimeService';
 
 function App() {
   const { 
     loadCampsites, 
-    filteredCampsites = [], // Default to empty array
+    filteredCampsites = [], 
     selectedCampsite, 
     setSelectedCampsite,
     setSearchQuery,
@@ -25,33 +31,48 @@ function App() {
   } = useCampsiteStore();
   
   const { 
-    theme = 'dark', // Default theme
-    weatherEffectsEnabled = true, // Default value
-    currentWeatherCondition = 'clear', // Default condition
+    theme = 'dark',
+    weatherEffectsEnabled = true,
+    currentWeatherCondition = 'clear',
     setCurrentWeatherCondition 
   } = useUIStore();
   
-  const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map'>('hero');
+  const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map' | 'dashboard'>('hero');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         setIsLoading(true);
+        
+        // Initialize enhanced API service
         await loadCampsites();
+        
+        // Connect to real-time service
+        realTimeService.connect();
+        
+        // Simulate some initial data loading
+        await enhancedApiService.getFeaturedCampsites();
+        await enhancedApiService.getPopularDestinations();
+        
       } catch (error) {
-        console.error('Failed to load campsites:', error);
+        console.error('Failed to initialize app:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
     initializeApp();
+
+    // Cleanup on unmount
+    return () => {
+      realTimeService.disconnect();
+    };
   }, [loadCampsites]);
 
   // Cycle through weather conditions for demo
   useEffect(() => {
-    if (!setCurrentWeatherCondition) return; // Guard against undefined
+    if (!setCurrentWeatherCondition) return;
 
     const weatherCycle = ['clear', 'rain', 'snow', 'fog', 'cloudy'] as const;
     let currentIndex = 0;
@@ -59,7 +80,7 @@ function App() {
     const interval = setInterval(() => {
       currentIndex = (currentIndex + 1) % weatherCycle.length;
       setCurrentWeatherCondition(weatherCycle[currentIndex]);
-    }, 10000); // Change every 10 seconds
+    }, 12000); // Change every 12 seconds
 
     return () => clearInterval(interval);
   }, [setCurrentWeatherCondition]);
@@ -70,6 +91,10 @@ function App() {
 
   const handleMapView = () => {
     setCurrentView('map');
+  };
+
+  const handleDashboardView = () => {
+    setCurrentView('dashboard');
   };
 
   const handleBackToHero = () => {
@@ -90,8 +115,27 @@ function App() {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white">Loading WildScape...</p>
+          <motion.div
+            className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto mb-6"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.h2
+            className="text-2xl font-bold text-white mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Loading WildScape...
+          </motion.h2>
+          <motion.p
+            className="text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            Preparing your adventure
+          </motion.p>
         </div>
       </div>
     );
@@ -112,14 +156,35 @@ function App() {
       </AnimatePresence>
 
       {/* Global Weather Effects */}
-      {weatherEffectsEnabled && (
-        <WeatherParticles condition={currentWeatherCondition} intensity={0.8} />
+      {weatherEffectsEnabled && currentView !== 'dashboard' && (
+        <WeatherParticles condition={currentWeatherCondition} intensity={0.6} />
       )}
 
-      {/* Theme Toggle */}
-      <div className="fixed top-6 right-6 z-40">
+      {/* Header Controls */}
+      <div className="fixed top-6 right-6 z-40 flex items-center gap-4">
+        <NotificationCenter />
         <ThemeToggle />
       </div>
+
+      {/* Navigation */}
+      {currentView !== 'hero' && (
+        <div className="fixed top-6 left-6 z-40">
+          <nav className="flex items-center gap-4">
+            <button
+              onClick={handleBackToHero}
+              className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              🏠 Home
+            </button>
+            <button
+              onClick={handleDashboardView}
+              className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              📊 Dashboard
+            </button>
+          </nav>
+        </div>
+      )}
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
@@ -148,15 +213,12 @@ function App() {
               {/* Header */}
               <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
                 <div>
-                  <button
-                    onClick={handleBackToHero}
-                    className="text-primary hover:text-primary/80 mb-2 transition-colors"
-                  >
-                    ← Back to Home
-                  </button>
                   <h1 className="text-4xl font-display font-bold">
                     Explore European Campsites
                   </h1>
+                  <p className="text-gray-400 mt-2">
+                    Discover {filteredCampsites.length} amazing camping destinations
+                  </p>
                 </div>
                 <div className="flex items-center gap-4">
                   <MorphingSearchBar 
@@ -167,7 +229,7 @@ function App() {
                     onClick={handleMapView}
                     className="px-6 py-3 bg-secondary hover:bg-secondary/90 text-white rounded-lg transition-colors"
                   >
-                    3D Map View
+                    🗺️ 3D Map View
                   </button>
                 </div>
               </div>
@@ -197,6 +259,9 @@ function App() {
                   ← Back to Results
                 </button>
                 <h1 className="text-2xl font-bold text-white">3D Terrain Map</h1>
+                <span className="text-sm text-gray-400">
+                  {filteredCampsites.length} campsites
+                </span>
               </div>
               <div className="flex items-center gap-4">
                 <MorphingSearchBar 
@@ -215,6 +280,18 @@ function App() {
                 currentWeatherCondition={currentWeatherCondition}
               />
             </div>
+          </motion.div>
+        )}
+
+        {currentView === 'dashboard' && (
+          <motion.div
+            key="dashboard"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.6 }}
+          >
+            <UserDashboard />
           </motion.div>
         )}
       </AnimatePresence>
