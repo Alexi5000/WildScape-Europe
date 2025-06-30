@@ -2,48 +2,59 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+/* Import Google Fonts for Natural Typography */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
-/* CSS Custom Properties for Forest Theme */
+/* 🌲 FOREST THEME CSS CUSTOM PROPERTIES */
 :root {
-  /* Forest Color Palette */
-  --forest-primary: #064E3B;
-  --forest-secondary: #059669;
-  --forest-accent: #10B981;
-  --forest-light: #D1FAE5;
-  --forest-dark: #022C22;
-  --forest-mist: rgba(209, 250, 229, 0.1);
+  /* Deep Forest Color Palette */
+  --forest-deep: #0D2818;
+  --forest-dark: #1A4B2F;
+  --forest-primary: #2D5A3D;
+  --forest-medium: #4A7C59;
+  --forest-light: #6B9B7A;
+  --forest-pale: #A8C8A8;
+  --forest-mist: #D4E6D4;
   
   /* Earth Tones */
-  --earth-brown: #8B4513;
-  --earth-tan: #D2B48C;
-  --earth-moss: #228B22;
+  --earth-bark: #3E2723;
+  --earth-soil: #5D4037;
+  --earth-moss: #689F38;
+  --earth-stone: #78909C;
+  --earth-sand: #BCAAA4;
+  
+  /* Natural Accents */
+  --sunlight: #FFF8E1;
+  --golden-hour: #FFB74D;
+  --morning-dew: #E8F5E8;
+  --shadow: rgba(13, 40, 24, 0.3);
   
   /* Typography */
-  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-body: 'Crimson Text', serif;
+  --font-ui: 'Inter', sans-serif;
   
-  /* Spacing System */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
+  /* Spacing System (8px base) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
   
   /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-organic: 0.75rem 1rem 0.5rem 1.25rem;
+  --radius-leaf: 50% 0% 50% 0%;
+  --radius-smooth: 1rem;
   
   /* Shadows */
-  --shadow-forest: 0 4px 6px -1px rgba(6, 78, 59, 0.1), 0 2px 4px -1px rgba(6, 78, 59, 0.06);
-  --shadow-forest-lg: 0 10px 15px -3px rgba(6, 78, 59, 0.1), 0 4px 6px -2px rgba(6, 78, 59, 0.05);
+  --shadow-soft: 0 4px 20px rgba(13, 40, 24, 0.15);
+  --shadow-deep: 0 8px 40px rgba(13, 40, 24, 0.25);
+  --shadow-canopy: inset 0 4px 20px rgba(13, 40, 24, 0.1);
 }
 
-/* Base styles */
+/* 🌿 BASE STYLES */
 * {
   margin: 0;
   padding: 0;
@@ -53,108 +64,199 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
 }
 
 body {
-  font-family: var(--font-primary);
-  line-height: 1.6;
-  color: #1F2937;
+  font-family: var(--font-body);
+  line-height: 1.7;
+  color: var(--forest-deep);
+  background: linear-gradient(180deg, var(--morning-dew) 0%, var(--forest-mist) 100%);
   overflow-x: hidden;
-  background: linear-gradient(135deg, var(--forest-light) 0%, #F3F4F6 100%);
+  position: relative;
 }
 
-/* Custom scrollbar with forest theme */
+/* 🍃 CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--forest-light);
+  background: var(--forest-mist);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--forest-secondary);
+  background: linear-gradient(180deg, var(--forest-medium), var(--forest-primary));
   border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--forest-primary);
+  background: linear-gradient(180deg, var(--forest-primary), var(--forest-dark));
 }
 
 /* Firefox scrollbar */
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--forest-secondary) var(--forest-light);
+  scrollbar-color: var(--forest-medium) var(--forest-mist);
 }
 
-/* Typography improvements */
+/* 🌲 TYPOGRAPHY SYSTEM */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-weight: 600;
   line-height: 1.2;
-  color: var(--forest-primary);
+  color: var(--forest-deep);
+  margin-bottom: var(--space-md);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
 }
 
 p {
   margin-bottom: var(--space-md);
-  color: #374151;
+  color: var(--forest-primary);
+  font-size: 1.125rem;
+  line-height: 1.8;
 }
 
-/* Button base styles */
+/* 🌿 BUTTON SYSTEM */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-organic);
+  font-family: var(--font-ui);
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
-  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--forest-secondary) 0%, var(--forest-accent) 100%);
+  background: linear-gradient(135deg, var(--forest-medium) 0%, var(--forest-primary) 100%);
   color: white;
-  box-shadow: var(--shadow-forest);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-forest-lg);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-deep);
+  background: linear-gradient(135deg, var(--forest-primary) 0%, var(--forest-dark) 100%);
 }
 
 .btn-secondary {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.9);
   color: var(--forest-primary);
-  border: 2px solid var(--forest-secondary);
+  border: 2px solid var(--forest-medium);
+  backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-  background: var(--forest-secondary);
+  background: var(--forest-medium);
   color: white;
+  transform: translateY(-2px);
 }
 
-/* Forest-specific animations */
-@keyframes forestSway {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  25% { transform: translateX(-2px) rotate(-1deg); }
-  75% { transform: translateX(2px) rotate(1deg); }
+/* 🌲 FOREST ANIMATIONS */
+@keyframes gentleSway {
+  0%, 100% { 
+    transform: translateX(0) rotate(0deg); 
+  }
+  25% { 
+    transform: translateX(-3px) rotate(-0.5deg); 
+  }
+  75% { 
+    transform: translateX(3px) rotate(0.5deg); 
+  }
 }
 
-@keyframes leafFall {
-  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+@keyframes leafDance {
+  0% { 
+    transform: translateY(0) rotate(0deg); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(180deg); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(0) rotate(360deg); 
+    opacity: 0.8; 
+  }
 }
 
-@keyframes mistFloat {
-  0%, 100% { transform: translateX(0) translateY(0); opacity: 0.3; }
-  50% { transform: translateX(20px) translateY(-10px); opacity: 0.6; }
+@keyframes mistFlow {
+  0%, 100% { 
+    transform: translateX(0) translateY(0); 
+    opacity: 0.3; 
+  }
+  33% { 
+    transform: translateX(20px) translateY(-5px); 
+    opacity: 0.6; 
+  }
+  66% { 
+    transform: translateX(-15px) translateY(5px); 
+    opacity: 0.4; 
+  }
 }
 
-/* Forest particle effects */
+@keyframes sunlightFilter {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.05); 
+  }
+}
+
+@keyframes organicPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: scale(1.1); 
+    opacity: 1; 
+  }
+}
+
+/* 🍃 FOREST PARTICLE EFFECTS */
 .forest-particles {
   position: fixed;
   top: 0;
@@ -163,68 +265,119 @@ p {
   height: 100%;
   pointer-events: none;
   z-index: 1;
+  overflow: hidden;
 }
 
-.forest-particle {
+.particle {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: var(--forest-accent);
+  border-radius: var(--radius-leaf);
+  animation: leafDance 8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.particle.leaf {
+  background: linear-gradient(45deg, var(--forest-light), var(--forest-medium));
+  width: 8px;
+  height: 12px;
+  animation-duration: 12s;
+}
+
+.particle.pollen {
+  background: radial-gradient(circle, var(--golden-hour), transparent);
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
-  animation: leafFall 8s linear infinite;
+  animation-duration: 15s;
+  filter: blur(0.5px);
 }
 
-/* Improved glass morphism */
+.particle.dust {
+  background: var(--sunlight);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  animation-duration: 20s;
+  opacity: 0.4;
+}
+
+/* 🌿 GLASS MORPHISM EFFECTS */
 .glass-forest {
-  background: rgba(209, 250, 229, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(209, 250, 229, 0.2);
-  box-shadow: var(--shadow-forest);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-organic);
+  box-shadow: var(--shadow-soft);
 }
 
-.glass-forest-dark {
-  background: rgba(6, 78, 59, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(6, 78, 59, 0.2);
+.glass-canopy {
+  background: rgba(45, 90, 61, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(45, 90, 61, 0.2);
+  border-radius: var(--radius-smooth);
 }
 
-/* Loading states with forest theme */
-.loading-forest {
-  background: linear-gradient(90deg, var(--forest-light) 25%, var(--forest-mist) 50%, var(--forest-light) 75%);
+/* 🌲 ORGANIC SHAPES */
+.organic-shape {
+  border-radius: var(--radius-organic);
+  position: relative;
+}
+
+.organic-shape::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--forest-light), var(--forest-medium), var(--forest-primary));
+  border-radius: var(--radius-organic);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.organic-shape:hover::before {
+  opacity: 0.3;
+}
+
+/* 🍃 HOVER EFFECTS */
+.nature-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.nature-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--shadow-deep);
+}
+
+.leaf-hover {
+  transition: all 0.3s ease;
+}
+
+.leaf-hover:hover {
+  animation: leafDance 2s ease-in-out;
+  transform: rotate(5deg);
+}
+
+/* 🌲 LOADING STATES */
+.forest-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--forest-mist) 25%,
+    var(--morning-dew) 50%,
+    var(--forest-mist) 75%
+  );
   background-size: 200% 100%;
-  animation: forestShimmer 2s infinite;
+  animation: shimmer 2s infinite;
 }
 
-@keyframes forestShimmer {
+@keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
-/* Focus styles for accessibility */
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--forest-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --forest-primary: #000000;
-    --forest-secondary: #006400;
-    --forest-accent: #00FF00;
-  }
-  
-  .text-gray-300 { color: #ffffff; }
-  .text-gray-600 { color: #000000; }
-  .bg-white\/10 { background-color: rgba(255, 255, 255, 0.5); }
-}
-
-/* Reduced motion support */
+/* 🌿 ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -234,51 +387,57 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
   }
   
-  .forest-particle {
+  .particle {
     animation: none;
+    opacity: 0.3;
   }
 }
 
-/* Dark mode forest theme */
-@media (prefers-color-scheme: dark) {
+@media (prefers-contrast: high) {
   :root {
-    --forest-light: #1F2937;
-    --forest-mist: rgba(31, 41, 55, 0.1);
-  }
-  
-  body {
-    background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
-    color: #F9FAFB;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    color: var(--forest-accent);
-  }
-  
-  p {
-    color: #D1D5DB;
+    --forest-deep: #000000;
+    --forest-primary: #1B5E20;
+    --forest-medium: #2E7D32;
+    --sunlight: #FFFFFF;
   }
 }
 
-/* Responsive typography */
+/* 🌲 FOCUS STYLES */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--golden-hour);
+  outline-offset: 2px;
+  border-radius: var(--radius-smooth);
+}
+
+/* 🍃 RESPONSIVE TYPOGRAPHY */
 @media (max-width: 768px) {
   html { font-size: 14px; }
   
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.5rem; }
+  .btn {
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.9rem;
+  }
+  
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }
 
 @media (max-width: 480px) {
   html { font-size: 13px; }
   
-  .btn {
-    padding: var(--space-xs) var(--space-md);
-    font-size: 0.875rem;
+  :root {
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
   }
 }
 
-/* Print styles */
+/* 🌲 PRINT STYLES */
 @media print {
   .no-print { display: none !important; }
   
@@ -288,57 +447,98 @@ a:focus-visible {
   }
   
   .glass-forest,
-  .glass-forest-dark {
+  .glass-canopy {
     background: white !important;
     border: 1px solid #ccc !important;
   }
 }
 
-/* Utility classes for forest theme */
+/* 🌿 UTILITY CLASSES */
+.text-forest-deep { color: var(--forest-deep); }
 .text-forest-primary { color: var(--forest-primary); }
-.text-forest-secondary { color: var(--forest-secondary); }
-.text-forest-accent { color: var(--forest-accent); }
+.text-forest-medium { color: var(--forest-medium); }
+.text-sunlight { color: var(--sunlight); }
+.text-golden { color: var(--golden-hour); }
 
+.bg-forest-deep { background-color: var(--forest-deep); }
 .bg-forest-primary { background-color: var(--forest-primary); }
-.bg-forest-secondary { background-color: var(--forest-secondary); }
-.bg-forest-accent { background-color: var(--forest-accent); }
-.bg-forest-light { background-color: var(--forest-light); }
+.bg-forest-medium { background-color: var(--forest-medium); }
+.bg-forest-mist { background-color: var(--forest-mist); }
 
-.border-forest { border-color: var(--forest-secondary); }
+.border-forest { border-color: var(--forest-medium); }
+.border-organic { border-radius: var(--radius-organic); }
 
-/* Enhanced mapbox styles for forest theme */
-.mapboxgl-popup-content {
-  padding: 0 !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-forest-lg) !important;
-  background: var(--forest-light) !important;
-}
-
-.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-  border-top-color: var(--forest-light) !important;
-}
-
-.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
-  border-bottom-color: var(--forest-light) !important;
-}
-
-.campsite-marker {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  filter: drop-shadow(0 4px 8px rgba(6, 78, 59, 0.3));
-}
-
-.campsite-marker:hover {
-  transform: scale(1.1);
-}
-
-/* Performance optimizations */
+/* 🌲 PERFORMANCE OPTIMIZATIONS */
 .will-change-transform { will-change: transform; }
 .will-change-opacity { will-change: opacity; }
-
-/* GPU acceleration for animations */
 .gpu-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* 🍃 ENHANCED MAPBOX STYLES */
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: var(--radius-organic) !important;
+  box-shadow: var(--shadow-deep) !important;
+  background: var(--morning-dew) !important;
+  border: 2px solid var(--forest-light) !important;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: var(--morning-dew) !important;
+}
+
+.campsite-marker {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 4px 12px var(--shadow));
+  animation: organicPulse 3s ease-in-out infinite;
+}
+
+.campsite-marker:hover {
+  transform: scale(1.2);
+  animation-play-state: paused;
+}
+
+/* 🌲 SECTION TRANSITIONS */
+.section-enter {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🌿 AMBIENT SOUND CONTROLS */
+.sound-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: var(--glass-forest);
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.sound-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sound-toggle.active {
+  background: var(--forest-medium);
+  color: white;
 }

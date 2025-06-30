@@ -3,10 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCampsiteStore } from './store/campsiteStore';
 import { useUIStore } from './store/uiStore';
 
-// Components
-import { AuroraBackground } from './components/Hero/AuroraBackground';
-import { HeroContent } from './components/Hero/HeroContent';
-import { ForestParallax } from './components/Background/ForestParallax';
+// Enhanced Components
+import { EnhancedForestParallax } from './components/Background/EnhancedForestParallax';
+import { EnhancedHeroContent } from './components/Hero/EnhancedHeroContent';
+import { EnhancedForestParticles } from './components/UI/EnhancedForestParticles';
+import { AmbientSoundManager } from './components/Audio/AmbientSoundManager';
+import { StorytellingElements } from './components/Interactive/StorytellingElements';
+
+// Existing Components
 import { WeatherParticles } from './components/Map/WeatherParticles';
 import { Terrain3DMap } from './components/Map/Terrain3DMap';
 import { MorphingSearchBar } from './components/Search/MorphingSearchBar';
@@ -15,7 +19,6 @@ import { CampsiteDetails } from './components/Campsite/CampsiteDetails';
 import { ThemeToggle } from './components/UI/ThemeToggle';
 import { NotificationCenter } from './components/UI/NotificationCenter';
 import { UserDashboard } from './components/Dashboard/UserDashboard';
-import { ForestParticles } from './components/UI/ForestParticles';
 import { ForestLoadingSpinner } from './components/UI/ForestLoadingSpinner';
 
 // Services
@@ -35,7 +38,7 @@ function App() {
   } = useCampsiteStore();
   
   const { 
-    theme = 'dark',
+    theme = 'light',
     weatherEffectsEnabled = true,
     currentWeatherCondition = 'clear',
     setCurrentWeatherCondition 
@@ -44,6 +47,22 @@ function App() {
   const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map' | 'dashboard'>('hero');
   const [isLoading, setIsLoading] = useState(true);
   const [appError, setAppError] = useState<string | null>(null);
+  const [timeOfDay, setTimeOfDay] = useState<'dawn' | 'day' | 'dusk' | 'night'>('day');
+
+  // Determine time of day based on current time
+  useEffect(() => {
+    const updateTimeOfDay = () => {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 8) setTimeOfDay('dawn');
+      else if (hour >= 8 && hour < 17) setTimeOfDay('day');
+      else if (hour >= 17 && hour < 20) setTimeOfDay('dusk');
+      else setTimeOfDay('night');
+    };
+
+    updateTimeOfDay();
+    const interval = setInterval(updateTimeOfDay, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -79,20 +98,28 @@ function App() {
     };
   }, [loadCampsites]);
 
-  // Cycle through weather conditions for demo
+  // Enhanced weather cycling with time-based conditions
   useEffect(() => {
     if (!setCurrentWeatherCondition) return;
 
-    const weatherCycle = ['clear', 'rain', 'snow', 'fog', 'cloudy'] as const;
-    let currentIndex = 0;
+    const getWeatherForTime = () => {
+      const conditions = {
+        dawn: ['fog', 'clear', 'cloudy'],
+        day: ['clear', 'cloudy', 'rain'],
+        dusk: ['clear', 'cloudy', 'fog'],
+        night: ['clear', 'fog', 'cloudy']
+      };
+      
+      const timeConditions = conditions[timeOfDay];
+      return timeConditions[Math.floor(Math.random() * timeConditions.length)];
+    };
     
     const interval = setInterval(() => {
-      currentIndex = (currentIndex + 1) % weatherCycle.length;
-      setCurrentWeatherCondition(weatherCycle[currentIndex]);
-    }, 15000); // Change every 15 seconds
+      setCurrentWeatherCondition(getWeatherForTime() as any);
+    }, 20000); // Change every 20 seconds
 
     return () => clearInterval(interval);
-  }, [setCurrentWeatherCondition]);
+  }, [setCurrentWeatherCondition, timeOfDay]);
 
   const handleExploreClick = () => {
     setCurrentView('explore');
@@ -119,66 +146,107 @@ function App() {
     if (setSearchFilters) setSearchFilters(filters);
   };
 
-  // Show error state
+  // Show error state with enhanced styling
   if (appError || campsitesError) {
     return (
-      <div className="min-h-screen bg-forest-50 flex items-center justify-center">
-        <div className="text-center p-8 bg-white rounded-xl shadow-forest-lg max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-forest-900 mb-4">
-            Oops! Something went wrong
+      <div className="min-h-screen bg-gradient-to-br from-forest-mist to-morning-dew flex items-center justify-center">
+        <motion.div 
+          className="text-center p-8 glass-forest rounded-2xl shadow-lg max-w-md"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="text-forest-medium text-6xl mb-4"
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            🌲
+          </motion.div>
+          <h2 className="text-2xl font-serif font-bold text-forest-deep mb-4">
+            Forest Path Blocked
           </h2>
-          <p className="text-forest-700 mb-6">
+          <p className="text-forest-primary mb-6">
             {appError || campsitesError}
           </p>
           <button
             onClick={() => window.location.reload()}
             className="btn btn-primary"
           >
-            Try Again
+            Find Another Path
           </button>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
-  // Show loading state while app initializes
+  // Enhanced loading state
   if (isLoading || campsitesLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-forest-50 to-forest-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-morning-dew to-forest-mist flex items-center justify-center relative overflow-hidden">
+        {/* Background forest silhouette */}
+        <div className="absolute inset-0 opacity-10">
+          <svg viewBox="0 0 1200 800" className="w-full h-full">
+            <path d="M0,600 Q200,400 400,500 T800,450 Q1000,400 1200,480 L1200,800 L0,800 Z" fill="currentColor" />
+          </svg>
+        </div>
+        
         <ForestLoadingSpinner 
           size="lg" 
-          message="Preparing your forest adventure..." 
+          message="Preparing your forest sanctuary..." 
+        />
+        
+        {/* Loading particles */}
+        <EnhancedForestParticles 
+          density="low" 
+          types={['leaf', 'dust']} 
+          timeOfDay={timeOfDay}
         />
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
+    <div className={`min-h-screen transition-all duration-500 ${
       theme === 'dark' 
-        ? 'bg-gradient-to-br from-forest-900 to-forest-800 text-white' 
-        : 'bg-gradient-to-br from-forest-50 to-forest-100 text-forest-900'
+        ? 'bg-gradient-to-br from-forest-deep to-forest-dark text-white' 
+        : 'bg-gradient-to-br from-morning-dew to-forest-mist text-forest-deep'
     }`}>
-      {/* Background Effects */}
+      {/* Enhanced Background Effects */}
       <AnimatePresence mode="wait">
         {currentView === 'hero' && (
-          <>
-            <ForestParallax />
-            {theme === 'dark' && <AuroraBackground />}
-          </>
+          <motion.div
+            key="hero-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <EnhancedForestParallax />
+          </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Global Weather Effects */}
+      {/* Enhanced Weather Effects */}
       {weatherEffectsEnabled && currentView !== 'dashboard' && (
-        <WeatherParticles condition={currentWeatherCondition} intensity={0.6} />
+        <WeatherParticles condition={currentWeatherCondition} intensity={0.7} />
       )}
 
-      {/* Forest Particles */}
+      {/* Enhanced Forest Particles */}
       {currentView === 'hero' && (
-        <ForestParticles density="medium" types={['leaf', 'pollen']} />
+        <EnhancedForestParticles 
+          density="medium" 
+          types={timeOfDay === 'night' ? ['firefly', 'dust'] : ['leaf', 'pollen', 'dust']}
+          timeOfDay={timeOfDay}
+          windStrength={currentWeatherCondition === 'clear' ? 0.5 : 1.5}
+        />
       )}
+
+      {/* Ambient Sound Manager */}
+      <AmbientSoundManager />
+
+      {/* Interactive Storytelling */}
+      {currentView === 'hero' && <StorytellingElements />}
 
       {/* Header Controls */}
       <div className="fixed top-6 right-6 z-40 flex items-center gap-4">
@@ -186,27 +254,36 @@ function App() {
         <ThemeToggle />
       </div>
 
-      {/* Navigation */}
+      {/* Enhanced Navigation */}
       {currentView !== 'hero' && (
-        <div className="fixed top-6 left-6 z-40">
+        <motion.div 
+          className="fixed top-6 left-6 z-40"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <nav className="flex items-center gap-4">
-            <button
+            <motion.button
               onClick={handleBackToHero}
-              className="px-4 py-2 glass-forest rounded-lg border border-forest-200 text-forest-700 hover:bg-forest-100 transition-all flex items-center gap-2"
+              className="px-6 py-3 glass-forest rounded-xl border border-forest-light text-forest-primary hover:bg-forest-light hover:text-forest-deep transition-all flex items-center gap-2"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
-              🏠 Home
-            </button>
-            <button
+              🏠 Forest Home
+            </motion.button>
+            <motion.button
               onClick={handleDashboardView}
-              className="px-4 py-2 glass-forest rounded-lg border border-forest-200 text-forest-700 hover:bg-forest-100 transition-all flex items-center gap-2"
+              className="px-6 py-3 glass-forest rounded-xl border border-forest-light text-forest-primary hover:bg-forest-light hover:text-forest-deep transition-all flex items-center gap-2"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
-              📊 Dashboard
-            </button>
+              📊 Journey Log
+            </motion.button>
           </nav>
-        </div>
+        </motion.div>
       )}
 
-      {/* Main Content */}
+      {/* Main Content with Enhanced Transitions */}
       <AnimatePresence mode="wait">
         {currentView === 'hero' && (
           <motion.div
@@ -214,30 +291,35 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1 }}
           >
-            <HeroContent onExploreClick={handleExploreClick} />
+            <EnhancedHeroContent onExploreClick={handleExploreClick} />
           </motion.div>
         )}
 
         {currentView === 'explore' && (
           <motion.div
             key="explore"
-            className="min-h-screen pt-20 pb-12"
+            className="min-h-screen pt-24 pb-12"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
             <div className="container mx-auto px-4">
-              {/* Header */}
-              <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-                <div>
-                  <h1 className="text-4xl font-display font-bold text-forest-800">
-                    Explore Forest Campsites
+              {/* Enhanced Header */}
+              <motion.div 
+                className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="text-center md:text-left">
+                  <h1 className="text-5xl font-serif font-bold text-forest-deep mb-4">
+                    Forest Sanctuaries
                   </h1>
-                  <p className="text-forest-600 mt-2">
-                    Discover {filteredCampsites.length} amazing forest camping destinations
+                  <p className="text-forest-primary text-xl">
+                    Discover {filteredCampsites.length} enchanting forest camping destinations
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -245,17 +327,25 @@ function App() {
                     onSearch={handleSearch}
                     onFilterChange={handleFilterChange}
                   />
-                  <button
+                  <motion.button
                     onClick={handleMapView}
-                    className="px-6 py-3 bg-forest-600 hover:bg-forest-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                    className="px-8 py-4 bg-gradient-to-r from-forest-medium to-forest-primary text-white rounded-xl font-semibold transition-all flex items-center gap-3 shadow-lg"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    🗺️ 3D Map View
-                  </button>
+                    🗺️ 3D Forest Map
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Search Results */}
-              <SearchResults />
+              {/* Enhanced Search Results */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <SearchResults />
+              </motion.div>
             </div>
           </motion.div>
         )}
@@ -267,21 +357,31 @@ function App() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
-            {/* Map Header */}
-            <div className="flex items-center justify-between p-6 glass-forest-dark backdrop-blur-sm">
-              <div className="flex items-center gap-4">
-                <button
+            {/* Enhanced Map Header */}
+            <motion.div 
+              className="flex items-center justify-between p-6 glass-forest backdrop-blur-lg border-b border-forest-light"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="flex items-center gap-6">
+                <motion.button
                   onClick={() => setCurrentView('explore')}
-                  className="text-white hover:text-forest-300 transition-colors"
+                  className="text-forest-primary hover:text-forest-medium transition-colors flex items-center gap-2"
+                  whileHover={{ x: -5 }}
                 >
-                  ← Back to Results
-                </button>
-                <h1 className="text-2xl font-bold text-white">3D Forest Terrain Map</h1>
-                <span className="text-sm text-forest-200">
-                  {filteredCampsites.length} forest campsites
-                </span>
+                  ← Return to Forest
+                </motion.button>
+                <div>
+                  <h1 className="text-3xl font-serif font-bold text-forest-deep">
+                    3D Forest Terrain Explorer
+                  </h1>
+                  <span className="text-forest-primary">
+                    {filteredCampsites.length} forest sanctuaries mapped
+                  </span>
+                </div>
               </div>
               <div className="flex items-center gap-4">
                 <MorphingSearchBar 
@@ -289,17 +389,22 @@ function App() {
                   onFilterChange={handleFilterChange}
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Map Container */}
-            <div className="flex-1">
+            {/* Enhanced Map Container */}
+            <motion.div 
+              className="flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               <Terrain3DMap 
                 campsites={filteredCampsites}
                 onCampsiteSelect={(campsite) => setSelectedCampsite?.(campsite)}
                 selectedCampsite={selectedCampsite}
                 currentWeatherCondition={currentWeatherCondition}
               />
-            </div>
+            </motion.div>
           </motion.div>
         )}
 
@@ -309,14 +414,14 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
             <UserDashboard />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Campsite Details Modal */}
+      {/* Enhanced Campsite Details Modal */}
       <AnimatePresence>
         {selectedCampsite && (
           <CampsiteDetails
@@ -325,6 +430,24 @@ function App() {
           />
         )}
       </AnimatePresence>
+
+      {/* Time of day indicator */}
+      <motion.div 
+        className="fixed bottom-6 left-6 z-30 glass-forest px-4 py-2 rounded-full"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 1 }}
+      >
+        <div className="flex items-center gap-2 text-sm text-forest-primary">
+          <span className="capitalize">{timeOfDay}</span>
+          <div className={`w-2 h-2 rounded-full ${
+            timeOfDay === 'dawn' ? 'bg-orange-300' :
+            timeOfDay === 'day' ? 'bg-yellow-400' :
+            timeOfDay === 'dusk' ? 'bg-orange-500' :
+            'bg-blue-400'
+          }`} />
+        </div>
+      </motion.div>
     </div>
   );
 }
