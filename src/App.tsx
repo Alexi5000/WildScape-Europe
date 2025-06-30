@@ -15,6 +15,8 @@ import { CampsiteDetails } from './components/Campsite/CampsiteDetails';
 import { ThemeToggle } from './components/UI/ThemeToggle';
 import { NotificationCenter } from './components/UI/NotificationCenter';
 import { UserDashboard } from './components/Dashboard/UserDashboard';
+import { ForestParticles } from './components/UI/ForestParticles';
+import { ForestLoadingSpinner } from './components/UI/ForestLoadingSpinner';
 
 // Services
 import { enhancedApiService } from './services/enhancedApi';
@@ -27,7 +29,9 @@ function App() {
     selectedCampsite, 
     setSelectedCampsite,
     setSearchQuery,
-    setSearchFilters
+    setSearchFilters,
+    isLoading: campsitesLoading,
+    error: campsitesError
   } = useCampsiteStore();
   
   const { 
@@ -39,11 +43,13 @@ function App() {
   
   const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map' | 'dashboard'>('hero');
   const [isLoading, setIsLoading] = useState(true);
+  const [appError, setAppError] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         setIsLoading(true);
+        setAppError(null);
         
         // Initialize enhanced API service
         await loadCampsites();
@@ -52,11 +58,14 @@ function App() {
         realTimeService.connect();
         
         // Simulate some initial data loading
-        await enhancedApiService.getFeaturedCampsites();
-        await enhancedApiService.getPopularDestinations();
+        await Promise.all([
+          enhancedApiService.getFeaturedCampsites(),
+          enhancedApiService.getPopularDestinations()
+        ]);
         
       } catch (error) {
         console.error('Failed to initialize app:', error);
+        setAppError(error instanceof Error ? error.message : 'Failed to initialize application');
       } finally {
         setIsLoading(false);
       }
@@ -80,7 +89,7 @@ function App() {
     const interval = setInterval(() => {
       currentIndex = (currentIndex + 1) % weatherCycle.length;
       setCurrentWeatherCondition(weatherCycle[currentIndex]);
-    }, 12000); // Change every 12 seconds
+    }, 15000); // Change every 15 seconds
 
     return () => clearInterval(interval);
   }, [setCurrentWeatherCondition]);
@@ -110,47 +119,53 @@ function App() {
     if (setSearchFilters) setSearchFilters(filters);
   };
 
-  // Show loading state while app initializes
-  if (isLoading) {
+  // Show error state
+  if (appError || campsitesError) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
-        <div className="text-center">
-          <motion.div
-            className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto mb-6"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.h2
-            className="text-2xl font-bold text-white mb-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+      <div className="min-h-screen bg-forest-50 flex items-center justify-center">
+        <div className="text-center p-8 bg-white rounded-xl shadow-forest-lg max-w-md">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-forest-900 mb-4">
+            Oops! Something went wrong
+          </h2>
+          <p className="text-forest-700 mb-6">
+            {appError || campsitesError}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="btn btn-primary"
           >
-            Loading WildScape...
-          </motion.h2>
-          <motion.p
-            className="text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            Preparing your adventure
-          </motion.p>
+            Try Again
+          </button>
         </div>
+      </div>
+    );
+  }
+
+  // Show loading state while app initializes
+  if (isLoading || campsitesLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-forest-50 to-forest-100 flex items-center justify-center">
+        <ForestLoadingSpinner 
+          size="lg" 
+          message="Preparing your forest adventure..." 
+        />
       </div>
     );
   }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
-      theme === 'dark' ? 'bg-dark text-white' : 'bg-light text-gray-900'
+      theme === 'dark' 
+        ? 'bg-gradient-to-br from-forest-900 to-forest-800 text-white' 
+        : 'bg-gradient-to-br from-forest-50 to-forest-100 text-forest-900'
     }`}>
       {/* Background Effects */}
       <AnimatePresence mode="wait">
         {currentView === 'hero' && (
           <>
-            <AuroraBackground />
             <ForestParallax />
+            {theme === 'dark' && <AuroraBackground />}
           </>
         )}
       </AnimatePresence>
@@ -158,6 +173,11 @@ function App() {
       {/* Global Weather Effects */}
       {weatherEffectsEnabled && currentView !== 'dashboard' && (
         <WeatherParticles condition={currentWeatherCondition} intensity={0.6} />
+      )}
+
+      {/* Forest Particles */}
+      {currentView === 'hero' && (
+        <ForestParticles density="medium" types={['leaf', 'pollen']} />
       )}
 
       {/* Header Controls */}
@@ -172,13 +192,13 @@ function App() {
           <nav className="flex items-center gap-4">
             <button
               onClick={handleBackToHero}
-              className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all"
+              className="px-4 py-2 glass-forest rounded-lg border border-forest-200 text-forest-700 hover:bg-forest-100 transition-all flex items-center gap-2"
             >
               🏠 Home
             </button>
             <button
               onClick={handleDashboardView}
-              className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all"
+              className="px-4 py-2 glass-forest rounded-lg border border-forest-200 text-forest-700 hover:bg-forest-100 transition-all flex items-center gap-2"
             >
               📊 Dashboard
             </button>
@@ -213,11 +233,11 @@ function App() {
               {/* Header */}
               <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
                 <div>
-                  <h1 className="text-4xl font-display font-bold">
-                    Explore European Campsites
+                  <h1 className="text-4xl font-display font-bold text-forest-800">
+                    Explore Forest Campsites
                   </h1>
-                  <p className="text-gray-400 mt-2">
-                    Discover {filteredCampsites.length} amazing camping destinations
+                  <p className="text-forest-600 mt-2">
+                    Discover {filteredCampsites.length} amazing forest camping destinations
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -227,7 +247,7 @@ function App() {
                   />
                   <button
                     onClick={handleMapView}
-                    className="px-6 py-3 bg-secondary hover:bg-secondary/90 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 bg-forest-600 hover:bg-forest-700 text-white rounded-lg transition-colors flex items-center gap-2"
                   >
                     🗺️ 3D Map View
                   </button>
@@ -250,17 +270,17 @@ function App() {
             transition={{ duration: 0.6 }}
           >
             {/* Map Header */}
-            <div className="flex items-center justify-between p-6 bg-dark/90 backdrop-blur-sm">
+            <div className="flex items-center justify-between p-6 glass-forest-dark backdrop-blur-sm">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setCurrentView('explore')}
-                  className="text-white hover:text-primary transition-colors"
+                  className="text-white hover:text-forest-300 transition-colors"
                 >
                   ← Back to Results
                 </button>
-                <h1 className="text-2xl font-bold text-white">3D Terrain Map</h1>
-                <span className="text-sm text-gray-400">
-                  {filteredCampsites.length} campsites
+                <h1 className="text-2xl font-bold text-white">3D Forest Terrain Map</h1>
+                <span className="text-sm text-forest-200">
+                  {filteredCampsites.length} forest campsites
                 </span>
               </div>
               <div className="flex items-center gap-4">
