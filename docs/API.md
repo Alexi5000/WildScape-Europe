@@ -512,3 +512,8 @@ export const geocode = async (address: string) => {
 - [Architecture Guide](./ARCHITECTURE.md)
 - [Deployment Guide](./DEPLOYMENT.md)
 
+---
+
+**API Design**: Alex Cinovoj (TechTideAI)  
+**Architecture**: RESTful API with TypeScript type safety
+

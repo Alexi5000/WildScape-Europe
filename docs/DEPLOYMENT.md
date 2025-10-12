@@ -629,7 +629,12 @@ git push origin main --force
 ## 🎯 Support
 
 For deployment issues:
-- Check [GitHub Issues](https://github.com/yourusername/wildscape-europe/issues)
+- Check [GitHub Issues](https://github.com/Alexi5000/WildScape-Europe/issues)
 - Review [Troubleshooting Guide](./GETTING_STARTED.md#-troubleshooting)
-- Contact DevOps team
+- Contact: Alex Cinovoj (TechTideAI)
+
+---
+
+**Deployment Architecture**: Alex Cinovoj (TechTideAI)  
+**Infrastructure**: Multi-platform deployment with Docker, Vercel, Netlify, AWS support
 

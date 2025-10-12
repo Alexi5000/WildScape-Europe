@@ -465,3 +465,8 @@ reportWebVitals((metric) => {
 - [Deployment Guide](./DEPLOYMENT.md)
 - [Contributing Guidelines](../CONTRIBUTING.md)
 
+---
+
+**System Architect**: Alex Cinovoj (TechTideAI)  
+**Architecture Approach**: Component-based, performance-optimized, type-safe design
+

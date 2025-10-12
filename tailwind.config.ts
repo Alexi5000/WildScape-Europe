@@ -1,3 +1,9 @@
+/**
+ * Tailwind CSS Configuration
+ * @author Alex Cinovoj (TechTideAI)
+ * @description Custom forest-themed design system for WildScape Europe
+ */
+
 import type { Config } from 'tailwindcss'
 
 export default {

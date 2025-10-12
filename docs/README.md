@@ -110,8 +110,8 @@ npm run analyze
 
 ### Community
 
-- [GitHub Discussions](https://github.com/yourusername/wildscape-europe/discussions)
-- [GitHub Issues](https://github.com/yourusername/wildscape-europe/issues)
+- [GitHub Discussions](https://github.com/Alexi5000/WildScape-Europe/discussions)
+- [GitHub Issues](https://github.com/Alexi5000/WildScape-Europe/issues)
 - [Contributing Guide](../CONTRIBUTING.md)
 
 ## 🔄 Documentation Updates
@@ -175,5 +175,9 @@ Choose your path:
 
 **Happy coding!** 🏕️🌲
 
-If you have questions or suggestions, please [open an issue](https://github.com/yourusername/wildscape-europe/issues/new).
+If you have questions or suggestions, please [open an issue](https://github.com/Alexi5000/WildScape-Europe/issues/new).
+
+---
+
+**Developed by Alex Cinovoj | TechTideAI**
 

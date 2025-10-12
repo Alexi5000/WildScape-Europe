@@ -1,17 +1,20 @@
 # humanstxt.org
 
 /* TEAM */
-Developer: WildScape Development Team
+Lead Developer: Alex Cinovoj
+Organization: TechTideAI
 Site: https://wildscape-europe.com
-Twitter: @wildscape_eu
+GitHub: https://github.com/Alexi5000
 Location: Europe
 
 /* THANKS */
-Mapbox - Amazing mapping technology
-Three.js Community - 3D graphics inspiration
-React Community - Excellent ecosystem
-Pexels - Beautiful photography
-Open Source Contributors - Making the web better
+Alex Cinovoj - Lead Developer & Architect
+TechTideAI - Development Team
+Mapbox - Mapping technology
+Three.js Community - 3D graphics
+React Community - Frontend framework
+Pexels - Photography
+Open Source Community - Libraries and tools
 
 /* SITE */
 Last update: 2024-10-12
@@ -27,8 +30,9 @@ Performance: Lighthouse 90+
 /* PROJECT */
 Name: WildScape Europe
 Description: Premium camping discovery platform with immersive 3D visualization
-Repository: https://github.com/yourusername/wildscape-europe
-License: MIT
+Developer: Alex Cinovoj (TechTideAI)
+Repository: https://github.com/Alexi5000/WildScape-Europe
+License: Apache 2.0
 Version: 1.0.0
 
 /* FEATURES */
@@ -41,5 +45,13 @@ Version: 1.0.0
 - Dark Mode Support
 - Progressive Web App
 
-Built with ❤️ for outdoor enthusiasts
+/* DEVELOPMENT */
+Developed by: Alex Cinovoj
+Team: TechTideAI
+Approach: Modern web development best practices
+Code Quality: TypeScript strict mode, ESLint, Prettier
+Architecture: Component-based, performance-optimized
+Testing: Comprehensive quality assurance
+
+Built with ❤️ for outdoor enthusiasts by Alex Cinovoj & TechTideAI
 

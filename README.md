@@ -93,10 +93,10 @@ Stunning mountain-style landing page featuring:
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/wildscape-camping-europe.git
+git clone https://github.com/Alexi5000/WildScape-Europe.git
 
 # Navigate to project directory
-cd wildscape-camping-europe
+cd WildScape-Europe
 
 # Install dependencies
 npm install
@@ -395,30 +395,48 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 👨‍💻 Development
+
+**Lead Developer**: Alex Cinovoj  
+**Organization**: TechTideAI  
+**Architecture**: Modern component-based SPA with TypeScript  
+**Quality Standards**: Enterprise-grade code quality and performance  
+
+### Development Approach
+- Strict TypeScript for type safety
+- Component-based architecture for maintainability
+- Performance-first optimization strategy
+- Accessibility-driven design (WCAG 2.1 AA)
+- Test-driven development practices
+- Modern best practices throughout
+
 ## 🙏 Acknowledgments
 
-- **Mapbox** for incredible mapping technology
-- **Three.js** community for 3D graphics inspiration
-- **Pexels** for beautiful camping photography
-- **React Three Fiber** for seamless React-Three.js integration
-- **Framer Motion** for smooth animations
-- **Tailwind CSS** for rapid UI development
+- **Alex Cinovoj** - Lead Developer & System Architect (TechTideAI)
+- **TechTideAI** - Development Team & Technical Direction
+- **Mapbox** - Mapping technology platform
+- **Three.js** - 3D graphics engine
+- **React** - UI framework and ecosystem
+- **Pexels** - High-quality photography
+- **Open Source Community** - Libraries and tools
 
-## 📞 Support
+## 📞 Support & Contact
 
-- **Documentation**: [docs.wildscape-europe.com](https://docs.wildscape-europe.com)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/wildscape-camping-europe/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/wildscape-camping-europe/discussions)
-- **Email**: support@wildscape-europe.com
+- **Developer**: Alex Cinovoj (TechTideAI)
+- **GitHub**: [https://github.com/Alexi5000/WildScape-Europe](https://github.com/Alexi5000/WildScape-Europe)
+- **Issues**: [GitHub Issues](https://github.com/Alexi5000/WildScape-Europe/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Alexi5000/WildScape-Europe/discussions)
+- **Email**: explore@wildscape-europe.com
 
 ---
 
 <div align="center">
+  <p><strong>Developed by Alex Cinovoj | TechTideAI</strong></p>
   <p>Built with ❤️ for outdoor enthusiasts and nature lovers</p>
   <p>
-    <a href="https://wildscape-europe.vercel.app">🌲 Explore WildScape Europe</a> •
+    <a href="https://github.com/Alexi5000/WildScape-Europe">🌲 GitHub Repository</a> •
     <a href="#-features">✨ Features</a> •
     <a href="#-quick-start">🚀 Get Started</a> •
-    <a href="#-contributing">🤝 Contribute</a>
+    <a href="#-development">👨‍💻 Developer</a>
   </p>
 </div>

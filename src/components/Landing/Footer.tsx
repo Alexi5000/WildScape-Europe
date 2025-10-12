@@ -117,7 +117,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/50 text-sm">
-            © 2024 WildScape Europe. All rights reserved.
+            © 2024 WildScape Europe by Alex Cinovoj | TechTideAI. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <a href="#" className="text-white/50 hover:text-white transition-colors">Privacy Policy</a>

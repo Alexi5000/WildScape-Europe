@@ -505,8 +505,9 @@ htop  # or 'top' on Mac
 
 ## 📞 Still Having Issues?
 
-1. **Search Issues**: Check [GitHub Issues](https://github.com/yourusername/wildscape-europe/issues)
-2. **Ask Community**: Post in [Discussions](https://github.com/yourusername/wildscape-europe/discussions)
+1. **Search Issues**: Check [GitHub Issues](https://github.com/Alexi5000/WildScape-Europe/issues)
+2. **Ask Community**: Post in [Discussions](https://github.com/Alexi5000/WildScape-Europe/discussions)
+3. **Contact Developer**: Alex Cinovoj (TechTideAI)
 3. **Check Logs**: Include full error logs when asking for help
 4. **Minimal Reproduction**: Create minimal example that reproduces issue
 

@@ -2,6 +2,9 @@
 
 All notable changes to WildScape Europe will be documented in this file.
 
+**Developer**: Alex Cinovoj (TechTideAI)  
+**Repository**: https://github.com/Alexi5000/WildScape-Europe
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -70,5 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For detailed changes, see [GitHub Releases](https://github.com/yourusername/wildscape-europe/releases)
+**Developed by**: Alex Cinovoj & TechTideAI  
+For detailed changes, see [GitHub Releases](https://github.com/Alexi5000/WildScape-Europe/releases)
 

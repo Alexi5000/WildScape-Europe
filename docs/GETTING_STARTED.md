@@ -25,13 +25,13 @@ git --version    # Any recent version
 
 ```bash
 # Using HTTPS
-git clone https://github.com/yourusername/wildscape-europe.git
+git clone https://github.com/Alexi5000/WildScape-Europe.git
 
 # Or using SSH
-git clone git@github.com:yourusername/wildscape-europe.git
+git clone git@github.com:Alexi5000/WildScape-Europe.git
 
 # Navigate to project directory
-cd wildscape-europe
+cd WildScape-Europe
 ```
 
 ### 2. Install Dependencies
@@ -286,8 +286,9 @@ Now that you have the project running:
 
 - Check [Troubleshooting Section](#-troubleshooting)
 - Review [API Documentation](./API.md)
-- Open an [Issue](https://github.com/yourusername/wildscape-europe/issues)
-- Join our [Discussions](https://github.com/yourusername/wildscape-europe/discussions)
+- Open an [Issue](https://github.com/Alexi5000/WildScape-Europe/issues)
+- Join our [Discussions](https://github.com/Alexi5000/WildScape-Europe/discussions)
+- Contact: Alex Cinovoj (TechTideAI)
 
 Happy coding! 🏕️🌲
 

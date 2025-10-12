@@ -250,7 +250,7 @@ git push origin feature/amazing-feature
 
 ## ❓ Questions?
 
-- Open a [Discussion](https://github.com/yourusername/wildscape-europe/discussions)
+- Open a [Discussion](https://github.com/Alexi5000/WildScape-Europe/discussions)
 - Check existing documentation in `/docs`
 - Ask maintainers for clarification
 
