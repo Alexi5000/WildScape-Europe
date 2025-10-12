@@ -38,8 +38,8 @@
 
 ### Prerequisites
 - Node.js 18+ 
-- npm or yarn
-- Mapbox API Token (optional for demo)
+- npm, pnpm, or yarn
+- Mapbox API Token (optional - app works with mock data)
 
 ### Installation
 ```bash
@@ -68,13 +68,15 @@ VITE_MAPBOX_TOKEN=your_mapbox_token_here
 ## 🏗️ Architecture
 
 ### Tech Stack
-- **Frontend**: React 18 + TypeScript + Vite
-- **3D Graphics**: Three.js + React Three Fiber
-- **Mapping**: Mapbox GL JS
-- **Styling**: Tailwind CSS + Framer Motion
-- **Animation**: GSAP + Lenis Smooth Scrolling
-- **State Management**: Zustand
-- **Build Tool**: Vite with optimized bundling
+- **Frontend**: React 18.2 + TypeScript 5.2 + Vite 4.5
+- **3D Graphics**: Three.js 0.157 + React Three Fiber 8.15 + Drei 9.88
+- **Mapping**: Mapbox GL JS 2.15
+- **Styling**: Tailwind CSS 3.3 + Custom Forest Theme
+- **Animation**: Framer Motion 10.16 + GSAP 3.12 + Lenis 1.3
+- **State Management**: Zustand 4.4
+- **Icons**: Lucide React 0.263
+- **Routing**: React Router 6.8
+- **Build Tool**: Vite with manual chunking & terser optimization
 
 ### Project Structure
 ```
@@ -98,25 +100,34 @@ src/
 
 ### Color Palette
 ```javascript
+// Custom Forest Theme
 const colors = {
+  forest: {
+    50: '#F0FDF4',   500: '#22C55E',   900: '#14532D'
+  },
+  earth: {
+    brown: '#8B4513', tan: '#D2B48C', moss: '#228B22'
+  },
+  nature: {
+    sky: '#87CEEB', water: '#4682B4', sun: '#FFD700'
+  },
+  // Legacy colors
   primary: '#059669',    // Forest Emerald
-  secondary: '#14B8A6',  // Teal Waters  
   accent: '#F97316',     // Sunset Orange
   aurora: '#8B5CF6',     // Aurora Purple
-  light: '#F3F4F6',      // Morning Mist
-  dark: '#0F172A',       // Night Sky
-  forest: '#064E3B',     // Deep Forest
-  water: '#0891B2'       // Clear Waters
 }
 ```
 
 ### Typography
 - **Display Font**: Poppins (headings, hero text)
 - **Body Font**: Inter (body text, UI elements)
+- **Mono Font**: JetBrains Mono (code, technical)
+- **Font Scale**: xs to 9xl (0.75rem to 8rem)
 - **Font Weights**: 300, 400, 500, 600, 700, 800
 
 ### Animation Principles
-- **Duration**: 0.3s for micro-interactions, 0.8s for page transitions
+- **Forest Animations**: Sway (4s), leaf fall (8s), mist float (6s)
+- **UI Animations**: Aurora (8s), float (6s), glow (2s), morph (0.5s)
 - **Easing**: Custom cubic-bezier curves for natural motion
 - **Performance**: 60fps target with GPU acceleration
 - **Accessibility**: Respects `prefers-reduced-motion`
@@ -165,11 +176,13 @@ const colors = {
 ## ⚡ Performance
 
 ### Optimization Strategies
-- **Code Splitting**: Route-based and component-based splitting
+- **Code Splitting**: Manual chunks (react, three, mapbox, animations, ui)
 - **Lazy Loading**: Images, 3D models, and non-critical components
 - **Asset Optimization**: Compressed textures and optimized models
-- **Caching**: Service worker caching for offline capability
-- **Bundle Analysis**: Regular bundle size monitoring
+- **Minification**: Terser with console/debugger removal
+- **Build Target**: ES2015 for broad browser support
+- **Dependency Optimization**: Pre-bundled common dependencies
+- **Bundle Analysis**: Built-in analyzer for size monitoring
 
 ### Performance Metrics
 - **Lighthouse Score**: 90+ across all categories
@@ -182,14 +195,14 @@ const colors = {
 
 ### Available Scripts
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
+npm run dev          # Start development server (port 3000)
+npm run build        # Build for production (TypeScript + Vite)
+npm run preview      # Preview production build (port 4173)
 npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint issues
+npm run lint:fix     # Fix ESLint issues automatically
+npm run type-check   # TypeScript type checking
 npm run format       # Format code with Prettier
-npm run test         # Run tests
-npm run analyze      # Analyze bundle size
+npm run analyze      # Analyze bundle size with visualizer
 ```
 
 ### Development Guidelines

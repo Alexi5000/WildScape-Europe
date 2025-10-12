@@ -100,3 +100,15 @@ test-results/
 # Build info
 .next/
 out/
+
+# Docker
+docker-compose.override.yml
+.docker/
+*.dockerignore.local
+
+# WSL
+.wsl/
+*.wsl
+
+# Scripts output
+scripts/*.log

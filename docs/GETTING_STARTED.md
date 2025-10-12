@@ -78,7 +78,7 @@ VITE_GA_TRACKING_ID=your_ga_id
 npm run dev
 ```
 
-The application will open at `http://localhost:5173`
+The application will open at `http://localhost:3000`
 
 ## 🎯 First Run
 
@@ -181,19 +181,25 @@ wildscape-europe/
 
 Key settings in `vite.config.ts`:
 
-- **Port**: 5173 (default)
+- **Port**: 3000 (development), 4173 (preview)
 - **Hot Module Replacement**: Enabled
-- **Build Optimizations**: Code splitting, minification
+- **Build Target**: ES2015
+- **Minification**: Terser (with console/debugger removal)
+- **Manual Chunks**: React, Three.js, Mapbox, Animations, UI libraries
 - **Alias**: `@/` points to `src/`
+- **Host**: Exposed for network access
 
 ### Tailwind Configuration
 
 Customization in `tailwind.config.ts`:
 
-- **Custom Colors**: Forest, emerald, teal theme
-- **Custom Animations**: Fade, slide, aurora
+- **Custom Colors**: Forest theme (50-950 scale), earth tones, nature colors
+- **Custom Fonts**: Inter (sans), Poppins (display), JetBrains Mono (mono)
+- **Custom Animations**: Forest sway, leaf fall, mist float, aurora, glow, morph
 - **Dark Mode**: Class-based strategy
-- **Custom Utilities**: Glassmorphism, gradients
+- **Custom Utilities**: Glass-forest, backdrop-forest, scrollbar-forest, text-shadow
+- **Custom Shadows**: Forest-themed box shadows
+- **Breakpoints**: xs (475px), 3xl (1600px) in addition to defaults
 
 ## 🌐 Browser Support
 
@@ -216,11 +222,18 @@ The app gracefully degrades for older browsers:
 ### Port Already in Use
 
 ```bash
-# Kill process on port 5173
-npx kill-port 5173
+# Kill process on port 3000
+npx kill-port 3000
+
+# On Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# On Mac/Linux
+lsof -ti:3000 | xargs kill -9
 
 # Or use different port
-npm run dev -- --port 3000
+npm run dev -- --port 5173
 ```
 
 ### Module Not Found Errors

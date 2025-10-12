@@ -36,15 +36,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance monitoring and optimization
 
 ### Technical
-- React 18 with TypeScript
-- Vite build system with optimization
-- Three.js for 3D graphics
-- Framer Motion for animations
-- Zustand for state management
-- Tailwind CSS for styling
-- GSAP for complex animations
-- Lenis for smooth scrolling
-- ESLint and Prettier for code quality
+- React 18.2 with TypeScript 5.2
+- Vite 4.5 build system with manual chunking
+- Three.js 0.157 + React Three Fiber 8.15 + Drei 9.88
+- Framer Motion 10.16 + GSAP 3.12 for animations
+- Zustand 4.4 for state management
+- Tailwind CSS 3.3 with custom forest theme
+- Mapbox GL 2.15 for interactive maps
+- Lucide React 0.263 for icons
+- Lenis 1.3 for smooth scrolling
+- React Router 6.8 for routing
+- ESLint + Prettier + TypeScript strict mode
+- Terser minification with console removal
+- ES2015 build target for compatibility
 
 ### Performance
 - Lighthouse score: 90+ across all categories

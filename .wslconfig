@@ -1,0 +1,44 @@
+# WildScape Europe - WSL Configuration
+# Place this file in: C:\Users\YourUsername\.wslconfig
+
+[wsl2]
+# Limits VM memory to 8 GB
+memory=8GB
+
+# Sets the VM to use 4 processors
+processors=4
+
+# Sets amount of swap storage space to 2 GB
+swap=2GB
+
+# Sets swapfile path location
+swapfile=C:\\temp\\wsl-swap.vhdx
+
+# Disable page reporting (keeps memory allocated)
+pageReporting=false
+
+# Turn on default connection to bind WSL 2 localhost to Windows localhost
+localhostforwarding=true
+
+# Disables nested virtualization
+nestedVirtualization=false
+
+# Turns on output console showing contents of dmesg when opening a WSL 2 distro
+debugConsole=false
+
+[experimental]
+# Automatically reclaim memory from the WSL 2 VM
+autoMemoryReclaim=gradual
+
+# Enable sparse VHD
+sparseVhd=true
+
+# Enable DNS tunneling
+dnsTunneling=true
+
+# Enable firewall
+firewall=true
+
+# Enable auto proxy
+autoProxy=true
+

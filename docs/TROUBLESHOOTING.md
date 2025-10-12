@@ -58,20 +58,20 @@ rm -rf node_modules/.vite
 
 ### Port Already in Use
 
-**Problem**: Error: Port 5173 is already in use
+**Problem**: Error: Port 3000 is already in use
 
 **Solution**:
 ```bash
-# Find and kill process on port 5173
+# Find and kill process on port 3000
 # On Windows
-netstat -ano | findstr :5173
+netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 
 # On Mac/Linux
-lsof -ti:5173 | xargs kill -9
+lsof -ti:3000 | xargs kill -9
 
 # Or use a different port
-npm run dev -- --port 3000
+npm run dev -- --port 5173
 ```
 
 ### Hot Reload Not Working

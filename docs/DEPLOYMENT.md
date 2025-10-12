@@ -36,23 +36,49 @@ npm run build
 ### Build Configuration
 
 ```typescript
-// vite.config.ts
+// vite.config.ts - Optimized production build
 export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   build: {
     target: 'es2015',
     minify: 'terser',
-    sourcemap: false,
+    terserOptions: {
+      compress: {
+        drop_console: true,      // Remove console logs
+        drop_debugger: true,     // Remove debugger statements
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'animation': ['framer-motion', 'gsap'],
-          'map': ['mapbox-gl']
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+          'vendor-mapbox': ['mapbox-gl'],
+          'vendor-animations': ['framer-motion', 'gsap'],
+          'vendor-ui': ['lucide-react', 'zustand'],
         }
       }
-    },
-    chunkSizeWarningLimit: 1000
+    }
+  },
+  optimizeDeps: {
+    include: [
+      'react', 'react-dom', 'three', 'mapbox-gl',
+      'framer-motion', 'gsap', 'lucide-react', 'zustand'
+    ],
+    exclude: ['@mapbox/node-pre-gyp']
+  },
+  server: {
+    port: 3000,
+    host: true,
+  },
+  preview: {
+    port: 4173,
+    host: true,
   }
 });
 ```

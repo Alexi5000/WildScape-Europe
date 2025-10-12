@@ -50,14 +50,20 @@ WildScape Europe is a modern single-page application (SPA) built with React, foc
 | Library | Version | Purpose |
 |---------|---------|---------|
 | React | 18.2.0 | UI framework |
+| React Router | 6.8.0 | Routing |
 | TypeScript | 5.2.0 | Type safety |
 | Vite | 4.5.0 | Build tool |
 | Three.js | 0.157.0 | 3D graphics |
+| @react-three/fiber | 8.15.0 | React Three.js renderer |
+| @react-three/drei | 9.88.0 | Three.js helpers |
 | Mapbox GL | 2.15.0 | Interactive maps |
 | Framer Motion | 10.16.0 | Animations |
+| GSAP | 3.12.0 | Advanced animations |
 | Zustand | 4.4.0 | State management |
 | Tailwind CSS | 3.3.0 | Styling |
-| GSAP | 3.12.0 | Advanced animations |
+| Lucide React | 0.263.0 | Icons |
+| Lenis | 1.3.4 | Smooth scrolling |
+| clsx | 2.0.0 | Conditional classes |
 
 ## 🗂️ Project Structure
 
@@ -246,13 +252,14 @@ const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 ### Tailwind CSS Approach
 
 ```typescript
-// Utility-first styling
+// Utility-first styling with custom forest theme
 <div className="
   flex items-center justify-between
   px-6 py-4
   bg-white dark:bg-slate-900
-  rounded-lg shadow-lg
-  hover:shadow-xl transition-shadow
+  rounded-lg shadow-forest-lg
+  hover:shadow-forest-xl transition-all
+  glass-forest
 ">
   {/* Content */}
 </div>
@@ -261,27 +268,39 @@ const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 ### Theme Configuration
 
 ```typescript
-// tailwind.config.ts
+// tailwind.config.ts - Forest-themed design system
 export default {
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         forest: {
-          50: '#f0fdf4',
-          500: '#059669',
-          900: '#064E3B',
+          50: '#F0FDF4', 100: '#DCFCE7', 200: '#BBF7D0',
+          500: '#22C55E', 700: '#15803D', 900: '#14532D'
         },
-        aurora: {
-          400: '#a78bfa',
-          500: '#8b5cf6',
+        earth: {
+          brown: '#8B4513', tan: '#D2B48C', moss: '#228B22'
+        },
+        nature: {
+          sky: '#87CEEB', water: '#4682B4', sun: '#FFD700'
         }
       },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace']
+      },
       animation: {
-        'aurora': 'aurora 20s ease-in-out infinite',
-        'float': 'float 3s ease-in-out infinite',
+        'forest-sway': 'forestSway 4s ease-in-out infinite',
+        'leaf-fall': 'leafFall 8s linear infinite',
+        'aurora': 'aurora 8s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite'
       }
     }
-  }
+  },
+  plugins: [
+    // Custom forest utilities plugin
+  ]
 }
 ```
 
