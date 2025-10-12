@@ -1,2 +1,102 @@
+# Dependencies
 node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+*.lcov
+
+# Production build
+/dist
+/build
+/.next/
+/out/
+
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# IDE and Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Debug
+.npm
+.eslintcache
+.stylelintcache
+
+# Misc
+.cache
+.parcel-cache
+.turbo
+.vercel
+.netlify
+
+# OS
+Thumbs.db
+*.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+dist-ssr
+
+# Vite
+.vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# PWA
+**/sw.js
+**/workbox-*.js
+sw.js.map
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Package manager lock files (keep one, ignore others)
+# Uncomment the ones you want to ignore
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Bundle analyzer
+stats.html
+.bundle-analyzer/
+
+# Storybook
+storybook-static
+
+# Screenshots and recordings (for CI/CD)
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+test-results/
+
+# Build info
+.next/
+out/

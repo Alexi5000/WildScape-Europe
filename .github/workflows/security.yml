@@ -1,0 +1,355 @@
+name: Security Scanning
+
+on:
+  schedule:
+    # Run security scans daily at 3 AM UTC
+    - cron: '0 3 * * *'
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Job 1: Dependency Vulnerability Scan
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: NPM Audit
+        run: |
+          npm audit --audit-level=moderate --json > npm-audit.json || true
+          cat npm-audit.json
+
+      - name: Upload Audit Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: npm-audit-results
+          path: npm-audit.json
+          retention-days: 30
+
+      - name: Check for High Severity Vulnerabilities
+        run: |
+          HIGH_VULNS=$(cat npm-audit.json | jq '.metadata.vulnerabilities.high // 0')
+          CRITICAL_VULNS=$(cat npm-audit.json | jq '.metadata.vulnerabilities.critical // 0')
+          
+          echo "High severity vulnerabilities: $HIGH_VULNS"
+          echo "Critical severity vulnerabilities: $CRITICAL_VULNS"
+          
+          if [ "$CRITICAL_VULNS" -gt 0 ]; then
+            echo "❌ Critical vulnerabilities found!"
+            exit 1
+          fi
+          
+          if [ "$HIGH_VULNS" -gt 0 ]; then
+            echo "⚠️ High severity vulnerabilities found!"
+            exit 1
+          fi
+          
+          echo "✅ No high or critical vulnerabilities found"
+
+  # Job 2: Snyk Security Scan
+  snyk-scan:
+    name: Snyk Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run Snyk Test
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --json-file-output=snyk-results.json
+
+      - name: Run Snyk Code Analysis
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+
+      - name: Upload Snyk Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: snyk-results
+          path: snyk-results.json
+          retention-days: 30
+
+      - name: Run Snyk Monitor
+        if: github.ref == 'refs/heads/main'
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+
+  # Job 3: CodeQL Analysis
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'typescript']
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  # Job 4: Secrets Scanning
+  secret-scan:
+    name: Secrets & Credentials Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog Secrets Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+      - name: GitLeaks Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for Exposed Secrets
+        run: |
+          echo "Checking for common secret patterns..."
+          
+          # Check for common secret patterns
+          if grep -r -E "(api[_-]?key|password|secret|token|bearer)" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" src/ | grep -v "import\|const\|let\|var\|type\|interface"; then
+            echo "⚠️ Potential secrets found in code"
+            echo "Please review the findings above"
+            exit 1
+          fi
+          
+          echo "✅ No obvious secrets detected in source code"
+
+  # Job 5: License Compliance
+  license-compliance:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Check Licenses
+        run: |
+          npx license-checker --json --out licenses.json
+          npx license-checker --summary
+
+      - name: Check for Restricted Licenses
+        run: |
+          RESTRICTED_LICENSES=("GPL-3.0" "AGPL-3.0" "LGPL-3.0")
+          
+          for license in "${RESTRICTED_LICENSES[@]}"; do
+            if npx license-checker --summary | grep -i "$license"; then
+              echo "❌ Restricted license found: $license"
+              exit 1
+            fi
+          done
+          
+          echo "✅ No restricted licenses found"
+
+      - name: Upload License Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: license-report
+          path: licenses.json
+          retention-days: 30
+
+  # Job 6: OWASP Dependency Check
+  owasp-check:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'WildScape-Europe'
+          path: '.'
+          format: 'HTML'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+
+      - name: Upload OWASP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: owasp-dependency-check-report
+          path: reports/
+          retention-days: 30
+
+  # Job 7: Container Security (if using Docker)
+  container-security:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    if: false # Enable if using containers
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Container Image
+        run: docker build -t wildscape-europe:${{ github.sha }} .
+
+      - name: Run Trivy Container Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: wildscape-europe:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Job 8: Security Report Summary
+  security-summary:
+    name: Security Summary Report
+    runs-on: ubuntu-latest
+    needs: [dependency-scan, secret-scan, license-compliance]
+    if: always()
+    
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Generate Security Report
+        run: |
+          echo "# 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependency Scan: ${{ needs.dependency-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Secret Scan: ${{ needs.secret-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- License Compliance: ${{ needs.license-compliance.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Recommendations" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review all flagged vulnerabilities" >> $GITHUB_STEP_SUMMARY
+          echo "2. Update vulnerable dependencies" >> $GITHUB_STEP_SUMMARY
+          echo "3. Ensure no secrets are committed to repository" >> $GITHUB_STEP_SUMMARY
+          echo "4. Verify all dependencies have compatible licenses" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create Security Issue (if vulnerabilities found)
+        if: needs.dependency-scan.result == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🔒 Security Vulnerabilities Detected';
+            const body = `Security scan detected vulnerabilities in dependencies.\n\nPlease review the scan results and update vulnerable packages.\n\n**Scan Date**: ${new Date().toISOString()}\n**Branch**: ${context.ref}\n**Commit**: ${context.sha}`;
+            
+            // Check if issue already exists
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security'
+            });
+            
+            const existingIssue = issues.find(issue => issue.title === title);
+            
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['security', 'automated']
+              });
+            }
+
+      - name: Send Security Alert Notification
+        if: needs.dependency-scan.result == 'failure' || needs.secret-scan.result == 'failure'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "🚨 Security Alert: Vulnerabilities detected in WildScape-Europe",
+              attachments: [{
+                color: 'danger',
+                text: `Security scan failed on ${process.env.AS_REF}`
+              }]
+            }
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true
+

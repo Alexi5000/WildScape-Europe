@@ -1,0 +1,41 @@
+# robots.txt for WildScape Europe
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin/internal paths (if any)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_internal/
+
+# Disallow search results pages to prevent duplicate content
+Disallow: /search?*
+
+# Crawl-delay for aggressive bots
+User-agent: Baiduspider
+Crawl-delay: 5
+
+User-agent: Yandex
+Crawl-delay: 2
+
+# Sitemap location
+Sitemap: https://wildscape-europe.com/sitemap.xml
+
+# Preferred crawlers for better indexing
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Media files
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.css$
+Allow: /*.js$
+

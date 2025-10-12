@@ -1,0 +1,90 @@
+# Automatic PR Labeler Configuration
+# Labels PRs based on file changes
+
+# Component Labels
+'component: map':
+  - src/components/Map/**/*
+  - src/hooks/useMapbox.ts
+  - src/services/mapbox.ts
+
+'component: search':
+  - src/components/Search/**/*
+  - src/hooks/useSearch.ts
+  - src/store/searchStore.ts
+
+'component: campsite':
+  - src/components/Campsite/**/*
+  - src/types/campsite.ts
+
+'component: ui':
+  - src/components/UI/**/*
+  - src/components/Layout/**/*
+
+'component: background':
+  - src/components/Background/**/*
+  - src/components/Hero/**/*
+
+'component: weather':
+  - src/services/weather.ts
+  - src/hooks/useWeather.ts
+  - src/types/weather.ts
+
+# Technology Labels
+'tech: three.js':
+  - any: ['**/*three*', '**/*3d*', '**/*Three*']
+
+'tech: react':
+  - any: ['**/*.tsx', '**/*.jsx']
+
+'tech: typescript':
+  - any: ['**/*.ts', '**/*.tsx']
+
+'tech: styles':
+  - any: ['**/*.css', '**/tailwind.config.*']
+
+# Type Labels
+'type: feature':
+  - any: ['src/components/**/*', 'src/features/**/*']
+
+'type: bugfix':
+  - any: ['**/*.fix.*']
+
+'type: documentation':
+  - any: ['**/*.md', 'docs/**/*', '.docs/**/*']
+
+'type: dependencies':
+  - any: ['package.json', 'package-lock.json', 'pnpm-lock.yaml']
+
+'type: config':
+  - any: ['*.config.*', '.github/**/*', '.eslintrc.*', 'tsconfig.*']
+
+'type: test':
+  - any: ['**/*.test.*', '**/*.spec.*', '__tests__/**/*']
+
+# Area Labels
+'area: frontend':
+  - src/components/**/*
+  - src/App.tsx
+  - src/main.tsx
+
+'area: backend':
+  - src/services/**/*
+  - src/store/**/*
+
+'area: build':
+  - vite.config.ts
+  - tsconfig.json
+  - package.json
+
+'area: ci/cd':
+  - .github/workflows/**/*
+  - .github/**/*
+
+# Priority Labels (based on file count)
+'priority: critical':
+  - any: ['src/main.tsx', 'src/App.tsx', 'index.html']
+
+# Status Labels
+'needs review':
+  - any: ['**/*']
+

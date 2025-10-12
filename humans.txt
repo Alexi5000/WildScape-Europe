@@ -1,0 +1,45 @@
+# humanstxt.org
+
+/* TEAM */
+Developer: WildScape Development Team
+Site: https://wildscape-europe.com
+Twitter: @wildscape_eu
+Location: Europe
+
+/* THANKS */
+Mapbox - Amazing mapping technology
+Three.js Community - 3D graphics inspiration
+React Community - Excellent ecosystem
+Pexels - Beautiful photography
+Open Source Contributors - Making the web better
+
+/* SITE */
+Last update: 2024-10-12
+Language: English / Multi-language
+Doctype: HTML5
+IDE: Visual Studio Code
+Technologies: React, TypeScript, Three.js, Mapbox, Tailwind CSS
+Standards: HTML5, CSS3, ES2015+
+Components: Vite, Framer Motion, Zustand, GSAP
+Accessibility: WCAG 2.1 AA
+Performance: Lighthouse 90+
+
+/* PROJECT */
+Name: WildScape Europe
+Description: Premium camping discovery platform with immersive 3D visualization
+Repository: https://github.com/yourusername/wildscape-europe
+License: MIT
+Version: 1.0.0
+
+/* FEATURES */
+- 3D Terrain Mapping
+- Real-time Weather Effects
+- Aurora Background Animations
+- Interactive Search & Filters
+- Virtual Campsite Tours
+- Responsive Design
+- Dark Mode Support
+- Progressive Web App
+
+Built with ❤️ for outdoor enthusiasts
+

@@ -10,7 +10,11 @@
   [![Mapbox](https://img.shields.io/badge/Mapbox-GL-green)](https://www.mapbox.com/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-blue)](https://www.typescriptlang.org/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.0-blue)](https://tailwindcss.com/)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+  
+  ![CI](https://github.com/Alexi5000/WildScape-Europe/workflows/CI/badge.svg)
+  ![CD](https://github.com/Alexi5000/WildScape-Europe/workflows/CD/badge.svg)
+  ![Security](https://github.com/Alexi5000/WildScape-Europe/workflows/Security%20Scanning/badge.svg)
 </div>
 
 ## ✨ Features
@@ -239,9 +243,63 @@ VITE_GA_TRACKING_ID=your_google_analytics_id
 - **GitHub Pages**: Free hosting for open source projects
 - **AWS S3 + CloudFront**: Enterprise-grade hosting
 
+## 🔄 CI/CD Pipeline
+
+This project features a **complete, production-ready CI/CD pipeline** with:
+
+### Automated Workflows
+
+- ✅ **Continuous Integration** - Automated testing, linting, and type checking
+- ✅ **Continuous Deployment** - Auto-deploy to production on merge to main
+- ✅ **PR Previews** - Every PR gets a unique preview deployment
+- ✅ **Security Scanning** - Daily vulnerability and dependency checks
+- ✅ **Release Automation** - Automated version management and releases
+
+### Quick Setup
+
+1. **Minimum Configuration** (GitHub Pages deployment)
+   ```bash
+   # Add to GitHub Secrets:
+   VITE_MAPBOX_TOKEN=your_mapbox_token
+   ```
+
+2. **Recommended Setup** (Vercel deployment + all features)
+   ```bash
+   # Add to GitHub Secrets:
+   VITE_MAPBOX_TOKEN=your_mapbox_token
+   VERCEL_TOKEN=your_vercel_token
+   VERCEL_ORG_ID=your_org_id
+   VERCEL_PROJECT_ID=your_project_id
+   ```
+
+### Documentation
+
+- 📖 **[Quick Start Guide](CICD_QUICKSTART.md)** - Get started in 5 minutes
+- 📚 **[Complete Setup Guide](.github/CICD_SETUP.md)** - Detailed configuration
+- 🔄 **[Workflow Documentation](.github/workflows/README.md)** - Technical details
+- 📋 **[Setup Summary](CICD_SUMMARY.md)** - What was implemented
+
+### What Happens Automatically
+
+Every push to `main`:
+- ✅ Code quality checks (linting, type checking)
+- ✅ Security scanning
+- ✅ Production build
+- ✅ Automatic deployment
+- ✅ Post-deployment verification
+
+Every Pull Request:
+- ✅ All CI checks
+- ✅ Preview deployment with unique URL
+- ✅ Bundle size analysis
+- ✅ Accessibility testing
+- ✅ Automated code review
+
+See [CICD_SUMMARY.md](CICD_SUMMARY.md) for complete details.
+
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](.github/CONTRIBUTING.md) for details.
 
 ### Development Setup
 1. Fork the repository

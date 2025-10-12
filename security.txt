@@ -1,0 +1,32 @@
+# Security Policy for WildScape Europe
+# See: https://securitytxt.org/
+
+Contact: mailto:security@wildscape-europe.com
+Contact: https://github.com/yourusername/wildscape-europe/security/advisories/new
+Expires: 2025-12-31T23:59:59.000Z
+Encryption: https://wildscape-europe.com/.well-known/pgp-key.txt
+Preferred-Languages: en, no, sv, fi
+Canonical: https://wildscape-europe.com/.well-known/security.txt
+
+# Policy
+Policy: https://wildscape-europe.com/security-policy
+
+# Acknowledgments
+Acknowledgments: https://wildscape-europe.com/security-acknowledgments
+
+# Hiring
+Hiring: https://wildscape-europe.com/careers
+
+# Vulnerability Disclosure
+# We take security seriously. If you discover a security vulnerability,
+# please report it to us privately. We will respond within 48 hours.
+#
+# Please include:
+# - Description of the vulnerability
+# - Steps to reproduce
+# - Potential impact
+# - Any suggested fixes
+#
+# We appreciate responsible disclosure and will credit you in our
+# security acknowledgments (unless you prefer to remain anonymous).
+

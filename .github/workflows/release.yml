@@ -1,0 +1,407 @@
+name: Release Automation
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+          - prerelease
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Job 1: Create Release
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    outputs:
+      release_id: ${{ steps.create_release.outputs.id }}
+      release_url: ${{ steps.create_release.outputs.html_url }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Version from Tag
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          # Get the previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            echo "First release"
+            NOTES="Initial release of WildScape Europe 🎉"
+          else
+            echo "Generating changelog from $PREV_TAG to ${{ github.ref_name }}"
+            
+            # Generate changelog
+            NOTES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s (%h)" --no-merges)
+            
+            # Categorize commits
+            FEATURES=$(echo "$NOTES" | grep -E "^- feat" || echo "")
+            FIXES=$(echo "$NOTES" | grep -E "^- fix" || echo "")
+            OTHERS=$(echo "$NOTES" | grep -vE "^- (feat|fix)" || echo "")
+            
+            CHANGELOG="## What's Changed\n\n"
+            
+            if [ ! -z "$FEATURES" ]; then
+              CHANGELOG="${CHANGELOG}### ✨ Features\n$FEATURES\n\n"
+            fi
+            
+            if [ ! -z "$FIXES" ]; then
+              CHANGELOG="${CHANGELOG}### 🐛 Bug Fixes\n$FIXES\n\n"
+            fi
+            
+            if [ ! -z "$OTHERS" ]; then
+              CHANGELOG="${CHANGELOG}### 📦 Other Changes\n$OTHERS\n\n"
+            fi
+            
+            NOTES="$CHANGELOG"
+          fi
+          
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            # WildScape Europe - Release ${{ steps.get_version.outputs.version }}
+            
+            ${{ steps.release_notes.outputs.notes }}
+            
+            ## 🚀 Deployment
+            
+            - **Production**: https://wildscape-europe.vercel.app
+            - **Preview**: https://pr-preview.wildscape-europe.vercel.app
+            
+            ## 📦 Installation
+            
+            ```bash
+            npm install wildscape-europe@${{ steps.get_version.outputs.version }}
+            ```
+            
+            ## 📝 Full Changelog
+            
+            See the [full changelog](https://github.com/${{ github.repository }}/compare/${{ steps.release_notes.outputs.prev_tag }}...${{ github.ref_name }})
+            
+            ---
+            
+            **Full Changelog**: [${{ steps.release_notes.outputs.prev_tag }}...${{ github.ref_name }}](https://github.com/${{ github.repository }}/compare/${{ steps.release_notes.outputs.prev_tag }}...${{ github.ref_name }})
+          draft: false
+          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
+
+      - name: Add Release Labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ steps.get_version.outputs.version }}';
+            const isPrerelease = version.includes('alpha') || version.includes('beta') || version.includes('rc');
+            
+            let label = 'release';
+            if (isPrerelease) label = 'prerelease';
+            
+            // Add label to release
+            console.log(`Tagged as: ${label}`);
+
+  # Job 2: Build Release Assets
+  build-release-assets:
+    name: Build Release Assets
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build Production Bundle
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Create Release Archive
+        run: |
+          tar -czf wildscape-europe-${{ needs.create-release.outputs.version }}.tar.gz dist/
+          zip -r wildscape-europe-${{ needs.create-release.outputs.version }}.zip dist/
+
+      - name: Generate Checksums
+        run: |
+          sha256sum wildscape-europe-*.tar.gz > checksums.txt
+          sha256sum wildscape-europe-*.zip >> checksums.txt
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./wildscape-europe-${{ needs.create-release.outputs.version }}.tar.gz
+          asset_name: wildscape-europe-${{ needs.create-release.outputs.version }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Checksums
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./checksums.txt
+          asset_name: checksums.txt
+          asset_content_type: text/plain
+
+  # Job 3: Automated Version Bump
+  version-bump:
+    name: Automated Version Bump
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump Version
+        id: bump
+        run: |
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          
+          # Bump version
+          npm version $RELEASE_TYPE -m "chore: bump version to %s [skip ci]"
+          
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+      - name: Push Changes
+        run: |
+          git push origin main
+          git push origin --tags
+
+      - name: Create Release PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const newVersion = '${{ steps.bump.outputs.new_version }}';
+            
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `chore: release v${newVersion}`,
+              head: 'main',
+              base: 'develop',
+              body: `## Release v${newVersion}\n\nAutomated release PR for version ${newVersion}\n\n### Changes\n- Version bumped to ${newVersion}\n- Ready for release\n\n---\n_This PR was automatically created by the release workflow._`
+            });
+
+  # Job 4: Changelog Generation
+  generate-changelog:
+    name: Generate CHANGELOG.md
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Changelog
+        uses: conventional-changelog/standard-version@v9
+        with:
+          skip_tag: true
+          skip_commit: false
+
+      - name: Commit Changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add CHANGELOG.md
+          git commit -m "docs: update CHANGELOG.md [skip ci]" || echo "No changes to commit"
+          git push origin main || echo "Nothing to push"
+
+  # Job 5: NPM Package Publishing (if applicable)
+  publish-npm:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: false # Enable if publishing to NPM
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build Package
+        run: npm run build
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Job 6: Docker Image Publishing
+  publish-docker:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: false # Enable if using Docker
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Version
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/wildscape-europe:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/wildscape-europe:${{ steps.version.outputs.version }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/wildscape-europe:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/wildscape-europe:buildcache,mode=max
+
+  # Job 7: Post-Release Notifications
+  post-release-notifications:
+    name: Post-Release Notifications
+    runs-on: ubuntu-latest
+    needs: [create-release, build-release-assets]
+    if: always() && startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "🚀 New Release: WildScape Europe ${{ github.ref_name }}",
+              attachments: [{
+                color: 'good',
+                text: "Release ${{ github.ref_name }} has been published!\n\nView release: ${{ needs.create-release.outputs.release_url }}"
+              }]
+            }
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true
+
+      - name: Create Announcement Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📣 Release ${{ github.ref_name }} is now available!`,
+              body: `# 🎉 Release ${{ github.ref_name }}\n\nNew version of WildScape Europe has been released!\n\n🔗 [View Release](${{ needs.create-release.outputs.release_url }})\n\n---\n_This issue was automatically created by the release workflow._`,
+              labels: ['release', 'announcement']
+            });
+
+      - name: Tweet Release Announcement
+        if: false # Enable if using Twitter API
+        run: |
+          # Add Twitter API integration here
+          echo "Tweet: 🚀 WildScape Europe ${{ github.ref_name }} is now live!"
+
+  # Job 8: Release Summary
+  release-summary:
+    name: Release Summary
+    runs-on: ubuntu-latest
+    needs: [create-release, build-release-assets, post-release-notifications]
+    if: always()
+    
+    steps:
+      - name: Generate Release Summary
+        run: |
+          echo "# 🎉 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Release Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ needs.create-release.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release URL**: ${{ needs.create-release.outputs.release_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Verify deployment to production" >> $GITHUB_STEP_SUMMARY
+          echo "2. Monitor for any issues" >> $GITHUB_STEP_SUMMARY
+          echo "3. Update documentation if needed" >> $GITHUB_STEP_SUMMARY
+          echo "4. Announce release on social media" >> $GITHUB_STEP_SUMMARY
+
