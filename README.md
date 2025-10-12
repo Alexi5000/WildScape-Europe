@@ -1,21 +1,70 @@
-# 🏕️ WildScape Europe - Immersive Camping Experience
+# 🏕️ WildScape Europe - Wild Camping Across Europe
 
 <div align="center">
-  <img src="./public/logo.png" alt="WildScape Logo" width="120" height="120">
+  
+  ### ✨ Beautiful Mountain-Style Landing Page Now Live!
   
   **Premium camping discovery platform with 3D terrain visualization and real-time weather effects**
   
+  ![Hero Preview](https://via.placeholder.com/1400x400/E8E3DB/3E2723?text=Wild+Camping+Across+Europe+🏕️)
+  
   [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
-  [![Three.js](https://img.shields.io/badge/Three.js-0.160.0-black)](https://threejs.org/)
-  [![Mapbox](https://img.shields.io/badge/Mapbox-GL-green)](https://www.mapbox.com/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-blue)](https://www.typescriptlang.org/)
-  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.0-blue)](https://tailwindcss.com/)
-  [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.0-blue)](https://www.typescriptlang.org/)
+  [![Vite](https://img.shields.io/badge/Vite-4.5.0-646CFF)](https://vitejs.dev/)
+  [![Three.js](https://img.shields.io/badge/Three.js-0.157.0-black)](https://threejs.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.0-38BDF8)](https://tailwindcss.com/)
+  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.16.0-FF0080)](https://www.framer.com/motion/)
   
   ![CI](https://github.com/Alexi5000/WildScape-Europe/workflows/CI/badge.svg)
   ![CD](https://github.com/Alexi5000/WildScape-Europe/workflows/CD/badge.svg)
   ![Security](https://github.com/Alexi5000/WildScape-Europe/workflows/Security%20Scanning/badge.svg)
+  [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+  
+  [🚀 Quick Start](#-quick-start) • [📚 Documentation](./docs) • [🎨 Landing Page](./docs/LANDING_PAGE_BUILD.md) • [🚢 Deploy](./deployment)
+  
 </div>
+
+---
+
+## 🎨 Landing Page Showcase
+
+<table>
+<tr>
+<td width="60%">
+  
+### Hero Section - "Wild camping across Europe"
+
+Stunning mountain-style landing page featuring:
+- **European Destinations**: Norway, Iceland, Scotland, Alps, Scandinavia, Pyrenees, Croatia
+- **Organic Design**: Wavy dividers, custom clip-path shapes
+- **Smooth Animations**: Lenis scrolling, Framer Motion effects
+- **Earthy Palette**: Warm beige, dark brown, terracotta accents
+
+</td>
+<td width="40%">
+  
+### Featured Campsites
+
+🏔️ **Aurora Valley Wilderness**  
+📍 Lofoten Islands, Norway • €45/night
+
+🏴󠁧󠁢󠁳󠁣󠁴󠁿 **Highland Loch Retreat**  
+📍 Scottish Highlands • €38/night
+
+⛰️ **Alpine Mountain Base**  
+📍 Swiss Alps • €52/night
+
+🌊 **Fjord Edge Sanctuary**  
+📍 Norway Fjords • €48/night
+
+</td>
+</tr>
+</table>
+
+### 🔍 Find Your Campsite - 5 Filter Categories
+🏔️ Mountain Sites • 🌊 Lakes & Rivers • 🏕️ Coastal Camps • 🌲 Forest Camping • ✨ Aurora Viewing
+
+---
 
 ## ✨ Features
 
