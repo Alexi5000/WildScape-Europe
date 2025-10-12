@@ -274,10 +274,10 @@ This project features a **complete, production-ready CI/CD pipeline** with:
 
 ### Documentation
 
-- 📖 **[Quick Start Guide](CICD_QUICKSTART.md)** - Get started in 5 minutes
+- 📖 **[Quick Start Guide](.docs/CICD_QUICKSTART.md)** - Get started in 5 minutes
 - 📚 **[Complete Setup Guide](.github/CICD_SETUP.md)** - Detailed configuration
 - 🔄 **[Workflow Documentation](.github/workflows/README.md)** - Technical details
-- 📋 **[Setup Summary](CICD_SUMMARY.md)** - What was implemented
+- 📋 **[Setup Summary](.docs/CICD_SUMMARY.md)** - What was implemented
 
 ### What Happens Automatically
 
@@ -295,7 +295,7 @@ Every Pull Request:
 - ✅ Accessibility testing
 - ✅ Automated code review
 
-See [CICD_SUMMARY.md](CICD_SUMMARY.md) for complete details.
+See [CICD_SUMMARY.md](.docs/CICD_SUMMARY.md) for complete details.
 
 ## 🤝 Contributing
 

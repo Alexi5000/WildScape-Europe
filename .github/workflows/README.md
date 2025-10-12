@@ -363,8 +363,8 @@ npm run type-check
 
 ### Detailed Guides
 
-- **[CI/CD Setup Guide](CICD_SETUP.md)** - Complete setup instructions
-- **[Quick Start](../CICD_QUICKSTART.md)** - 5-minute setup
+- **[CI/CD Setup Guide](../CICD_SETUP.md)** - Complete setup instructions
+- **[Quick Start](../.docs/CICD_QUICKSTART.md)** - 5-minute setup
 - **[Contributing Guide](CONTRIBUTING.md)** - Development workflow
 
 ### External Resources
