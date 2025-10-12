@@ -86,7 +86,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -138,7 +138,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -173,7 +173,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -231,7 +231,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: production-build-${{ github.sha }}
           path: dist/
