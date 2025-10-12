@@ -69,7 +69,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "prettier": "^3.0.0",
-    "terser": "^5.19.0"
+    "terser": "^5.44.0"
   },
   "engines": {
     "node": ">=18.0.0",
