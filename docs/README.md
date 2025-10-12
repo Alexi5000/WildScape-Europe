@@ -7,6 +7,7 @@ Welcome to the WildScape Europe documentation! This directory contains comprehen
 ### Getting Started
 
 - **[Getting Started Guide](./GETTING_STARTED.md)** - Set up your development environment and run the project locally
+- **[Landing Page Build](./LANDING_PAGE_BUILD.md)** - Complete landing page implementation guide
   - Prerequisites and installation
   - Development workflow
   - Troubleshooting common issues

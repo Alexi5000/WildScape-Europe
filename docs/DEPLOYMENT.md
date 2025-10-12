@@ -35,6 +35,12 @@ npm run build
 
 ### Build Configuration
 
+All deployment configurations are now organized in the `/deployment` folder:
+- `Dockerfile` - Docker container setup
+- `docker-compose.yml` - Multi-container orchestration
+- `nginx.conf` - Web server configuration
+- `Makefile` - Build automation
+
 ```typescript
 // vite.config.ts - Optimized production build
 export default defineConfig({

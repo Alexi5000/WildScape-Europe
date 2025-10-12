@@ -1,0 +1,12 @@
+/* Import Google Fonts matching the design aesthetic */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+/* Additional font for headlines that matches the Russian site */
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --font-headline: 'Bitter', 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-accent: 'Cormorant Garamond', serif;
+}
+

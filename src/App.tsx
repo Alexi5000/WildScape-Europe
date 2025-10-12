@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCampsiteStore } from './store/campsiteStore';
 import { useUIStore } from './store/uiStore';
+import { useSmoothScroll } from './hooks/useSmoothScroll';
+
+// Landing Page Components
+import { LandingPage } from './components/Landing/LandingPage';
+import { InfoSections } from './components/Landing/InfoSections';
+import { Footer } from './components/Landing/Footer';
 
 // Enhanced Components
 import { EnhancedForestParallax } from './components/Background/EnhancedForestParallax';
@@ -49,13 +55,16 @@ function App() {
     setCurrentWeatherCondition 
   } = useUIStore();
   
-  const [currentView, setCurrentView] = useState<'hero' | 'explore' | 'map' | 'dashboard'>('hero');
+  const [currentView, setCurrentView] = useState<'landing' | 'hero' | 'explore' | 'map' | 'dashboard'>('landing');
   const [isLoading, setIsLoading] = useState(true);
   const [appError, setAppError] = useState<string | null>(null);
   const [timeOfDay, setTimeOfDay] = useState<'dawn' | 'day' | 'dusk' | 'night'>('day');
 
   // Track user engagement
   useEngagementTracking();
+
+  // Enable smooth scrolling
+  useSmoothScroll(currentView === 'landing');
 
   // Determine time of day based on current time
   useEffect(() => {
@@ -142,7 +151,11 @@ function App() {
   };
 
   const handleBackToHero = () => {
-    setCurrentView('hero');
+    setCurrentView('landing');
+  };
+
+  const handleLandingExplore = () => {
+    setCurrentView('explore');
   };
 
   const handleSearch = ({ query, filters }: { query: string; filters: any }) => {
@@ -261,14 +274,16 @@ function App() {
         {/* Interactive Storytelling */}
         {currentView === 'hero' && <StorytellingElements />}
 
-        {/* Header Controls */}
-        <div className="fixed top-6 right-6 z-40 flex items-center gap-4">
-          <NotificationCenter />
-          <ThemeToggle />
-        </div>
+        {/* Header Controls - Hidden on landing page */}
+        {currentView !== 'landing' && (
+          <div className="fixed top-6 right-6 z-40 flex items-center gap-4">
+            <NotificationCenter />
+            <ThemeToggle />
+          </div>
+        )}
 
         {/* Enhanced Navigation */}
-        {currentView !== 'hero' && (
+        {currentView !== 'hero' && currentView !== 'landing' && (
           <motion.div 
             className="fixed top-6 left-6 z-40"
             initial={{ opacity: 0, x: -50 }}
@@ -300,6 +315,20 @@ function App() {
 
         {/* Main Content with Enhanced Transitions */}
         <AnimatePresence mode="wait">
+          {currentView === 'landing' && (
+            <motion.div
+              key="landing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <LandingPage onExploreClick={handleLandingExplore} />
+              <InfoSections />
+              <Footer />
+            </motion.div>
+          )}
+
           {currentView === 'hero' && (
             <motion.div
               key="hero"

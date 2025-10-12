@@ -61,8 +61,10 @@ npm run dev
 # Copy environment template
 cp .env.example .env
 
-# Add your Mapbox token (optional - demo works without it)
+# Add your Mapbox token (optional - app works with mock data)
 VITE_MAPBOX_TOKEN=your_mapbox_token_here
+
+# See .env.example for all available configuration options
 ```
 
 ## 🏗️ Architecture
@@ -229,6 +231,19 @@ npm run analyze      # Analyze bundle size with visualizer
 
 ## 🚀 Deployment
 
+All deployment configurations are organized in the `/deployment` folder.
+
+### Docker Deployment
+```bash
+# Using Docker Compose (recommended)
+cd deployment
+docker-compose up -d
+
+# Or build manually
+docker build -f deployment/Dockerfile -t wildscape-europe .
+docker run -p 80:80 wildscape-europe
+```
+
 ### Build Configuration
 ```bash
 # Production build
@@ -240,6 +255,8 @@ npm run preview
 # Deploy to Vercel (recommended)
 vercel --prod
 ```
+
+See [deployment/README.md](./deployment/README.md) for detailed deployment options.
 
 ### Environment Variables
 ```bash
