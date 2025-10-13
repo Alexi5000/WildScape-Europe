@@ -130,21 +130,57 @@ VITE_MAPBOX_TOKEN=your_mapbox_token_here
 - **Build Tool**: Vite with manual chunking & terser optimization
 
 ### Project Structure
+
+#### Root Directory
+```
+WildScape-Europe/
+├── src/                    # Source code and components
+├── public/                 # Static assets and metadata
+├── docs/                   # Project documentation
+├── deployment/             # Docker and deployment configs
+├── scripts/                # Development and setup scripts
+├── node_modules/           # NPM dependencies (auto-generated)
+├── .github/                # GitHub workflows and templates
+├── index.html              # Application entry point
+├── package.json            # Project dependencies and scripts
+├── package-lock.json       # Locked dependency versions
+├── vite.config.ts          # Vite build configuration
+├── tsconfig.json           # TypeScript configuration
+├── tsconfig.node.json      # TypeScript config for Node.js
+├── tailwind.config.ts      # Tailwind CSS configuration
+├── postcss.config.js       # PostCSS configuration
+├── README.md               # Project documentation (this file)
+├── LICENSE                 # Apache 2.0 license
+├── CHANGELOG.md            # Version history and changes
+└── CONTRIBUTING.md         # Contribution guidelines
+```
+
+#### Source Directory (`src/`)
 ```
 src/
-├── components/          # React components
-│   ├── Hero/           # Landing page components
-│   ├── Map/            # 3D map and terrain
-│   ├── Background/     # Visual effects
-│   ├── Search/         # Search and filters
-│   ├── Campsite/       # Campsite details
-│   └── UI/             # Reusable UI components
-├── hooks/              # Custom React hooks
-├── services/           # API and external services
-├── store/              # Zustand state management
-├── data/               # Mock data and configurations
-├── types/              # TypeScript type definitions
-└── assets/             # Static assets
+├── components/             # React components
+│   ├── Hero/              # Landing page components
+│   ├── Map/               # 3D map and terrain visualization
+│   ├── Background/        # Visual effects and animations
+│   ├── Search/            # Search interface and filters
+│   ├── Campsite/          # Campsite details and booking
+│   ├── Interactive/       # Storytelling and engagement
+│   ├── Dashboard/         # User dashboard components
+│   ├── Landing/           # Landing page sections
+│   ├── Audio/             # Ambient sound management
+│   ├── Content/           # Content and metrics
+│   ├── Layout/            # Layout and grid systems
+│   └── UI/                # Reusable UI components
+├── hooks/                 # Custom React hooks
+├── services/              # API and external services
+├── store/                 # Zustand state management
+├── data/                  # Mock data and configurations
+├── types/                 # TypeScript type definitions
+├── styles/                # Global styles and themes
+├── main.tsx               # Application entry point
+├── App.tsx                # Root application component
+├── index.css              # Global CSS styles
+└── fonts.css              # Custom font definitions
 ```
 
 ## 🎨 Design System
