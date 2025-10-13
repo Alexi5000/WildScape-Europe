@@ -6,7 +6,7 @@
   
   **Premium camping discovery platform with 3D terrain visualization and real-time weather effects**
   
-  ![Hero Preview](https://via.placeholder.com/1400x400/E8E3DB/3E2723?text=Wild+Camping+Across+Europe+🏕️)
+  ![WildScape Europe - Wild Camping Platform](https://raw.githubusercontent.com/Alexi5000/WildScape-Europe/main/public/preview-hero.png)
   
   [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.0-blue)](https://www.typescriptlang.org/)
