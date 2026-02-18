@@ -1,87 +1,73 @@
-# 🏕️ WildScape Europe - Wild Camping Across Europe
-
 <div align="center">
-  
-  ### ✨ Beautiful Mountain-Style Landing Page Now Live!
-  
-  **Premium camping discovery platform with 3D terrain visualization and real-time weather effects**
-  
-  ![WildScape Europe - Wild Camping Platform](https://raw.githubusercontent.com/Alexi5000/WildScape-Europe/main/public/preview-hero.png)
-  
-  [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.0-blue)](https://www.typescriptlang.org/)
-  [![Vite](https://img.shields.io/badge/Vite-4.5.0-646CFF)](https://vitejs.dev/)
-  [![Three.js](https://img.shields.io/badge/Three.js-0.157.0-black)](https://threejs.org/)
-  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.0-38BDF8)](https://tailwindcss.com/)
-  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.16.0-FF0080)](https://www.framer.com/motion/)
-  
-  ![CI](https://github.com/Alexi5000/WildScape-Europe/workflows/CI/badge.svg)
-  ![CD](https://github.com/Alexi5000/WildScape-Europe/workflows/CD/badge.svg)
-  ![Security](https://github.com/Alexi5000/WildScape-Europe/workflows/Security%20Scanning/badge.svg)
-  [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
-  
-  [🚀 Quick Start](#-quick-start) • [📚 Documentation](./docs) • [🎨 Landing Page](./docs/LANDING_PAGE_BUILD.md) • [🚢 Deploy](./deployment)
-  
+
+<img src="assets/icon.png" alt="WildScape Europe Logo" width="120" />
+
+# WildScape Europe
+
+### Discover Wild Camping Across Europe
+
+**3D terrain maps, real-time weather, and curated campsites from Norway's fjords to the Swiss Alps — the Airbnb for wilderness.**
+
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+[![React](https://img.shields.io/badge/React-18.2-61dafb?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-3D%20Terrain-000?logo=threedotjs)](https://threejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-4.5-646cff?logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+[![Mapbox](https://img.shields.io/badge/Mapbox-Maps-4264fb)](https://www.mapbox.com/)
+
+![CI](https://github.com/Alexi5000/WildScape-Europe/workflows/CI/badge.svg)
+![CD](https://github.com/Alexi5000/WildScape-Europe/workflows/CD/badge.svg)
+![Security](https://github.com/Alexi5000/WildScape-Europe/workflows/Security%20Scanning/badge.svg)
+
+[Features](#-features) · [Quick Start](#-quick-start) · [Destinations](#featured-destinations) · [Architecture](#-architecture) · [Deploy](#-deployment) · [Docs](./docs)
+
+---
+
+<img src="assets/cover.png" alt="WildScape Europe" width="100%" />
+
 </div>
 
 ---
 
-## 🎨 Landing Page Showcase
+## The Problem
 
-<table>
-<tr>
-<td width="60%">
-  
-### Hero Section - "Wild camping across Europe"
+Europe has some of the most stunning wild camping spots on the planet — Norwegian fjords, Scottish highlands, Swiss alpine meadows, Icelandic volcanic landscapes. But finding them is a nightmare. Information is scattered across forums, blogs, and word-of-mouth. There's no single platform that curates these locations, shows you the terrain in 3D, checks the weather, and lets you plan your trip.
 
-Stunning mountain-style landing page featuring:
-- **European Destinations**: Norway, Iceland, Scotland, Alps, Scandinavia, Pyrenees, Croatia
-- **Organic Design**: Wavy dividers, custom clip-path shapes
-- **Smooth Animations**: Lenis scrolling, Framer Motion effects
-- **Earthy Palette**: Warm beige, dark brown, terracotta accents
+## The Solution
 
-</td>
-<td width="40%">
-  
-### Featured Campsites
+WildScape Europe is a **premium camping discovery platform** that brings together Europe's best wild camping destinations with 3D terrain visualization, real-time weather data, interactive Mapbox maps, and a stunning mountain-style UI. Browse curated campsites across 7+ European regions, explore terrain before you go, and plan your next wilderness adventure.
 
-🏔️ **Aurora Valley Wilderness**  
-📍 Lofoten Islands, Norway • €45/night
+> *Browse the Norwegian fjords in 3D. Check tonight's weather at an Alpine base camp. Find a Highland loch retreat for under €40/night.*
 
-🏴󠁧󠁢󠁳󠁣󠁴󠁿 **Highland Loch Retreat**  
-📍 Scottish Highlands • €38/night
+---
 
-⛰️ **Alpine Mountain Base**  
-📍 Swiss Alps • €52/night
+## Featured Destinations
 
-🌊 **Fjord Edge Sanctuary**  
-📍 Norway Fjords • €48/night
-
-</td>
-</tr>
-</table>
-
-### 🔍 Find Your Campsite - 5 Filter Categories
-🏔️ Mountain Sites • 🌊 Lakes & Rivers • 🏕️ Coastal Camps • 🌲 Forest Camping • ✨ Aurora Viewing
+| Campsite | Location | Price | Highlights |
+|---|---|---|---|
+| **Aurora Valley Wilderness** | Lofoten Islands, Norway | €45/night | Northern lights, fjord views |
+| **Highland Loch Retreat** | Scottish Highlands | €38/night | Loch-side, mountain trails |
+| **Alpine Mountain Base** | Swiss Alps | €52/night | Glacier views, hiking access |
+| **Fjord Edge Sanctuary** | Norway Fjords | €48/night | Waterfall trails, kayaking |
 
 ---
 
 ## ✨ Features
 
-- 🗺️ **3D Terrain Mapping** - Interactive elevation maps with Mapbox GL
-- 🌧️ **Weather Particles** - Real-time weather visualization systems
-- 🌌 **Aurora Effects** - Dynamic northern lights background
-- 🌲 **Parallax Forests** - Immersive depth-layered scenes
-- 🔍 **Morphing Search** - Fluid, animated search interface
-- 📱 **Responsive Design** - Works seamlessly on all devices
-- ⚡ **Performance Optimized** - Smooth 60fps animations
-- 🎨 **Premium UI/UX** - Apple-level design aesthetics
-- 🌍 **European Focus** - 500+ curated camping locations
-- 🏕️ **Virtual Tours** - 360° campsite previews
+- **3D Terrain Mapping** — Interactive elevation maps with Mapbox GL and Three.js
+- **Real-Time Weather** — Weather particles, forecasts, and aurora predictions
+- **Aurora Effects** — Dynamic northern lights background with custom GLSL shaders
+- **Parallax Forests** — Immersive depth-layered scenes
+- **Morphing Search** — Fluid, animated search interface with smart filters
+- **Responsive Design** — Beautiful on desktop, tablet, and mobile
+- **Performance Optimized** — Smooth 60fps animations, code splitting, lazy loading
+- **Premium UI/UX** — Mountain-style landing page with Lenis scrolling and Framer Motion
+- **500+ Locations** — Curated European camping sites across 15+ countries
+- **Audio Ambiance** — Immersive nature soundscapes for each campsite
+- **Docker Ready** — Full Docker Compose deployment with Nginx
 
-## 🎯 Live Demo
-
-[🚀 View Live Demo](https://wildscape-europe.vercel.app) | [📱 Mobile Demo](https://wildscape-europe.vercel.app/mobile)
+[🚀 View Live Demo](https://wildscape-europe.vercel.app)
 
 ## 🚀 Quick Start
 
@@ -467,12 +453,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <p><strong>Developed by Alex Cinovoj | TechTideAI</strong></p>
-  <p>Built with ❤️ for outdoor enthusiasts and nature lovers</p>
-  <p>
-    <a href="https://github.com/Alexi5000/WildScape-Europe">🌲 GitHub Repository</a> •
-    <a href="#-features">✨ Features</a> •
-    <a href="#-quick-start">🚀 Get Started</a> •
-    <a href="#-development">👨‍💻 Developer</a>
-  </p>
+
+**Built by [Alex Cinovoj](https://github.com/Alexi5000) · [TechTide AI](https://github.com/Alexi5000)**
+
+*Your next adventure starts here.*
+
 </div>
