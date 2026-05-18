@@ -4,8 +4,8 @@ import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from 'lucide-react'
 export const Footer = () => {
   const footerLinks = {
     tours: ['Mountain Campsites', 'Coastal Camping', 'Forest Retreats', 'Aurora Viewing', 'Lake Camping'],
-    company: ['About WildScape', 'Featured Sites', 'Safety Guidelines', 'Reviews', 'Blog'],
-    support: ['FAQ', 'Booking Policy', 'Cancellation', 'Travel Insurance', 'Contact']
+    company: ['About Release 1.0', 'Featured Sites', 'Safety Guidelines', 'Responsible Travel', 'Lab Notes'],
+    support: ['FAQ', 'Booking Policy', 'Session Data', 'Production Support', 'Contact']
   };
 
   return (
@@ -31,7 +31,7 @@ export const Footer = () => {
               <span className="text-lg font-bold">WILDSCAPE</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              Discover Europe's most breathtaking wild camping locations. From Nordic fjords to Alpine peaks, experience nature with 3D terrain maps and real-time weather.
+              WildScape Europe Release 1.0 is a working camping discovery and planning app for European wilderness travel, combining campsite search, terrain context, weather-aware planning, booking readiness, and persistent session state.
             </p>
             <div className="flex gap-4">
               <motion.a 
@@ -117,7 +117,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/50 text-sm">
-            © 2024 WildScape Europe by Alex Cinovoj | TechTideAI. All rights reserved.
+            © 2026 WildScape Europe Release 1.0 by Alex Cinovoj | TechTideAI. Production build.
           </p>
           <div className="flex gap-6 text-sm">
             <a href="#" className="text-white/50 hover:text-white transition-colors">Privacy Policy</a>
