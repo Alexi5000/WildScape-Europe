@@ -1,39 +1,39 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* Import Google Fonts for Natural Typography */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 
 /* 🌲 FOREST THEME CSS CUSTOM PROPERTIES */
 :root {
   /* Deep Forest Color Palette */
-  --forest-deep: #0D2818;
-  --forest-dark: #1A4B2F;
-  --forest-primary: #2D5A3D;
-  --forest-medium: #4A7C59;
-  --forest-light: #6B9B7A;
-  --forest-pale: #A8C8A8;
-  --forest-mist: #D4E6D4;
-  
+  --forest-deep: #0d2818;
+  --forest-dark: #1a4b2f;
+  --forest-primary: #2d5a3d;
+  --forest-medium: #4a7c59;
+  --forest-light: #6b9b7a;
+  --forest-pale: #a8c8a8;
+  --forest-mist: #d4e6d4;
+
   /* Earth Tones */
-  --earth-bark: #3E2723;
-  --earth-soil: #5D4037;
-  --earth-moss: #689F38;
-  --earth-stone: #78909C;
-  --earth-sand: #BCAAA4;
-  
+  --earth-bark: #3e2723;
+  --earth-soil: #5d4037;
+  --earth-moss: #689f38;
+  --earth-stone: #78909c;
+  --earth-sand: #bcaaa4;
+
   /* Natural Accents */
-  --sunlight: #FFF8E1;
-  --golden-hour: #FFB74D;
-  --morning-dew: #E8F5E8;
+  --sunlight: #fff8e1;
+  --golden-hour: #ffb74d;
+  --morning-dew: #e8f5e8;
   --shadow: rgba(13, 40, 24, 0.3);
-  
+
   /* Typography */
-  --font-serif: 'Playfair Display', serif;
-  --font-body: 'Crimson Text', serif;
-  --font-ui: 'Inter', sans-serif;
-  
+  --font-serif: "Playfair Display", serif;
+  --font-body: "Crimson Text", serif;
+  --font-ui: "Inter", sans-serif;
+
   /* Spacing System (8px base) */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -42,12 +42,12 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --space-3xl: 6rem;
-  
+
   /* Border Radius */
   --radius-organic: 0.75rem 1rem 0.5rem 1.25rem;
   --radius-leaf: 50% 0% 50% 0%;
   --radius-smooth: 1rem;
-  
+
   /* Shadows */
   --shadow-soft: 0 4px 20px rgba(13, 40, 24, 0.15);
   --shadow-deep: 0 8px 40px rgba(13, 40, 24, 0.25);
@@ -71,7 +71,11 @@ body {
   font-family: var(--font-body);
   line-height: 1.7;
   color: var(--forest-deep);
-  background: linear-gradient(180deg, var(--morning-dew) 0%, var(--forest-mist) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--morning-dew) 0%,
+    var(--forest-mist) 100%
+  );
   overflow-x: hidden;
   position: relative;
 }
@@ -86,13 +90,21 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--forest-medium), var(--forest-primary));
+  background: linear-gradient(
+    180deg,
+    var(--forest-medium),
+    var(--forest-primary)
+  );
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--forest-primary), var(--forest-dark));
+  background: linear-gradient(
+    180deg,
+    var(--forest-primary),
+    var(--forest-dark)
+  );
 }
 
 /* Firefox scrollbar */
@@ -102,7 +114,12 @@ html {
 }
 
 /* 🌲 TYPOGRAPHY SYSTEM */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-serif);
   font-weight: 600;
   line-height: 1.2;
@@ -152,13 +169,18 @@ p {
 }
 
 .btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -167,7 +189,11 @@ p {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--forest-medium) 0%, var(--forest-primary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--forest-medium) 0%,
+    var(--forest-primary) 100%
+  );
   color: white;
   box-shadow: var(--shadow-soft);
 }
@@ -175,7 +201,11 @@ p {
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.02);
   box-shadow: var(--shadow-deep);
-  background: linear-gradient(135deg, var(--forest-primary) 0%, var(--forest-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--forest-primary) 0%,
+    var(--forest-dark) 100%
+  );
 }
 
 .btn-secondary {
@@ -193,66 +223,70 @@ p {
 
 /* 🌲 FOREST ANIMATIONS */
 @keyframes gentleSway {
-  0%, 100% { 
-    transform: translateX(0) rotate(0deg); 
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
   }
-  25% { 
-    transform: translateX(-3px) rotate(-0.5deg); 
+  25% {
+    transform: translateX(-3px) rotate(-0.5deg);
   }
-  75% { 
-    transform: translateX(3px) rotate(0.5deg); 
+  75% {
+    transform: translateX(3px) rotate(0.5deg);
   }
 }
 
 @keyframes leafDance {
-  0% { 
-    transform: translateY(0) rotate(0deg); 
-    opacity: 0.8; 
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
   }
-  50% { 
-    transform: translateY(-10px) rotate(180deg); 
-    opacity: 1; 
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+    opacity: 1;
   }
-  100% { 
-    transform: translateY(0) rotate(360deg); 
-    opacity: 0.8; 
+  100% {
+    transform: translateY(0) rotate(360deg);
+    opacity: 0.8;
   }
 }
 
 @keyframes mistFlow {
-  0%, 100% { 
-    transform: translateX(0) translateY(0); 
-    opacity: 0.3; 
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: 0.3;
   }
-  33% { 
-    transform: translateX(20px) translateY(-5px); 
-    opacity: 0.6; 
+  33% {
+    transform: translateX(20px) translateY(-5px);
+    opacity: 0.6;
   }
-  66% { 
-    transform: translateX(-15px) translateY(5px); 
-    opacity: 0.4; 
+  66% {
+    transform: translateX(-15px) translateY(5px);
+    opacity: 0.4;
   }
 }
 
 @keyframes sunlightFilter {
-  0%, 100% { 
-    opacity: 0.6; 
-    transform: scale(1); 
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
   }
-  50% { 
-    opacity: 0.8; 
-    transform: scale(1.05); 
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
   }
 }
 
 @keyframes organicPulse {
-  0%, 100% { 
-    transform: scale(1); 
-    opacity: 0.7; 
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
   }
-  50% { 
-    transform: scale(1.1); 
-    opacity: 1; 
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
   }
 }
 
@@ -323,13 +357,18 @@ p {
 }
 
 .organic-shape::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -2px;
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, var(--forest-light), var(--forest-medium), var(--forest-primary));
+  background: linear-gradient(
+    45deg,
+    var(--forest-light),
+    var(--forest-medium),
+    var(--forest-primary)
+  );
   border-radius: var(--radius-organic);
   z-index: -1;
   opacity: 0;
@@ -373,8 +412,12 @@ p {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* 🌿 ACCESSIBILITY */
@@ -386,7 +429,7 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .particle {
     animation: none;
     opacity: 0.3;
@@ -396,9 +439,9 @@ p {
 @media (prefers-contrast: high) {
   :root {
     --forest-deep: #000000;
-    --forest-primary: #1B5E20;
-    --forest-medium: #2E7D32;
-    --sunlight: #FFFFFF;
+    --forest-primary: #1b5e20;
+    --forest-medium: #2e7d32;
+    --sunlight: #ffffff;
   }
 }
 
@@ -415,13 +458,15 @@ a:focus-visible {
 
 /* 🍃 RESPONSIVE TYPOGRAPHY */
 @media (max-width: 768px) {
-  html { font-size: 14px; }
-  
+  html {
+    font-size: 14px;
+  }
+
   .btn {
     padding: var(--space-xs) var(--space-md);
     font-size: 0.9rem;
   }
-  
+
   p {
     font-size: 1rem;
     line-height: 1.6;
@@ -429,8 +474,10 @@ a:focus-visible {
 }
 
 @media (max-width: 480px) {
-  html { font-size: 13px; }
-  
+  html {
+    font-size: 13px;
+  }
+
   :root {
     --space-lg: 1.5rem;
     --space-xl: 2rem;
@@ -439,13 +486,15 @@ a:focus-visible {
 
 /* 🌲 PRINT STYLES */
 @media print {
-  .no-print { display: none !important; }
-  
+  .no-print {
+    display: none !important;
+  }
+
   body {
     background: white !important;
     color: black !important;
   }
-  
+
   .glass-forest,
   .glass-canopy {
     background: white !important;
@@ -454,23 +503,49 @@ a:focus-visible {
 }
 
 /* 🌿 UTILITY CLASSES */
-.text-forest-deep { color: var(--forest-deep); }
-.text-forest-primary { color: var(--forest-primary); }
-.text-forest-medium { color: var(--forest-medium); }
-.text-sunlight { color: var(--sunlight); }
-.text-golden { color: var(--golden-hour); }
+.text-forest-deep {
+  color: var(--forest-deep);
+}
+.text-forest-primary {
+  color: var(--forest-primary);
+}
+.text-forest-medium {
+  color: var(--forest-medium);
+}
+.text-sunlight {
+  color: var(--sunlight);
+}
+.text-golden {
+  color: var(--golden-hour);
+}
 
-.bg-forest-deep { background-color: var(--forest-deep); }
-.bg-forest-primary { background-color: var(--forest-primary); }
-.bg-forest-medium { background-color: var(--forest-medium); }
-.bg-forest-mist { background-color: var(--forest-mist); }
+.bg-forest-deep {
+  background-color: var(--forest-deep);
+}
+.bg-forest-primary {
+  background-color: var(--forest-primary);
+}
+.bg-forest-medium {
+  background-color: var(--forest-medium);
+}
+.bg-forest-mist {
+  background-color: var(--forest-mist);
+}
 
-.border-forest { border-color: var(--forest-medium); }
-.border-organic { border-radius: var(--radius-organic); }
+.border-forest {
+  border-color: var(--forest-medium);
+}
+.border-organic {
+  border-radius: var(--radius-organic);
+}
 
 /* 🌲 PERFORMANCE OPTIMIZATIONS */
-.will-change-transform { will-change: transform; }
-.will-change-opacity { will-change: opacity; }
+.will-change-transform {
+  will-change: transform;
+}
+.will-change-opacity {
+  will-change: opacity;
+}
 .gpu-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;

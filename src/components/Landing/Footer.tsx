@@ -1,11 +1,23 @@
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 
 export const Footer = () => {
   const footerLinks = {
-    tours: ['Mountain Campsites', 'Coastal Camping', 'Forest Retreats', 'Aurora Viewing', 'Lake Camping'],
-    company: ['About Release 1.0', 'Featured Sites', 'Safety Guidelines', 'Responsible Travel', 'Lab Notes'],
-    support: ['FAQ', 'Booking Policy', 'Session Data', 'Production Support', 'Contact']
+    tours: [
+      "Mountain Campsites",
+      "Coastal Camping",
+      "Forest Retreats",
+      "Aurora Viewing",
+      "Lake Camping",
+    ],
+    company: [
+      "About Release 1.0",
+      "Featured Sites",
+      "Safety Guidelines",
+      "Responsible Travel",
+      "Lab Notes",
+    ],
+    support: ["FAQ", "Booking Policy", "Session Data", "Production Support", "Contact"],
   };
 
   return (
@@ -24,32 +36,39 @@ export const Footer = () => {
             <div className="flex items-center gap-2">
               <div className="w-10 h-10">
                 <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
-                  <path d="M24 8L32 24L24 40L16 24L24 8Z" stroke="white" strokeWidth="2" fill="#8B7355"/>
-                  <circle cx="24" cy="24" r="3" fill="white"/>
+                  <path
+                    d="M24 8L32 24L24 40L16 24L24 8Z"
+                    stroke="white"
+                    strokeWidth="2"
+                    fill="#8B7355"
+                  />
+                  <circle cx="24" cy="24" r="3" fill="white" />
                 </svg>
               </div>
               <span className="text-lg font-bold">WILDSCAPE</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              WildScape Europe Release 1.0 is a working camping discovery and planning app for European wilderness travel, combining campsite search, terrain context, weather-aware planning, booking readiness, and persistent session state.
+              WildScape Europe Release 1.0 is a working camping discovery and planning app for
+              European wilderness travel, combining campsite search, terrain context, weather-aware
+              planning, booking readiness, and persistent session state.
             </p>
             <div className="flex gap-4">
-              <motion.a 
-                href="#" 
+              <motion.a
+                href="#"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
                 <Facebook size={18} />
               </motion.a>
-              <motion.a 
-                href="#" 
+              <motion.a
+                href="#"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
                 <Instagram size={18} />
               </motion.a>
-              <motion.a 
-                href="#" 
+              <motion.a
+                href="#"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
                 whileHover={{ scale: 1.1 }}
               >
@@ -64,7 +83,10 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.tours.map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-white/70 hover:text-[#C85A54] transition-colors text-sm">
+                  <a
+                    href="#"
+                    className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
+                  >
                     {link}
                   </a>
                 </li>
@@ -78,7 +100,10 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-white/70 hover:text-[#C85A54] transition-colors text-sm">
+                  <a
+                    href="#"
+                    className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
+                  >
                     {link}
                   </a>
                 </li>
@@ -99,14 +124,18 @@ export const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />
-                <a href="mailto:explore@wildscape-europe.com" className="text-white/70 hover:text-[#C85A54] transition-colors text-sm">
+                <a
+                  href="mailto:explore@wildscape-europe.com"
+                  className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
+                >
                   explore@wildscape-europe.com
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />
                 <p className="text-white/70 text-sm">
-                  Nordic Wilderness Center<br />
+                  Nordic Wilderness Center
+                  <br />
                   Oslo, Norway
                 </p>
               </li>
@@ -120,13 +149,18 @@ export const Footer = () => {
             © 2026 WildScape Europe Release 1.0 by Alex Cinovoj | TechTideAI. Production build.
           </p>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-white/50 hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">Cookies</a>
+            <a href="#" className="text-white/50 hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="text-white/50 hover:text-white transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="text-white/50 hover:text-white transition-colors">
+              Cookies
+            </a>
           </div>
         </div>
       </div>
     </footer>
   );
 };
-

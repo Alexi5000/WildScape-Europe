@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 interface FloatingCTAProps {
   onExploreClick: () => void;
@@ -25,10 +25,10 @@ export const FloatingCTA: React.FC<FloatingCTAProps> = ({ onExploreClick }) => {
           <span className="hidden sm:block">Start Exploring</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
         </div>
-        
+
         {/* Glow effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-aurora to-primary rounded-full blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300 -z-10" />
-        
+
         {/* Ripple effect */}
         <div className="absolute inset-0 rounded-full border-2 border-white/30 animate-ping" />
       </button>

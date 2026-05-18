@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { Mountain, Waves, Tent, Footprints, Camera } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Mountain, Waves, Tent, Footprints, Camera } from "lucide-react";
 
 interface TourFiltersProps {
   onFilterSelect?: (filter: string) => void;
@@ -7,11 +7,11 @@ interface TourFiltersProps {
 
 export const TourFilters = ({ onFilterSelect }: TourFiltersProps) => {
   const filters = [
-    { id: 'mountain', label: 'Mountain Sites', icon: Mountain },
-    { id: 'lake', label: 'Lakes & Rivers', icon: Waves },
-    { id: 'coastal', label: 'Coastal Camps', icon: Tent },
-    { id: 'forest', label: 'Forest Camping', icon: Footprints },
-    { id: 'aurora', label: 'Aurora Viewing', icon: Camera },
+    { id: "mountain", label: "Mountain Sites", icon: Mountain },
+    { id: "lake", label: "Lakes & Rivers", icon: Waves },
+    { id: "coastal", label: "Coastal Camps", icon: Tent },
+    { id: "forest", label: "Forest Camping", icon: Footprints },
+    { id: "aurora", label: "Aurora Viewing", icon: Camera },
   ];
 
   return (
@@ -44,15 +44,22 @@ export const TourFilters = ({ onFilterSelect }: TourFiltersProps) => {
                 <div className="relative">
                   {/* Icon Circle */}
                   <div className="w-20 h-20 rounded-full bg-white border-2 border-[#D4C4B0] flex items-center justify-center group-hover:border-[#C85A54] group-hover:bg-[#C85A54]/5 transition-all duration-300">
-                    <IconComponent size={32} className="text-[#6B5B47] group-hover:text-[#C85A54] transition-colors" />
+                    <IconComponent
+                      size={32}
+                      className="text-[#6B5B47] group-hover:text-[#C85A54] transition-colors"
+                    />
                   </div>
-                  
+
                   {/* Simple line decoration */}
-                  <svg className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-4 text-[#D4C4B0] opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 64 16" fill="none">
-                    <path d="M0,8 Q32,0 64,8" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <svg
+                    className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-4 text-[#D4C4B0] opacity-0 group-hover:opacity-100 transition-opacity"
+                    viewBox="0 0 64 16"
+                    fill="none"
+                  >
+                    <path d="M0,8 Q32,0 64,8" stroke="currentColor" strokeWidth="1.5" fill="none" />
                   </svg>
                 </div>
-                
+
                 <span className="text-sm text-[#3E2723] font-medium text-center group-hover:text-[#C85A54] transition-colors">
                   {filter.label}
                 </span>
@@ -64,4 +71,3 @@ export const TourFilters = ({ onFilterSelect }: TourFiltersProps) => {
     </section>
   );
 };
-

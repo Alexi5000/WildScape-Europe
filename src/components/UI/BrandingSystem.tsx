@@ -1,41 +1,41 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 interface BrandingSystemProps {
-  variant?: 'primary' | 'secondary' | 'minimal';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: "primary" | "secondary" | "minimal";
+  size?: "sm" | "md" | "lg" | "xl";
   showTagline?: boolean;
 }
 
 export const BrandingSystem: React.FC<BrandingSystemProps> = ({
-  variant = 'primary',
-  size = 'md',
-  showTagline = true
+  variant = "primary",
+  size = "md",
+  showTagline = true,
 }) => {
   const sizeClasses = {
-    sm: 'text-2xl',
-    md: 'text-4xl',
-    lg: 'text-6xl',
-    xl: 'text-8xl'
+    sm: "text-2xl",
+    md: "text-4xl",
+    lg: "text-6xl",
+    xl: "text-8xl",
   };
 
   const logoVariants = {
     primary: {
-      background: 'linear-gradient(135deg, #064E3B 0%, #059669 50%, #10B981 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text'
+      background: "linear-gradient(135deg, #064E3B 0%, #059669 50%, #10B981 100%)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      backgroundClip: "text",
     },
     secondary: {
-      color: '#FFFFFF'
+      color: "#FFFFFF",
     },
     minimal: {
-      color: '#064E3B'
-    }
+      color: "#064E3B",
+    },
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="flex flex-col items-center gap-2"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -49,12 +49,7 @@ export const BrandingSystem: React.FC<BrandingSystemProps> = ({
           transition={{ duration: 0.3 }}
         >
           {/* Forest Icon */}
-          <svg 
-            width="48" 
-            height="48" 
-            viewBox="0 0 48 48" 
-            className="text-forest-600"
-          >
+          <svg width="48" height="48" viewBox="0 0 48 48" className="text-forest-600">
             <defs>
               <linearGradient id="forestGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#064E3B" />
@@ -70,7 +65,7 @@ export const BrandingSystem: React.FC<BrandingSystemProps> = ({
           </svg>
         </motion.div>
 
-        <motion.h1 
+        <motion.h1
           className={`font-serif font-bold ${sizeClasses[size]} tracking-tight`}
           style={logoVariants[variant]}
           initial={{ opacity: 0, x: -20 }}
@@ -80,7 +75,7 @@ export const BrandingSystem: React.FC<BrandingSystemProps> = ({
           WildScape
         </motion.h1>
 
-        <motion.span 
+        <motion.span
           className="text-forest-medium font-medium text-xl tracking-wider"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -92,7 +87,7 @@ export const BrandingSystem: React.FC<BrandingSystemProps> = ({
 
       {/* Tagline */}
       {showTagline && (
-        <motion.p 
+        <motion.p
           className="text-forest-primary font-body italic text-lg text-center max-w-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

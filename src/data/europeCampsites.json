@@ -5,11 +5,17 @@
     "location": {
       "country": "Norway",
       "region": "Lofoten Islands",
-      "coordinates": [13.6000, 68.1500],
+      "coordinates": [13.6, 68.15],
       "elevation": 245
     },
     "description": "Experience the northern lights from your tent in this pristine wilderness location with unobstructed views of the Arctic sky.",
-    "amenities": ["aurora_viewing", "hiking_trails", "fishing", "wildlife_watching", "photography_spots"],
+    "amenities": [
+      "aurora_viewing",
+      "hiking_trails",
+      "fishing",
+      "wildlife_watching",
+      "photography_spots"
+    ],
     "difficulty": "moderate",
     "capacity": 12,
     "price_per_night": 45,
@@ -57,7 +63,7 @@
     }
   },
   {
-    "id": "camp_002", 
+    "id": "camp_002",
     "name": "Alpine Serenity Base",
     "location": {
       "country": "Switzerland",
@@ -66,7 +72,13 @@
       "elevation": 1650
     },
     "description": "High-altitude camping with panoramic views of the Eiger, Mönch, and Jungfrau peaks.",
-    "amenities": ["mountain_views", "hiking_trails", "rock_climbing", "stargazing", "alpine_flora"],
+    "amenities": [
+      "mountain_views",
+      "hiking_trails",
+      "rock_climbing",
+      "stargazing",
+      "alpine_flora"
+    ],
     "difficulty": "challenging",
     "capacity": 8,
     "price_per_night": 65,
@@ -109,13 +121,19 @@
     "id": "camp_003",
     "name": "Midnight Sun Fjord",
     "location": {
-      "country": "Norway", 
+      "country": "Norway",
       "region": "Nordkapp",
       "coordinates": [25.7844, 71.1694],
       "elevation": 120
     },
     "description": "Experience the midnight sun phenomenon while camping on dramatic fjord cliffs.",
-    "amenities": ["midnight_sun", "fjord_views", "bird_watching", "kayaking", "fishing"],
+    "amenities": [
+      "midnight_sun",
+      "fjord_views",
+      "bird_watching",
+      "kayaking",
+      "fishing"
+    ],
     "difficulty": "moderate",
     "capacity": 15,
     "price_per_night": 55,
@@ -160,11 +178,17 @@
     "location": {
       "country": "Germany",
       "region": "Black Forest",
-      "coordinates": [8.2000, 48.0000],
+      "coordinates": [8.2, 48.0],
       "elevation": 680
     },
     "description": "Deep forest camping among ancient pines with mystical fog and wildlife encounters.",
-    "amenities": ["forest_trails", "wildlife_watching", "mushroom_foraging", "meditation", "photography"],
+    "amenities": [
+      "forest_trails",
+      "wildlife_watching",
+      "mushroom_foraging",
+      "meditation",
+      "photography"
+    ],
     "difficulty": "easy",
     "capacity": 20,
     "price_per_night": 35,
@@ -208,11 +232,17 @@
     "location": {
       "country": "Portugal",
       "region": "Algarve Coast",
-      "coordinates": [-8.9500, 37.0200],
+      "coordinates": [-8.95, 37.02],
       "elevation": 25
     },
     "description": "Beachfront camping with golden sand dunes and crystal-clear Atlantic waters.",
-    "amenities": ["beach_access", "surfing", "fishing", "sunset_views", "water_sports"],
+    "amenities": [
+      "beach_access",
+      "surfing",
+      "fishing",
+      "sunset_views",
+      "water_sports"
+    ],
     "difficulty": "easy",
     "capacity": 25,
     "price_per_night": 40,
@@ -256,11 +286,17 @@
     "location": {
       "country": "Italy",
       "region": "Tuscany",
-      "coordinates": [11.2500, 43.7700],
+      "coordinates": [11.25, 43.77],
       "elevation": 420
     },
     "description": "Rolling hills camping among vineyards and olive groves with stunning sunset views.",
-    "amenities": ["vineyard_tours", "wine_tasting", "cooking_classes", "cycling", "sunset_views"],
+    "amenities": [
+      "vineyard_tours",
+      "wine_tasting",
+      "cooking_classes",
+      "cycling",
+      "sunset_views"
+    ],
     "difficulty": "easy",
     "capacity": 18,
     "price_per_night": 50,

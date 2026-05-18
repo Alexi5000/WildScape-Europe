@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 export const ScrollIndicator = () => {
   return (
@@ -11,7 +11,7 @@ export const ScrollIndicator = () => {
       onClick={() => {
         window.scrollTo({
           top: window.innerHeight,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }}
     >
@@ -25,4 +25,3 @@ export const ScrollIndicator = () => {
     </motion.div>
   );
 };
-

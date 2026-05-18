@@ -1,9 +1,9 @@
-import type { UserPreferences, UserProfile, UserSeed } from '@/types/api';
+import type { UserPreferences, UserProfile, UserSeed } from "@/types/api";
 
 const defaultPreferences: UserPreferences = {
-  favoriteActivities: ['hiking_trails', 'photography', 'stargazing'],
-  preferredDifficulty: 'moderate',
-  budgetRange: [30, 100]
+  favoriteActivities: ["hiking_trails", "photography", "stargazing"],
+  preferredDifficulty: "moderate",
+  budgetRange: [30, 100],
 };
 
 export class UserRepository {
@@ -17,15 +17,15 @@ export class UserRepository {
   createProfile(userData: Partial<UserProfile>): UserProfile {
     const user: UserProfile = {
       id: `user_${Date.now()}`,
-      name: userData.name ?? 'Anonymous User',
-      email: userData.email ?? '',
+      name: userData.name ?? "Anonymous User",
+      email: userData.email ?? "",
       avatar: userData.avatar,
       preferences: {
         ...defaultPreferences,
-        ...userData.preferences
+        ...userData.preferences,
       },
       bookingHistory: userData.bookingHistory ?? [],
-      wishlist: userData.wishlist ?? []
+      wishlist: userData.wishlist ?? [],
     };
 
     this.currentUser = user;
@@ -33,7 +33,7 @@ export class UserRepository {
   }
 
   findProfile(userId: string): UserProfile | null {
-    if (this.currentUser?.id === userId || userId === 'current_user') {
+    if (this.currentUser?.id === userId || userId === "current_user") {
       return this.currentUser;
     }
 
@@ -48,7 +48,7 @@ export class UserRepository {
 
     this.currentUser = {
       ...profile,
-      preferences: { ...profile.preferences, ...preferences }
+      preferences: { ...profile.preferences, ...preferences },
     };
     return true;
   }
@@ -69,30 +69,30 @@ export class UserRepository {
       return false;
     }
 
-    this.currentUser = { ...profile, wishlist: profile.wishlist.filter(id => id !== campsiteId) };
+    this.currentUser = { ...profile, wishlist: profile.wishlist.filter((id) => id !== campsiteId) };
     return true;
   }
 
   private seedUsers(): void {
     for (let index = 0; index < 100; index += 1) {
-      const id = `user_${String(index + 1).padStart(3, '0')}`;
+      const id = `user_${String(index + 1).padStart(3, "0")}`;
       this.users.set(id, {
         id,
         name: `WildScape Explorer ${index + 1}`,
         email: `user${index + 1}@example.com`,
         joinDate: new Date(Date.now() - index * 24 * 60 * 60 * 1000).toISOString(),
         totalBookings: index % 10,
-        favoriteActivities: defaultPreferences.favoriteActivities
+        favoriteActivities: defaultPreferences.favoriteActivities,
       });
     }
 
     this.currentUser = {
-      id: 'current_user',
-      name: 'WildScape Explorer',
-      email: 'explorer@wildscape.example',
+      id: "current_user",
+      name: "WildScape Explorer",
+      email: "explorer@wildscape.example",
       preferences: defaultPreferences,
-      bookingHistory: ['booking_001', 'booking_002'],
-      wishlist: ['camp_001', 'camp_005']
+      bookingHistory: ["booking_001", "booking_002"],
+      wishlist: ["camp_001", "camp_005"],
     };
   }
 }

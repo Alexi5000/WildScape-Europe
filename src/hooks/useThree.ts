@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 export const useThree = () => {
   const groupRef = useRef<THREE.Group>(null);

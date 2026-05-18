@@ -1,10 +1,10 @@
-import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import React, { useRef, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 const AuroraShader = () => {
   const meshRef = useRef<THREE.Mesh>(null);
-  
+
   const material = useMemo(() => {
     return new THREE.ShaderMaterial({
       uniforms: {
@@ -87,7 +87,7 @@ export const AuroraEffect: React.FC = () => {
     <div className="fixed inset-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 1], fov: 75 }}
-        style={{ background: 'linear-gradient(to bottom, #0F172A, #1E293B)' }}
+        style={{ background: "linear-gradient(to bottom, #0F172A, #1E293B)" }}
       >
         <AuroraShader />
       </Canvas>

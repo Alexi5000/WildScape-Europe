@@ -1,17 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useCampsiteStore } from '@/store/campsiteStore';
-import { useSearchStore } from '@/store/searchStore';
-import { apiService } from '@/services/api';
+import { useState, useEffect, useCallback } from "react";
+import { useCampsiteStore } from "@/store/campsiteStore";
+import { useSearchStore } from "@/store/searchStore";
+import { apiService } from "@/services/api";
 
 export const useSearch = () => {
   const { setSearchQuery, applyFilters } = useCampsiteStore();
-  const { 
-    searchQuery, 
-    suggestions, 
+  const {
+    searchQuery,
+    suggestions,
     isLoading,
     setSearchQuery: setStoreQuery,
     setSuggestions,
-    setLoading
+    setLoading,
   } = useSearchStore();
 
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
@@ -44,7 +44,7 @@ export const useSearch = () => {
         const newSuggestions = await apiService.getSuggestions(searchQuery);
         setSuggestions(newSuggestions);
       } catch (error) {
-        console.error('Failed to fetch suggestions:', error);
+        console.error("Failed to fetch suggestions:", error);
         setSuggestions([]);
       } finally {
         setLoading(false);
@@ -54,17 +54,23 @@ export const useSearch = () => {
     fetchSuggestions();
   }, [searchQuery, setSuggestions, setLoading]);
 
-  const handleSearch = useCallback((query: string) => {
-    setStoreQuery(query);
-  }, [setStoreQuery]);
+  const handleSearch = useCallback(
+    (query: string) => {
+      setStoreQuery(query);
+    },
+    [setStoreQuery],
+  );
 
-  const handleSuggestionSelect = useCallback((suggestion: string) => {
-    setStoreQuery(suggestion);
-    setSuggestions([]);
-  }, [setStoreQuery, setSuggestions]);
+  const handleSuggestionSelect = useCallback(
+    (suggestion: string) => {
+      setStoreQuery(suggestion);
+      setSuggestions([]);
+    },
+    [setStoreQuery, setSuggestions],
+  );
 
   const clearSearch = useCallback(() => {
-    setStoreQuery('');
+    setStoreQuery("");
     setSuggestions([]);
   }, [setStoreQuery, setSuggestions]);
 
@@ -74,6 +80,6 @@ export const useSearch = () => {
     isLoading,
     handleSearch,
     handleSuggestionSelect,
-    clearSearch
+    clearSearch,
   };
 };

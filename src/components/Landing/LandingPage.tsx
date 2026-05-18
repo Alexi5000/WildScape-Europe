@@ -1,6 +1,6 @@
-import { MountainHero } from './MountainHero';
-import { TourFilters } from './TourFilters';
-import { ToursSection } from './ToursSection';
+import { MountainHero } from "./MountainHero";
+import { TourFilters } from "./TourFilters";
+import { ToursSection } from "./ToursSection";
 
 interface LandingPageProps {
   onExploreClick: () => void;
@@ -15,4 +15,3 @@ export const LandingPage = ({ onExploreClick }: LandingPageProps) => {
     </div>
   );
 };
-

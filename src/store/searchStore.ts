@@ -1,11 +1,11 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface SearchStore {
   isExpanded: boolean;
   searchQuery: string;
   suggestions: string[];
   isLoading: boolean;
-  
+
   // Actions
   setExpanded: (expanded: boolean) => void;
   setSearchQuery: (query: string) => void;
@@ -16,7 +16,7 @@ interface SearchStore {
 
 export const useSearchStore = create<SearchStore>((set) => ({
   isExpanded: false,
-  searchQuery: '',
+  searchQuery: "",
   suggestions: [],
   isLoading: false,
 
@@ -24,5 +24,5 @@ export const useSearchStore = create<SearchStore>((set) => ({
   setSearchQuery: (query) => set({ searchQuery: query }),
   setSuggestions: (suggestions) => set({ suggestions }),
   setLoading: (loading) => set({ isLoading: loading }),
-  clearSearch: () => set({ searchQuery: '', suggestions: [], isExpanded: false }),
+  clearSearch: () => set({ searchQuery: "", suggestions: [], isExpanded: false }),
 }));

@@ -1,40 +1,44 @@
-import { motion } from 'framer-motion';
-import { TourCard } from './TourCard';
+import { motion } from "framer-motion";
+import { TourCard } from "./TourCard";
 
 export const ToursSection = () => {
   const tours = [
     {
-      image: 'https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg?auto=compress&cs=tinysrgb&w=800',
-      title: 'Aurora Valley Wilderness',
-      date: 'Available Now',
-      duration: 'Lofoten Islands',
-      price: '45',
-      category: 'NORWAY'
+      image:
+        "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Aurora Valley Wilderness",
+      date: "Available Now",
+      duration: "Lofoten Islands",
+      price: "45",
+      category: "NORWAY",
     },
     {
-      image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800',
-      title: 'Highland Loch Retreat',
-      date: 'Year Round',
-      duration: 'Scottish Highlands',
-      price: '38',
-      category: 'SCOTLAND'
+      image:
+        "https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Highland Loch Retreat",
+      date: "Year Round",
+      duration: "Scottish Highlands",
+      price: "38",
+      category: "SCOTLAND",
     },
     {
-      image: 'https://images.pexels.com/photos/1108701/pexels-photo-1108701.jpeg?auto=compress&cs=tinysrgb&w=800',
-      title: 'Alpine Mountain Base',
-      date: 'Seasonal',
-      duration: 'Swiss Alps',
-      price: '52',
-      category: 'SWITZERLAND'
+      image:
+        "https://images.pexels.com/photos/1108701/pexels-photo-1108701.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Alpine Mountain Base",
+      date: "Seasonal",
+      duration: "Swiss Alps",
+      price: "52",
+      category: "SWITZERLAND",
     },
     {
-      image: 'https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg?auto=compress&cs=tinysrgb&w=800',
-      title: 'Fjord Edge Sanctuary',
-      date: 'Summer Peak',
-      duration: 'Norway Fjords',
-      price: '48',
-      category: 'NORWAY'
-    }
+      image:
+        "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Fjord Edge Sanctuary",
+      date: "Summer Peak",
+      duration: "Norway Fjords",
+      price: "48",
+      category: "NORWAY",
+    },
   ];
 
   return (
@@ -81,4 +85,3 @@ export const ToursSection = () => {
     </section>
   );
 };
-

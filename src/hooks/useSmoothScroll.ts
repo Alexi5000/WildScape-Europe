@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import Lenis from 'lenis';
+import { useEffect } from "react";
+import Lenis from "lenis";
 
 export const useSmoothScroll = (enabled: boolean = true) => {
   useEffect(() => {
@@ -23,4 +23,3 @@ export const useSmoothScroll = (enabled: boolean = true) => {
     };
   }, [enabled]);
 };
-

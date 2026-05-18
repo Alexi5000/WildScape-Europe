@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, X, ChevronDown } from 'lucide-react';
-import { useCampsiteStore } from '@/store/campsiteStore';
-import { CampsiteFilter } from '@/types/campsite';
-import type { Difficulty } from '@/types/common';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Filter, X, ChevronDown } from "lucide-react";
+import { useCampsiteStore } from "@/store/campsiteStore";
+import { CampsiteFilter } from "@/types/campsite";
+import type { Difficulty } from "@/types/common";
 
 export const FilterPanel: React.FC = () => {
   const { filters, setFilters } = useCampsiteStore();
   const [isOpen, setIsOpen] = useState(false);
 
-  const countries = ['Norway', 'Switzerland', 'Portugal', 'Germany', 'Italy'];
-  const difficulties: Difficulty[] = ['easy', 'moderate', 'challenging'];
+  const countries = ["Norway", "Switzerland", "Portugal", "Germany", "Italy"];
+  const difficulties: Difficulty[] = ["easy", "moderate", "challenging"];
   const amenities = [
-    'aurora_viewing', 'hiking_trails', 'fishing', 'wildlife_watching',
-    'mountain_views', 'beach_access', 'surfing', 'stargazing'
+    "aurora_viewing",
+    "hiking_trails",
+    "fishing",
+    "wildlife_watching",
+    "mountain_views",
+    "beach_access",
+    "surfing",
+    "stargazing",
   ];
 
   const handleFilterChange = <K extends keyof CampsiteFilter>(key: K, value: CampsiteFilter[K]) => {
@@ -31,8 +37,8 @@ export const FilterPanel: React.FC = () => {
       <motion.button
         className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
           hasActiveFilters
-            ? 'bg-primary text-white shadow-lg'
-            : 'bg-white/90 hover:bg-white text-gray-700 shadow-md'
+            ? "bg-primary text-white shadow-lg"
+            : "bg-white/90 hover:bg-white text-gray-700 shadow-md"
         } backdrop-blur-sm`}
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.02 }}
@@ -45,7 +51,7 @@ export const FilterPanel: React.FC = () => {
             {Object.keys(filters).length}
           </span>
         )}
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </motion.button>
 
       <AnimatePresence>
@@ -90,7 +96,7 @@ export const FilterPanel: React.FC = () => {
                         name="country"
                         value={country}
                         checked={filters.country === country}
-                        onChange={(e) => handleFilterChange('country', e.target.value)}
+                        onChange={(e) => handleFilterChange("country", e.target.value)}
                         className="text-primary focus:ring-primary"
                       />
                       <span className="text-sm text-gray-700">{country}</span>
@@ -106,13 +112,16 @@ export const FilterPanel: React.FC = () => {
                   {difficulties.map((difficulty) => (
                     <button
                       key={difficulty}
-                      onClick={() => handleFilterChange('difficulty', 
-                        filters.difficulty === difficulty ? undefined : difficulty
-                      )}
+                      onClick={() =>
+                        handleFilterChange(
+                          "difficulty",
+                          filters.difficulty === difficulty ? undefined : difficulty,
+                        )
+                      }
                       className={`px-3 py-1 text-sm rounded-full transition-colors capitalize ${
                         filters.difficulty === difficulty
-                          ? 'bg-primary text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          ? "bg-primary text-white"
+                          : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                       }`}
                     >
                       {difficulty}
@@ -129,11 +138,11 @@ export const FilterPanel: React.FC = () => {
                     <input
                       type="number"
                       placeholder="Min"
-                      value={filters.priceRange?.[0] || ''}
+                      value={filters.priceRange?.[0] || ""}
                       onChange={(e) => {
                         const min = parseInt(e.target.value) || 0;
                         const max = filters.priceRange?.[1] || 100;
-                        handleFilterChange('priceRange', [min, max]);
+                        handleFilterChange("priceRange", [min, max]);
                       }}
                       className="w-20 px-2 py-1 border rounded text-sm"
                     />
@@ -141,11 +150,11 @@ export const FilterPanel: React.FC = () => {
                     <input
                       type="number"
                       placeholder="Max"
-                      value={filters.priceRange?.[1] || ''}
+                      value={filters.priceRange?.[1] || ""}
                       onChange={(e) => {
                         const min = filters.priceRange?.[0] || 0;
                         const max = parseInt(e.target.value) || 100;
-                        handleFilterChange('priceRange', [min, max]);
+                        handleFilterChange("priceRange", [min, max]);
                       }}
                       className="w-20 px-2 py-1 border rounded text-sm"
                     />
@@ -165,17 +174,18 @@ export const FilterPanel: React.FC = () => {
                         onChange={(e) => {
                           const currentAmenities = filters.amenities || [];
                           if (e.target.checked) {
-                            handleFilterChange('amenities', [...currentAmenities, amenity]);
+                            handleFilterChange("amenities", [...currentAmenities, amenity]);
                           } else {
-                            handleFilterChange('amenities', 
-                              currentAmenities.filter(a => a !== amenity)
+                            handleFilterChange(
+                              "amenities",
+                              currentAmenities.filter((a) => a !== amenity),
                             );
                           }
                         }}
                         className="text-primary focus:ring-primary"
                       />
                       <span className="text-sm text-gray-700 capitalize">
-                        {amenity.replace('_', ' ')}
+                        {amenity.replace("_", " ")}
                       </span>
                     </label>
                   ))}

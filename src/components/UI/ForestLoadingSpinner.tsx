@@ -1,26 +1,26 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Trees, Leaf } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { Trees, Leaf } from "lucide-react";
 
 interface ForestLoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   message?: string;
 }
 
-export const ForestLoadingSpinner: React.FC<ForestLoadingSpinnerProps> = ({ 
-  size = 'md',
-  message = 'Loading forest data...'
+export const ForestLoadingSpinner: React.FC<ForestLoadingSpinnerProps> = ({
+  size = "md",
+  message = "Loading forest data...",
 }) => {
   const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16'
+    sm: "w-8 h-8",
+    md: "w-12 h-12",
+    lg: "w-16 h-16",
   };
 
   const iconSizes = {
     sm: 16,
     md: 24,
-    lg: 32
+    lg: 32,
   };
 
   return (
@@ -32,20 +32,17 @@ export const ForestLoadingSpinner: React.FC<ForestLoadingSpinnerProps> = ({
           animate={{ rotate: 360 }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         >
-          <Trees 
-            size={iconSizes[size]} 
-            className="text-forest-600"
-          />
+          <Trees size={iconSizes[size]} className="text-forest-600" />
         </motion.div>
-        
+
         {/* Floating leaves */}
         {Array.from({ length: 3 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute"
             style={{
-              top: '50%',
-              left: '50%',
+              top: "50%",
+              left: "50%",
             }}
             animate={{
               x: [0, 20 * Math.cos(i * 2.1), 0],

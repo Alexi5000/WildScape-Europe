@@ -1,13 +1,13 @@
-import mapboxgl from 'mapbox-gl';
-import type { Campsite } from '@/types/campsite';
-import type { MapViewState } from '@/types/map';
+import mapboxgl from "mapbox-gl";
+import type { Campsite } from "@/types/campsite";
+import type { MapViewState } from "@/types/map";
 
 export class MapboxService {
   private static instance: MapboxService;
   private readonly accessToken: string;
 
   constructor() {
-    this.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN ?? 'pk.placeholder-token';
+    this.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN ?? "pk.placeholder-token";
     mapboxgl.accessToken = this.accessToken;
   }
 
@@ -22,50 +22,54 @@ export class MapboxService {
   createMap(container: HTMLElement, initialViewState?: Partial<MapViewState>): mapboxgl.Map {
     return new mapboxgl.Map({
       container,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: "mapbox://styles/mapbox/outdoors-v12",
       center: [initialViewState?.longitude ?? 10.0, initialViewState?.latitude ?? 60.0],
       zoom: initialViewState?.zoom ?? 4,
       pitch: initialViewState?.pitch ?? 60,
       bearing: initialViewState?.bearing ?? 0,
-      projection: { name: 'globe' }
+      projection: { name: "globe" },
     });
   }
 
   addTerrainLayer(map: mapboxgl.Map): void {
-    map.on('style.load', () => {
-      if (!map.getSource('mapbox-dem')) {
-        map.addSource('mapbox-dem', {
-          type: 'raster-dem',
-          url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+    map.on("style.load", () => {
+      if (!map.getSource("mapbox-dem")) {
+        map.addSource("mapbox-dem", {
+          type: "raster-dem",
+          url: "mapbox://mapbox.mapbox-terrain-dem-v1",
           tileSize: 512,
-          maxzoom: 14
+          maxzoom: 14,
         });
       }
 
-      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+      map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
 
-      if (!map.getLayer('sky')) {
+      if (!map.getLayer("sky")) {
         map.addLayer({
-          id: 'sky',
-          type: 'sky',
+          id: "sky",
+          type: "sky",
           paint: {
-            'sky-type': 'atmosphere',
-            'sky-atmosphere-sun': [0.0, 0.0],
-            'sky-atmosphere-sun-intensity': 15
-          }
+            "sky-type": "atmosphere",
+            "sky-atmosphere-sun": [0.0, 0.0],
+            "sky-atmosphere-sun-intensity": 15,
+          },
         });
       }
     });
   }
 
-  addCampsiteMarkers(map: mapboxgl.Map, campsites: Campsite[], onMarkerClick?: (campsite: Campsite) => void): void {
-    document.querySelectorAll('.campsite-marker').forEach(marker => marker.remove());
+  addCampsiteMarkers(
+    map: mapboxgl.Map,
+    campsites: Campsite[],
+    onMarkerClick?: (campsite: Campsite) => void,
+  ): void {
+    document.querySelectorAll(".campsite-marker").forEach((marker) => marker.remove());
 
-    campsites.forEach(campsite => {
-      const markerElement = document.createElement('div');
-      markerElement.className = 'campsite-marker';
+    campsites.forEach((campsite) => {
+      const markerElement = document.createElement("div");
+      markerElement.className = "campsite-marker";
       markerElement.innerHTML = this.createMarkerHtml(campsite);
-      markerElement.addEventListener('click', () => onMarkerClick?.(campsite));
+      markerElement.addEventListener("click", () => onMarkerClick?.(campsite));
 
       new mapboxgl.Marker(markerElement)
         .setLngLat(campsite.location.coordinates)

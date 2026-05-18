@@ -1,5 +1,5 @@
-import type { WeatherCondition } from './common';
-import type { WeatherForecastDay } from './api';
+import type { WeatherCondition } from "./common";
+import type { WeatherForecastDay } from "./api";
 
 export interface WeatherData {
   temperature: number;
@@ -34,7 +34,7 @@ export interface WeatherParticle {
   maxLife: number;
   size: number;
   opacity: number;
-  type?: 'rain' | 'snow' | 'leaf' | 'fog';
+  type?: "rain" | "snow" | "leaf" | "fog";
 }
 
 export interface WeatherParticlesProps {

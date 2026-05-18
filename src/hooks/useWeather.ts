@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { WeatherData, WeatherParticle } from '@/types/weather';
-import { weatherService } from '@/services/weather';
-import { apiService } from '@/services/api';
+import { useState, useEffect } from "react";
+import { WeatherData, WeatherParticle } from "@/types/weather";
+import { weatherService } from "@/services/weather";
+import { apiService } from "@/services/api";
 
 export const useWeather = (coordinates?: [number, number]) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -16,15 +16,12 @@ export const useWeather = (coordinates?: [number, number]) => {
       try {
         const data = await apiService.getWeatherData(coordinates);
         setWeatherData(data);
-        
+
         // Generate particles based on weather condition
-        const newParticles = weatherService.generateWeatherParticles(
-          data.condition,
-          100
-        );
+        const newParticles = weatherService.generateWeatherParticles(data.condition, 100);
         setParticles(newParticles);
       } catch (error) {
-        console.error('Failed to fetch weather data:', error);
+        console.error("Failed to fetch weather data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -34,9 +31,7 @@ export const useWeather = (coordinates?: [number, number]) => {
   }, [coordinates]);
 
   const updateParticles = (deltaTime: number) => {
-    setParticles(prevParticles => 
-      weatherService.updateParticles(prevParticles, deltaTime)
-    );
+    setParticles((prevParticles) => weatherService.updateParticles(prevParticles, deltaTime));
   };
 
   return {
@@ -44,6 +39,6 @@ export const useWeather = (coordinates?: [number, number]) => {
     particles,
     isLoading,
     updateParticles,
-    weatherService
+    weatherService,
   };
 };

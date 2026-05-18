@@ -1,20 +1,21 @@
-import { create } from 'zustand';
-import { Campsite, CampsiteFilter, SearchFilters, isDifficulty } from '@/types/campsite';
-import type { WeatherCondition } from '@/types/common';
-import campsitesData from '@/data/europeCampsites.json';
+import { create } from "zustand";
+import { Campsite, CampsiteFilter, SearchFilters, isDifficulty } from "@/types/campsite";
+import type { WeatherCondition } from "@/types/common";
+import campsitesData from "@/data/europeCampsites.json";
 
-
-const normalizeCampsite = (campsite: typeof campsitesData[number]): Campsite => ({
+const normalizeCampsite = (campsite: (typeof campsitesData)[number]): Campsite => ({
   ...campsite,
   location: {
     ...campsite.location,
-    coordinates: [campsite.location.coordinates[0] ?? 0, campsite.location.coordinates[1] ?? 0]
+    coordinates: [campsite.location.coordinates[0] ?? 0, campsite.location.coordinates[1] ?? 0],
   },
-  difficulty: isDifficulty(campsite.difficulty) ? campsite.difficulty : 'moderate',
+  difficulty: isDifficulty(campsite.difficulty) ? campsite.difficulty : "moderate",
   weather: {
     ...campsite.weather,
-    current: (campsite.weather.current === 'cloudy' ? 'clear' : campsite.weather.current) as WeatherCondition
-  }
+    current: (campsite.weather.current === "cloudy"
+      ? "clear"
+      : campsite.weather.current) as WeatherCondition,
+  },
 });
 
 interface CampsiteStore {
@@ -25,7 +26,7 @@ interface CampsiteStore {
   searchQuery: string;
   isLoading: boolean;
   error: string | null;
-  
+
   // Actions
   setCampsites: (campsites: Campsite[]) => void;
   setSelectedCampsite: (campsite: Campsite | null) => void;
@@ -42,17 +43,17 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
   filteredCampsites: [],
   selectedCampsite: null,
   filters: {},
-  searchQuery: '',
+  searchQuery: "",
   isLoading: false,
   error: null,
 
   setCampsites: (campsites) => {
     // Ensure campsites is always an array
     const safeCampsites = Array.isArray(campsites) ? campsites : [];
-    set({ 
-      campsites: safeCampsites, 
+    set({
+      campsites: safeCampsites,
       filteredCampsites: safeCampsites,
-      error: null 
+      error: null,
     });
   },
 
@@ -62,68 +63,71 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
 
   setFilters: (filters) => {
     // Ensure filters is always an object
-    const safeFilters = filters && typeof filters === 'object' ? filters : {};
+    const safeFilters = filters && typeof filters === "object" ? filters : {};
     set({ filters: safeFilters });
     get().applyFilters();
   },
 
   setSearchQuery: (query) => {
     // Ensure query is always a string
-    const safeQuery = typeof query === 'string' ? query : '';
+    const safeQuery = typeof query === "string" ? query : "";
     set({ searchQuery: safeQuery });
     get().applyFilters();
   },
 
   setSearchFilters: (searchFilters) => {
     // Safely convert SearchFilters to CampsiteFilter format
-    if (!searchFilters || typeof searchFilters !== 'object') {
+    if (!searchFilters || typeof searchFilters !== "object") {
       return;
     }
 
     const filters: CampsiteFilter = {
       country: searchFilters.location || undefined,
-      difficulty: searchFilters.difficulty !== 'any' ? searchFilters.difficulty : undefined,
-      amenities: Array.isArray(searchFilters.amenities) && searchFilters.amenities.length > 0 
-        ? searchFilters.amenities 
-        : undefined,
-      priceRange: Array.isArray(searchFilters.priceRange) && searchFilters.priceRange[1] < 200 
-        ? searchFilters.priceRange 
-        : undefined,
-      capacity: typeof searchFilters.guests === 'number' && searchFilters.guests > 2 
-        ? searchFilters.guests 
-        : undefined,
+      difficulty: searchFilters.difficulty !== "any" ? searchFilters.difficulty : undefined,
+      amenities:
+        Array.isArray(searchFilters.amenities) && searchFilters.amenities.length > 0
+          ? searchFilters.amenities
+          : undefined,
+      priceRange:
+        Array.isArray(searchFilters.priceRange) && searchFilters.priceRange[1] < 200
+          ? searchFilters.priceRange
+          : undefined,
+      capacity:
+        typeof searchFilters.guests === "number" && searchFilters.guests > 2
+          ? searchFilters.guests
+          : undefined,
     };
-    
+
     set({ filters });
     get().applyFilters();
   },
 
   applyFilters: () => {
     const { campsites, filters, searchQuery } = get();
-    
+
     // Ensure campsites is an array
     if (!Array.isArray(campsites)) {
       set({ filteredCampsites: [] });
       return;
     }
-    
+
     const filtered = campsites.filter((campsite) => {
       // Ensure campsite is a valid object
-      if (!campsite || typeof campsite !== 'object') {
+      if (!campsite || typeof campsite !== "object") {
         return false;
       }
 
       // Search query filter
-      if (searchQuery && typeof searchQuery === 'string') {
+      if (searchQuery && typeof searchQuery === "string") {
         const query = searchQuery.toLowerCase();
-        const name = campsite.name?.toLowerCase() || '';
-        const country = campsite.location?.country?.toLowerCase() || '';
-        const region = campsite.location?.region?.toLowerCase() || '';
-        
+        const name = campsite.name?.toLowerCase() || "";
+        const country = campsite.location?.country?.toLowerCase() || "";
+        const region = campsite.location?.region?.toLowerCase() || "";
+
         const matchesName = name.includes(query);
         const matchesCountry = country.includes(query);
         const matchesRegion = region.includes(query);
-        
+
         if (!matchesName && !matchesCountry && !matchesRegion) {
           return false;
         }
@@ -142,7 +146,7 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       }
 
       // Price range filter
-      if (Array.isArray(filters?.priceRange) && typeof campsite.price_per_night === 'number') {
+      if (Array.isArray(filters?.priceRange) && typeof campsite.price_per_night === "number") {
         const [min, max] = filters.priceRange;
         if (campsite.price_per_night < min || campsite.price_per_night > max) {
           return false;
@@ -150,7 +154,7 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       }
 
       // Capacity filter
-      if (typeof filters?.capacity === 'number' && typeof campsite.capacity === 'number') {
+      if (typeof filters?.capacity === "number" && typeof campsite.capacity === "number") {
         if (campsite.capacity < filters.capacity) {
           return false;
         }
@@ -159,8 +163,8 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       // Amenities filter
       if (Array.isArray(filters?.amenities) && filters.amenities.length > 0) {
         const campsiteAmenities = Array.isArray(campsite.amenities) ? campsite.amenities : [];
-        const hasAllAmenities = filters.amenities.every(amenity =>
-          campsiteAmenities.includes(amenity)
+        const hasAllAmenities = filters.amenities.every((amenity) =>
+          campsiteAmenities.includes(amenity),
         );
         if (!hasAllAmenities) {
           return false;
@@ -175,29 +179,29 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
 
   loadCampsites: async () => {
     set({ isLoading: true, error: null });
-    
+
     try {
       // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const campsites: Campsite[] = Array.isArray(campsitesData)
         ? campsitesData.map(normalizeCampsite)
         : [];
-      
-      set({ 
-        campsites, 
+
+      set({
+        campsites,
         filteredCampsites: campsites,
         isLoading: false,
-        error: null
+        error: null,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load campsites';
-      console.error('Failed to load campsites:', error);
-      set({ 
-        isLoading: false, 
+      const errorMessage = error instanceof Error ? error.message : "Failed to load campsites";
+      console.error("Failed to load campsites:", error);
+      set({
+        isLoading: false,
         error: errorMessage,
         campsites: [],
-        filteredCampsites: []
+        filteredCampsites: [],
       });
     }
   },

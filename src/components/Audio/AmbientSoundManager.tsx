@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Volume2, VolumeX, Play, Pause } from "lucide-react";
 
 interface SoundTrack {
   id: string;
@@ -20,26 +20,26 @@ export const AmbientSoundManager: React.FC = () => {
   // Forest ambient sound tracks (using asset references can be wired to licensed audio files during content packaging)
   const soundTracks: SoundTrack[] = [
     {
-      id: 'forest-ambience',
-      name: 'Forest Ambience',
-      url: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT',
+      id: "forest-ambience",
+      name: "Forest Ambience",
+      url: "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT",
       volume: 0.3,
-      loop: true
+      loop: true,
     },
     {
-      id: 'birds-chirping',
-      name: 'Birds Chirping',
-      url: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT',
+      id: "birds-chirping",
+      name: "Birds Chirping",
+      url: "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT",
       volume: 0.2,
-      loop: true
+      loop: true,
     },
     {
-      id: 'wind-through-trees',
-      name: 'Wind Through Trees',
-      url: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT',
+      id: "wind-through-trees",
+      name: "Wind Through Trees",
+      url: "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT",
       volume: 0.4,
-      loop: true
-    }
+      loop: true,
+    },
   ];
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export const AmbientSoundManager: React.FC = () => {
             >
               {volume > 0 ? <Volume2 size={18} /> : <VolumeX size={18} />}
             </button>
-            
+
             <input
               type="range"
               min="0"
@@ -125,7 +125,7 @@ export const AmbientSoundManager: React.FC = () => {
               onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
               className="w-20 h-2 bg-forest-light rounded-lg appearance-none cursor-pointer"
               style={{
-                background: `linear-gradient(to right, var(--forest-medium) 0%, var(--forest-medium) ${volume * 100}%, var(--forest-light) ${volume * 100}%, var(--forest-light) 100%)`
+                background: `linear-gradient(to right, var(--forest-medium) 0%, var(--forest-medium) ${volume * 100}%, var(--forest-light) ${volume * 100}%, var(--forest-light) 100%)`,
               }}
             />
           </div>
@@ -150,7 +150,7 @@ export const AmbientSoundManager: React.FC = () => {
             <motion.div
               className="flex items-center justify-center gap-1 mt-3"
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
             >
               {Array.from({ length: 5 }).map((_, i) => (
@@ -159,13 +159,13 @@ export const AmbientSoundManager: React.FC = () => {
                   className="w-1 bg-forest-medium rounded-full"
                   animate={{
                     height: [4, 12, 4],
-                    opacity: [0.4, 1, 0.4]
+                    opacity: [0.4, 1, 0.4],
                   }}
                   transition={{
                     duration: 1.5,
                     repeat: Infinity,
                     delay: i * 0.2,
-                    ease: "easeInOut"
+                    ease: "easeInOut",
                   }}
                 />
               ))}

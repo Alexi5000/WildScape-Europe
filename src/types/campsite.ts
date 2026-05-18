@@ -1,4 +1,4 @@
-import type { Difficulty, WeatherCondition } from './common';
+import type { Difficulty, WeatherCondition } from "./common";
 
 export interface Review {
   id: string;
@@ -53,11 +53,11 @@ export interface SearchFilters {
   dateRange: [Date | null, Date | null];
   guests: number;
   amenities: string[];
-  difficulty: 'any' | Difficulty;
+  difficulty: "any" | Difficulty;
   priceRange: [number, number];
 }
 
-export const CAMPSITE_DIFFICULTIES: Difficulty[] = ['easy', 'moderate', 'challenging', 'expert'];
+export const CAMPSITE_DIFFICULTIES: Difficulty[] = ["easy", "moderate", "challenging", "expert"];
 
 export const isDifficulty = (value: string): value is Difficulty =>
   CAMPSITE_DIFFICULTIES.includes(value as Difficulty);

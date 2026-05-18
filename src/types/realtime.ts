@@ -1,11 +1,11 @@
-import type { BookingStatus, WeatherCondition } from './common';
+import type { BookingStatus, WeatherCondition } from "./common";
 
 export interface WeatherUpdatePayload {
   campsiteId: string;
   condition: WeatherCondition;
   temperature: number;
   alert: string | null;
-  severity?: 'low' | 'medium' | 'high';
+  severity?: "low" | "medium" | "high";
 }
 
 export interface AvailabilityUpdatePayload {
@@ -33,15 +33,15 @@ export interface ReviewUpdatePayload {
 
 export interface SystemUpdatePayload {
   message: string;
-  severity: 'info' | 'warning' | 'error';
+  severity: "info" | "warning" | "error";
 }
 
 export type LiveUpdate =
-  | { type: 'weather'; data: WeatherUpdatePayload; timestamp: number }
-  | { type: 'availability'; data: AvailabilityUpdatePayload; timestamp: number }
-  | { type: 'booking'; data: BookingUpdatePayload; timestamp: number }
-  | { type: 'review'; data: ReviewUpdatePayload; timestamp: number }
-  | { type: 'system'; data: SystemUpdatePayload; timestamp: number };
+  | { type: "weather"; data: WeatherUpdatePayload; timestamp: number }
+  | { type: "availability"; data: AvailabilityUpdatePayload; timestamp: number }
+  | { type: "booking"; data: BookingUpdatePayload; timestamp: number }
+  | { type: "review"; data: ReviewUpdatePayload; timestamp: number }
+  | { type: "system"; data: SystemUpdatePayload; timestamp: number };
 
 export interface NotificationPreferences {
   weatherAlerts: boolean;

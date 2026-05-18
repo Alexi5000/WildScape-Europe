@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text } from '@react-three/drei';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import React, { useRef, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Text } from "@react-three/drei";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
 interface VirtualTourProps {
   campsite: { name: string };
@@ -38,11 +38,10 @@ const CampsiteScene = () => {
 
       {/* Trees */}
       {Array.from({ length: 8 }).map((_, i) => (
-        <group key={i} position={[
-          Math.cos(i * Math.PI / 4) * 8,
-          0,
-          Math.sin(i * Math.PI / 4) * 8
-        ]}>
+        <group
+          key={i}
+          position={[Math.cos((i * Math.PI) / 4) * 8, 0, Math.sin((i * Math.PI) / 4) * 8]}
+        >
           {/* Trunk */}
           <mesh position={[0, 1, 0]}>
             <cylinderGeometry args={[0.3, 0.3, 2]} />
@@ -65,9 +64,9 @@ const CampsiteScene = () => {
         {/* Fire effect */}
         <mesh position={[0, 0.5, 0]}>
           <coneGeometry args={[0.3, 1, 6]} />
-          <meshStandardMaterial 
-            color="#ff4500" 
-            transparent 
+          <meshStandardMaterial
+            color="#ff4500"
+            transparent
             opacity={0.8}
             emissive="#ff4500"
             emissiveIntensity={0.5}
@@ -77,27 +76,14 @@ const CampsiteScene = () => {
 
       {/* Mountains in background */}
       {Array.from({ length: 5 }).map((_, i) => (
-        <mesh
-          key={i}
-          position={[
-            (i - 2) * 8,
-            2,
-            -15
-          ]}
-        >
+        <mesh key={i} position={[(i - 2) * 8, 2, -15]}>
           <coneGeometry args={[3, 6, 8]} />
           <meshStandardMaterial color="#708090" />
         </mesh>
       ))}
 
       {/* Floating text */}
-      <Text
-        position={[0, 5, 0]}
-        fontSize={1}
-        color="#ffffff"
-        anchorX="center"
-        anchorY="middle"
-      >
+      <Text position={[0, 5, 0]} fontSize={1} color="#ffffff" anchorX="center" anchorY="middle">
         360° Virtual Tour
       </Text>
     </group>
@@ -116,9 +102,9 @@ export const VirtualTour: React.FC<VirtualTourProps> = ({ campsite }) => {
         <ambientLight intensity={0.4} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <pointLight position={[3, 2, 2]} intensity={0.5} color="#ff4500" />
-        
+
         <CampsiteScene />
-        
+
         <OrbitControls
           enablePan={false}
           enableZoom={true}
@@ -129,7 +115,7 @@ export const VirtualTour: React.FC<VirtualTourProps> = ({ campsite }) => {
           maxPolarAngle={Math.PI / 2}
         />
       </Canvas>
-      
+
       <div className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3">
         <h3 className="text-white font-semibold mb-1">{campsite.name}</h3>
         <p className="text-white/80 text-sm">

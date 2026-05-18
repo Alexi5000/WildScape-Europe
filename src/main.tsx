@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-import './fonts.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import "./fonts.css";
 
 // Initialize Lenis smooth scrolling
-import Lenis from 'lenis';
+import Lenis from "lenis";
 
 const lenis = new Lenis({
   duration: 1.2,
@@ -21,7 +21,7 @@ function raf(time: number) {
 
 requestAnimationFrame(raf);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

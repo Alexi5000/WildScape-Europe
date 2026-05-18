@@ -1,8 +1,8 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useCampsiteStore } from '@/store/campsiteStore';
-import { CampsiteCard } from '../Campsite/CampsiteCard';
-import { LoadingSpinner } from '../UI/LoadingSpinner';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCampsiteStore } from "@/store/campsiteStore";
+import { CampsiteCard } from "../Campsite/CampsiteCard";
+import { LoadingSpinner } from "../UI/LoadingSpinner";
 
 export const SearchResults: React.FC = () => {
   const { filteredCampsites, isLoading, searchQuery } = useCampsiteStore();
@@ -20,10 +20,11 @@ export const SearchResults: React.FC = () => {
       {/* Results Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">
-          {searchQuery ? `Search Results for "${searchQuery}"` : 'All Campsites'}
+          {searchQuery ? `Search Results for "${searchQuery}"` : "All Campsites"}
         </h2>
         <span className="text-gray-400">
-          {filteredCampsites.length} {filteredCampsites.length === 1 ? 'campsite' : 'campsites'} found
+          {filteredCampsites.length} {filteredCampsites.length === 1 ? "campsite" : "campsites"}{" "}
+          found
         </span>
       </div>
 
@@ -57,12 +58,8 @@ export const SearchResults: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
           >
             <div className="text-6xl mb-4">🏕️</div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              No campsites found
-            </h3>
-            <p className="text-gray-400 mb-6">
-              Try adjusting your search criteria or filters
-            </p>
+            <h3 className="text-xl font-semibold text-white mb-2">No campsites found</h3>
+            <p className="text-gray-400 mb-6">Try adjusting your search criteria or filters</p>
             <button className="px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors">
               Clear Filters
             </button>

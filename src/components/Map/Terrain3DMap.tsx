@@ -1,24 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import { motion } from 'framer-motion';
-import { Campsite } from '@/types/campsite';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import { motion } from "framer-motion";
+import { Campsite } from "@/types/campsite";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 // Use environment variable or public token
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example';
+mapboxgl.accessToken =
+  import.meta.env.VITE_MAPBOX_TOKEN || "pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example";
 
 interface Terrain3DMapProps {
   campsites: Campsite[];
   onCampsiteSelect: (campsite: Campsite) => void;
   selectedCampsite?: Campsite | null;
-  currentWeatherCondition?: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
+  currentWeatherCondition?: "clear" | "rain" | "snow" | "fog" | "cloudy";
 }
 
-export const Terrain3DMap = ({ 
-  campsites, 
-  onCampsiteSelect, 
+export const Terrain3DMap = ({
+  campsites,
+  onCampsiteSelect,
   selectedCampsite,
-  currentWeatherCondition = 'clear'
+  currentWeatherCondition = "clear",
 }: Terrain3DMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -29,66 +30,66 @@ export const Terrain3DMap = ({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: "mapbox://styles/mapbox/outdoors-v12",
       center: [10.0, 60.0], // Center on Europe
       zoom: 4,
       pitch: 60,
       bearing: 0,
       antialias: true,
-      attributionControl: false
+      attributionControl: false,
     });
 
-    map.current.on('load', () => {
+    map.current.on("load", () => {
       setMapLoaded(true);
-      
+
       // Add 3D terrain
-      map.current?.addSource('mapbox-dem', {
-        type: 'raster-dem',
-        url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+      map.current?.addSource("mapbox-dem", {
+        type: "raster-dem",
+        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
         tileSize: 512,
-        maxzoom: 14
+        maxzoom: 14,
       });
 
-      map.current?.setTerrain({ source: 'mapbox-dem', exaggeration: 2 });
+      map.current?.setTerrain({ source: "mapbox-dem", exaggeration: 2 });
 
       // Add atmospheric sky
       map.current?.addLayer({
-        id: 'sky',
-        type: 'sky',
+        id: "sky",
+        type: "sky",
         paint: {
-          'sky-type': 'atmosphere',
-          'sky-atmosphere-sun': [0.0, 90.0],
-          'sky-atmosphere-sun-intensity': 15
-        }
+          "sky-type": "atmosphere",
+          "sky-atmosphere-sun": [0.0, 90.0],
+          "sky-atmosphere-sun-intensity": 15,
+        },
       });
 
       // Add custom forest layer
       map.current?.addLayer({
-        id: 'forest-glow',
-        type: 'fill',
+        id: "forest-glow",
+        type: "fill",
         source: {
-          type: 'vector',
-          url: 'mapbox://mapbox.landcover-v1'
+          type: "vector",
+          url: "mapbox://mapbox.landcover-v1",
         },
-        'source-layer': 'landcover',
-        filter: ['==', 'class', 'wood'],
+        "source-layer": "landcover",
+        filter: ["==", "class", "wood"],
         paint: {
-          'fill-color': '#059669',
-          'fill-opacity': 0.3,
-          'fill-outline-color': '#064E3B'
-        }
+          "fill-color": "#059669",
+          "fill-opacity": 0.3,
+          "fill-outline-color": "#064E3B",
+        },
       });
 
       // Add campsite markers with custom styling
       campsites.forEach((campsite) => {
         // Create custom marker element
-        const markerEl = document.createElement('div');
-        markerEl.className = 'campsite-marker';
+        const markerEl = document.createElement("div");
+        markerEl.className = "campsite-marker";
         markerEl.innerHTML = `
           <div class="marker-pulse"></div>
           <div class="marker-icon">🏕️</div>
         `;
-        
+
         // Add custom styles
         markerEl.style.cssText = `
           position: relative;
@@ -104,32 +105,32 @@ export const Terrain3DMap = ({
           .addTo(map.current!);
 
         // Add hover effects
-        markerEl.addEventListener('mouseenter', () => {
-          markerEl.style.transform = 'scale(1.2)';
+        markerEl.addEventListener("mouseenter", () => {
+          markerEl.style.transform = "scale(1.2)";
         });
 
-        markerEl.addEventListener('mouseleave', () => {
-          markerEl.style.transform = 'scale(1)';
+        markerEl.addEventListener("mouseleave", () => {
+          markerEl.style.transform = "scale(1)";
         });
 
         // Add click handler
-        markerEl.addEventListener('click', () => {
+        markerEl.addEventListener("click", () => {
           onCampsiteSelect(campsite);
-          
+
           // Fly to campsite
           map.current?.flyTo({
             center: campsite.location.coordinates,
             zoom: 12,
             pitch: 70,
             bearing: 0,
-            duration: 2000
+            duration: 2000,
           });
         });
 
         // Create popup with rich content
-        const popup = new mapboxgl.Popup({ 
+        const popup = new mapboxgl.Popup({
           offset: 25,
-          className: 'campsite-popup'
+          className: "campsite-popup",
         }).setHTML(`
           <div class="p-4 bg-gradient-to-br from-emerald-900/90 to-teal-900/90 backdrop-blur-sm rounded-lg border border-emerald-500/30">
             <h3 class="text-lg font-bold text-white mb-2">${campsite.name}</h3>
@@ -139,9 +140,13 @@ export const Terrain3DMap = ({
               <span class="text-xs text-emerald-200">${campsite.difficulty}</span>
             </div>
             <div class="mt-3 flex flex-wrap gap-1">
-              ${campsite.amenities.slice(0, 3).map(amenity => 
-                `<span class="text-xs bg-emerald-500/30 text-emerald-100 px-2 py-1 rounded">${amenity.replace('_', ' ')}</span>`
-              ).join('')}
+              ${campsite.amenities
+                .slice(0, 3)
+                .map(
+                  (amenity) =>
+                    `<span class="text-xs bg-emerald-500/30 text-emerald-100 px-2 py-1 rounded">${amenity.replace("_", " ")}</span>`,
+                )
+                .join("")}
             </div>
           </div>
         `);
@@ -151,7 +156,7 @@ export const Terrain3DMap = ({
     });
 
     // Add custom CSS for markers
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       .marker-pulse {
         position: absolute;
@@ -201,25 +206,25 @@ export const Terrain3DMap = ({
 
   // Weather effect overlay
   const weatherEffects = {
-    rain: '☔',
-    snow: '❄️',
-    fog: '🌫️',
-    clear: '☀️',
-    cloudy: '☁️'
+    rain: "☔",
+    snow: "❄️",
+    fog: "🌫️",
+    clear: "☀️",
+    cloudy: "☁️",
   };
 
   return (
     <div className="relative w-full h-full">
       {/* Map container */}
-      <div 
-        ref={mapContainer} 
+      <div
+        ref={mapContainer}
         className="w-full h-full rounded-xl overflow-hidden shadow-2xl"
-        style={{ minHeight: '600px' }}
+        style={{ minHeight: "600px" }}
       />
-      
+
       {/* Loading overlay */}
       {!mapLoaded && (
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-gradient-to-br from-emerald-900/50 to-teal-900/50 backdrop-blur-sm flex items-center justify-center rounded-xl"
           initial={{ opacity: 1 }}
           animate={{ opacity: mapLoaded ? 0 : 1 }}
@@ -248,13 +253,13 @@ export const Terrain3DMap = ({
               zoom: 4,
               pitch: 60,
               bearing: 0,
-              duration: 2000
+              duration: 2000,
             });
           }}
         >
           🏠
         </motion.button>
-        
+
         <motion.button
           className="p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all"
           whileHover={{ scale: 1.05 }}
@@ -276,7 +281,9 @@ export const Terrain3DMap = ({
           <p className="text-emerald-100 mb-4">{selectedCampsite.description}</p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="text-emerald-300 font-semibold text-lg">€{selectedCampsite.price_per_night}/night</span>
+              <span className="text-emerald-300 font-semibold text-lg">
+                €{selectedCampsite.price_per_night}/night
+              </span>
               <span className="text-sm text-emerald-200 bg-emerald-500/30 px-3 py-1 rounded-full">
                 {selectedCampsite.difficulty}
               </span>

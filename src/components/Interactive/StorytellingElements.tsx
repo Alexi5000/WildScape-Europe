@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, MapPin, Camera, Compass, Leaf } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, MapPin, Camera, Compass, Leaf } from "lucide-react";
 
 interface StoryStep {
   id: string;
@@ -8,7 +8,7 @@ interface StoryStep {
   description: string;
   icon: React.ReactNode;
   position: { x: number; y: number };
-  trigger: 'scroll' | 'click' | 'hover';
+  trigger: "scroll" | "click" | "hover";
   content: {
     text: string;
     image?: string;
@@ -23,76 +23,77 @@ export const StorytellingElements: React.FC = () => {
 
   const storySteps: StoryStep[] = [
     {
-      id: 'welcome',
-      title: 'Welcome to the Forest',
-      description: 'Begin your journey into Europe\'s most pristine wilderness',
+      id: "welcome",
+      title: "Welcome to the Forest",
+      description: "Begin your journey into Europe's most pristine wilderness",
       icon: <Leaf className="w-6 h-6" />,
       position: { x: 50, y: 20 },
-      trigger: 'click',
+      trigger: "click",
       content: {
-        text: 'Step into a world where ancient trees whisper stories of centuries past. Your adventure begins here, where every path leads to discovery.',
-        image: 'https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg',
-        action: 'Start Exploring'
-      }
+        text: "Step into a world where ancient trees whisper stories of centuries past. Your adventure begins here, where every path leads to discovery.",
+        image: "https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg",
+        action: "Start Exploring",
+      },
     },
     {
-      id: 'discover',
-      title: 'Discover Hidden Gems',
-      description: 'Uncover secret camping spots known only to locals',
+      id: "discover",
+      title: "Discover Hidden Gems",
+      description: "Uncover secret camping spots known only to locals",
       icon: <MapPin className="w-6 h-6" />,
       position: { x: 25, y: 40 },
-      trigger: 'scroll',
+      trigger: "scroll",
       content: {
-        text: 'Beyond the beaten path lie treasures waiting to be found. Each campsite tells a unique story of the land and its guardians.',
-        image: 'https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg',
-        action: 'View Campsites'
-      }
+        text: "Beyond the beaten path lie treasures waiting to be found. Each campsite tells a unique story of the land and its guardians.",
+        image: "https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg",
+        action: "View Campsites",
+      },
     },
     {
-      id: 'capture',
-      title: 'Capture the Magic',
-      description: 'Document your journey through pristine landscapes',
+      id: "capture",
+      title: "Capture the Magic",
+      description: "Document your journey through pristine landscapes",
       icon: <Camera className="w-6 h-6" />,
       position: { x: 75, y: 60 },
-      trigger: 'hover',
+      trigger: "hover",
       content: {
-        text: 'Every sunrise brings new wonders. From misty mornings to starlit nights, nature provides an endless gallery of moments.',
-        image: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
-        action: 'Photo Gallery'
-      }
+        text: "Every sunrise brings new wonders. From misty mornings to starlit nights, nature provides an endless gallery of moments.",
+        image: "https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg",
+        action: "Photo Gallery",
+      },
     },
     {
-      id: 'navigate',
-      title: 'Navigate Your Path',
-      description: 'Use our interactive maps to plan your perfect route',
+      id: "navigate",
+      title: "Navigate Your Path",
+      description: "Use our interactive maps to plan your perfect route",
       icon: <Compass className="w-6 h-6" />,
       position: { x: 40, y: 80 },
-      trigger: 'click',
+      trigger: "click",
       content: {
-        text: 'Let technology guide you through nature\'s maze. Our 3D terrain maps reveal every hill, valley, and hidden trail.',
-        action: 'Open Map'
-      }
-    }
+        text: "Let technology guide you through nature's maze. Our 3D terrain maps reveal every hill, valley, and hidden trail.",
+        action: "Open Map",
+      },
+    },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      const scrollProgress =
+        window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
       const newStep = Math.floor(scrollProgress * storySteps.length);
-      
+
       if (newStep !== currentStep && newStep < storySteps.length) {
         setCurrentStep(newStep);
-        setVisitedSteps(prev => new Set([...prev, newStep]));
+        setVisitedSteps((prev) => new Set([...prev, newStep]));
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [currentStep, storySteps.length]);
 
   const handleStepClick = (stepIndex: number) => {
     setCurrentStep(stepIndex);
-    setVisitedSteps(prev => new Set([...prev, stepIndex]));
+    setVisitedSteps((prev) => new Set([...prev, stepIndex]));
     setIsStoryMode(true);
   };
 
@@ -100,7 +101,7 @@ export const StorytellingElements: React.FC = () => {
     if (currentStep < storySteps.length - 1) {
       const next = currentStep + 1;
       setCurrentStep(next);
-      setVisitedSteps(prev => new Set([...prev, next]));
+      setVisitedSteps((prev) => new Set([...prev, next]));
     }
   };
 
@@ -116,13 +117,9 @@ export const StorytellingElements: React.FC = () => {
             onClick={() => handleStepClick(index)}
             className={`relative w-4 h-4 rounded-full border-2 transition-all duration-300 ${
               visitedSteps.has(index)
-                ? 'bg-forest-medium border-forest-medium'
-                : 'bg-transparent border-forest-light'
-            } ${
-              currentStep === index
-                ? 'scale-125 shadow-lg'
-                : 'hover:scale-110'
-            }`}
+                ? "bg-forest-medium border-forest-medium"
+                : "bg-transparent border-forest-light"
+            } ${currentStep === index ? "scale-125 shadow-lg" : "hover:scale-110"}`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -135,9 +132,9 @@ export const StorytellingElements: React.FC = () => {
 
             {/* Connection line */}
             {index < storySteps.length - 1 && (
-              <div 
+              <div
                 className={`absolute top-full left-1/2 transform -translate-x-1/2 w-0.5 h-8 transition-colors duration-300 ${
-                  visitedSteps.has(index + 1) ? 'bg-forest-medium' : 'bg-forest-light'
+                  visitedSteps.has(index + 1) ? "bg-forest-medium" : "bg-forest-light"
                 }`}
               />
             )}
@@ -154,19 +151,19 @@ export const StorytellingElements: React.FC = () => {
             style={{
               left: `${step.position.x}%`,
               top: `${step.position.y}%`,
-              transform: 'translate(-50%, -50%)'
+              transform: "translate(-50%, -50%)",
             }}
             initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
+            animate={{
               opacity: visitedSteps.has(index) ? 1 : 0.6,
-              scale: currentStep === index ? 1.2 : 1
+              scale: currentStep === index ? 1.2 : 1,
             }}
             transition={{ duration: 0.5, delay: index * 0.2 }}
           >
             <motion.button
               onClick={() => handleStepClick(index)}
               className={`w-12 h-12 rounded-full glass-forest flex items-center justify-center text-forest-primary hover:text-forest-medium transition-all duration-300 ${
-                currentStep === index ? 'ring-4 ring-forest-medium ring-opacity-50' : ''
+                currentStep === index ? "ring-4 ring-forest-medium ring-opacity-50" : ""
               }`}
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
@@ -177,7 +174,7 @@ export const StorytellingElements: React.FC = () => {
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: index * 0.5
+                delay: index * 0.5,
               }}
             >
               {step.icon}
@@ -188,12 +185,12 @@ export const StorytellingElements: React.FC = () => {
               className="absolute inset-0 rounded-full border-2 border-forest-medium"
               animate={{
                 scale: [1, 2, 1],
-                opacity: [0.5, 0, 0.5]
+                opacity: [0.5, 0, 0.5],
               }}
               transition={{
                 duration: 2,
                 repeat: Infinity,
-                ease: "easeOut"
+                ease: "easeOut",
               }}
             />
           </motion.div>
@@ -226,9 +223,7 @@ export const StorytellingElements: React.FC = () => {
                   <h2 className="text-2xl font-serif font-bold text-forest-deep">
                     {currentStoryStep.title}
                   </h2>
-                  <p className="text-forest-primary">
-                    {currentStoryStep.description}
-                  </p>
+                  <p className="text-forest-primary">{currentStoryStep.description}</p>
                 </div>
               </div>
 
@@ -261,10 +256,10 @@ export const StorytellingElements: React.FC = () => {
                           key={index}
                           className={`w-2 h-2 rounded-full transition-colors ${
                             index === currentStep
-                              ? 'bg-forest-medium'
+                              ? "bg-forest-medium"
                               : visitedSteps.has(index)
-                              ? 'bg-forest-light'
-                              : 'bg-gray-300'
+                                ? "bg-forest-light"
+                                : "bg-gray-300"
                           }`}
                         />
                       ))}
@@ -277,7 +272,7 @@ export const StorytellingElements: React.FC = () => {
                         {currentStoryStep.content.action}
                       </button>
                     )}
-                    
+
                     {currentStep < storySteps.length - 1 && (
                       <button
                         onClick={nextStep}

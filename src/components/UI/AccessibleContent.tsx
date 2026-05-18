@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Type, Contrast, Volume2, VolumeX } from 'lucide-react';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Type, Contrast, Volume2, VolumeX } from "lucide-react";
 
 export const AccessibilityControls: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,22 +8,22 @@ export const AccessibilityControls: React.FC = () => {
     highContrast: false,
     largeText: false,
     reducedMotion: false,
-    soundEnabled: true
+    soundEnabled: true,
   });
 
   const toggleSetting = (key: keyof typeof settings) => {
     const newSettings = { ...settings, [key]: !settings[key] };
     setSettings(newSettings);
-    
+
     // Apply settings to document
-    if (key === 'highContrast') {
-      document.documentElement.classList.toggle('high-contrast', newSettings.highContrast);
+    if (key === "highContrast") {
+      document.documentElement.classList.toggle("high-contrast", newSettings.highContrast);
     }
-    if (key === 'largeText') {
-      document.documentElement.classList.toggle('large-text', newSettings.largeText);
+    if (key === "largeText") {
+      document.documentElement.classList.toggle("large-text", newSettings.largeText);
     }
-    if (key === 'reducedMotion') {
-      document.documentElement.classList.toggle('reduce-motion', newSettings.reducedMotion);
+    if (key === "reducedMotion") {
+      document.documentElement.classList.toggle("reduce-motion", newSettings.reducedMotion);
     }
   };
 
@@ -49,34 +49,46 @@ export const AccessibilityControls: React.FC = () => {
             transition={{ duration: 0.2 }}
           >
             <h3 className="font-semibold text-forest-deep mb-4">Accessibility Options</h3>
-            
+
             <div className="space-y-3">
               <AccessibilityToggle
                 icon={<Contrast className="w-4 h-4" />}
                 label="High Contrast"
                 checked={settings.highContrast}
-                onChange={() => toggleSetting('highContrast')}
+                onChange={() => toggleSetting("highContrast")}
               />
-              
+
               <AccessibilityToggle
                 icon={<Type className="w-4 h-4" />}
                 label="Large Text"
                 checked={settings.largeText}
-                onChange={() => toggleSetting('largeText')}
+                onChange={() => toggleSetting("largeText")}
               />
-              
+
               <AccessibilityToggle
-                icon={settings.reducedMotion ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                icon={
+                  settings.reducedMotion ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )
+                }
                 label="Reduce Motion"
                 checked={settings.reducedMotion}
-                onChange={() => toggleSetting('reducedMotion')}
+                onChange={() => toggleSetting("reducedMotion")}
               />
-              
+
               <AccessibilityToggle
-                icon={settings.soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                icon={
+                  settings.soundEnabled ? (
+                    <Volume2 className="w-4 h-4" />
+                  ) : (
+                    <VolumeX className="w-4 h-4" />
+                  )
+                }
                 label="Sound Effects"
                 checked={settings.soundEnabled}
-                onChange={() => toggleSetting('soundEnabled')}
+                onChange={() => toggleSetting("soundEnabled")}
               />
             </div>
           </motion.div>
@@ -98,14 +110,14 @@ const AccessibilityToggle: React.FC<{
     <button
       onClick={onChange}
       className={`w-10 h-6 rounded-full transition-colors ${
-        checked ? 'bg-forest-600' : 'bg-gray-300'
+        checked ? "bg-forest-600" : "bg-gray-300"
       }`}
       aria-checked={checked}
       role="switch"
     >
       <div
         className={`w-4 h-4 bg-white rounded-full transition-transform ${
-          checked ? 'translate-x-5' : 'translate-x-1'
+          checked ? "translate-x-5" : "translate-x-1"
         } mt-1`}
       />
     </button>

@@ -1,4 +1,4 @@
-import type { Campsite } from './campsite';
+import type { Campsite } from "./campsite";
 
 export interface MapViewState {
   longitude: number;
@@ -11,7 +11,7 @@ export interface MapViewState {
 export interface MapMarker<TData = Campsite> {
   id: string;
   coordinates: [number, number];
-  type: 'campsite' | 'poi' | 'user_location';
+  type: "campsite" | "poi" | "user_location";
   data: TData;
 }
 

@@ -1,5 +1,5 @@
-import type { Campsite, Review } from './campsite';
-import type { BookingStatus, Difficulty, WeatherCondition } from './common';
+import type { Campsite, Review } from "./campsite";
+import type { BookingStatus, Difficulty, WeatherCondition } from "./common";
 
 export interface BookingRequest {
   campsiteId: string;
@@ -84,7 +84,7 @@ export interface PopularDestination {
 
 export interface TrendingSearch {
   term: string;
-  category: 'destination' | 'activity' | 'country';
+  category: "destination" | "activity" | "country";
   growth: number;
   searchCount: number;
 }
@@ -94,7 +94,7 @@ export interface NearbyAttraction {
   campsiteId: string;
   name: string;
   distance: string;
-  type: 'historical' | 'nature' | 'cultural' | 'recreation' | 'educational';
+  type: "historical" | "nature" | "cultural" | "recreation" | "educational";
 }
 
 export interface WeatherForecastDay {
@@ -111,7 +111,7 @@ export interface AuroraForecast {
   probability: number;
   message?: string;
   kpIndex?: number;
-  visibility?: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+  visibility?: "Poor" | "Fair" | "Good" | "Excellent";
   peakTime?: string;
   cloudCover?: number;
 }

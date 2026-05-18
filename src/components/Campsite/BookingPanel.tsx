@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, Users, Check } from 'lucide-react';
-import { Campsite } from '@/types/campsite';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Calendar, Users, Check } from "lucide-react";
+import { Campsite } from "@/types/campsite";
 
 interface BookingPanelProps {
   campsite: Campsite;
@@ -19,19 +19,17 @@ export const BookingPanel: React.FC<BookingPanelProps> = ({ campsite }) => {
   const totalPrice = selectedDates.length * campsite.price_per_night;
 
   const handleDateSelect = (date: string) => {
-    setSelectedDates(prev => 
-      prev.includes(date) 
-        ? prev.filter(d => d !== date)
-        : [...prev, date].sort()
+    setSelectedDates((prev) =>
+      prev.includes(date) ? prev.filter((d) => d !== date) : [...prev, date].sort(),
     );
   };
 
   const handleBooking = async () => {
     setIsBooking(true);
     // Simulate booking process
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsBooking(false);
-    alert('Booking confirmed! You will receive a confirmation email shortly.');
+    alert("Booking confirmed! You will receive a confirmation email shortly.");
   };
 
   return (
@@ -62,13 +60,13 @@ export const BookingPanel: React.FC<BookingPanelProps> = ({ campsite }) => {
               onClick={() => handleDateSelect(date)}
               className={`p-2 text-xs rounded-lg border transition-colors ${
                 selectedDates.includes(date)
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+                  ? "bg-primary text-white border-primary"
+                  : "bg-gray-50 hover:bg-gray-100 border-gray-200"
               }`}
             >
-              {new Date(date).toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric' 
+              {new Date(date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
               })}
             </button>
           ))}
@@ -95,9 +93,7 @@ export const BookingPanel: React.FC<BookingPanelProps> = ({ campsite }) => {
           >
             +
           </button>
-          <span className="text-sm text-gray-600 ml-2">
-            (max {campsite.capacity})
-          </span>
+          <span className="text-sm text-gray-600 ml-2">(max {campsite.capacity})</span>
         </div>
       </div>
 
@@ -128,8 +124,8 @@ export const BookingPanel: React.FC<BookingPanelProps> = ({ campsite }) => {
         disabled={selectedDates.length === 0 || isBooking}
         className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
           selectedDates.length === 0
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-primary hover:bg-primary/90 text-white hover:shadow-lg'
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-primary hover:bg-primary/90 text-white hover:shadow-lg"
         }`}
       >
         {isBooking ? (
@@ -138,7 +134,7 @@ export const BookingPanel: React.FC<BookingPanelProps> = ({ campsite }) => {
             Processing...
           </div>
         ) : selectedDates.length === 0 ? (
-          'Select dates to book'
+          "Select dates to book"
         ) : (
           <div className="flex items-center justify-center gap-2">
             <Check className="w-4 h-4" />

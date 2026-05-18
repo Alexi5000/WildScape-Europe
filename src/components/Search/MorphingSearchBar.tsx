@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, MapPin, Users, Star } from 'lucide-react';
-import { SearchFilters, isDifficulty } from '@/types/campsite';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Filter, MapPin, Users, Star } from "lucide-react";
+import { SearchFilters, isDifficulty } from "@/types/campsite";
 
 interface MorphingSearchBarProps {
   onSearch: (data: { query: string; filters: SearchFilters }) => void;
@@ -10,33 +10,33 @@ interface MorphingSearchBarProps {
 
 export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<SearchFilters>({
-    location: '',
+    location: "",
     dateRange: [null, null],
     guests: 2,
     amenities: [],
-    difficulty: 'any',
-    priceRange: [0, 200]
+    difficulty: "any",
+    priceRange: [0, 200],
   });
-  
+
   const searchRef = useRef<HTMLDivElement>(null);
-  
+
   const popularSearches = [
-    'Northern Lights Norway',
-    'Alpine Camping Switzerland', 
-    'Forest Retreat Germany',
-    'Coastal Camping Portugal',
-    'Mountain Views Austria'
+    "Northern Lights Norway",
+    "Alpine Camping Switzerland",
+    "Forest Retreat Germany",
+    "Coastal Camping Portugal",
+    "Mountain Views Austria",
   ];
-  
+
   const amenityOptions = [
-    { id: 'aurora_viewing', label: 'Aurora Viewing', icon: '🌌' },
-    { id: 'hiking_trails', label: 'Hiking Trails', icon: '🥾' },
-    { id: 'fishing', label: 'Fishing', icon: '🎣' },
-    { id: 'wildlife_watching', label: 'Wildlife', icon: '🦌' },
-    { id: 'hot_springs', label: 'Hot Springs', icon: '♨️' },
-    { id: 'lake_access', label: 'Lake Access', icon: '🏊' }
+    { id: "aurora_viewing", label: "Aurora Viewing", icon: "🌌" },
+    { id: "hiking_trails", label: "Hiking Trails", icon: "🥾" },
+    { id: "fishing", label: "Fishing", icon: "🎣" },
+    { id: "wildlife_watching", label: "Wildlife", icon: "🦌" },
+    { id: "hot_springs", label: "Hot Springs", icon: "♨️" },
+    { id: "lake_access", label: "Lake Access", icon: "🏊" },
   ];
 
   useEffect(() => {
@@ -46,8 +46,8 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -59,23 +59,19 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
   };
 
   const updateFilters = (newFilters: Partial<SearchFilters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
   return (
     <div ref={searchRef} className="relative w-full max-w-4xl mx-auto">
       {/* Main search bar */}
-      <motion.div
-        className="relative"
-        layout
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      >
+      <motion.div className="relative" layout transition={{ duration: 0.3, ease: "easeInOut" }}>
         <motion.div
           className={`relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden transition-all duration-300 ${
-            isExpanded ? 'shadow-2xl shadow-emerald-500/20' : 'shadow-lg'
+            isExpanded ? "shadow-2xl shadow-emerald-500/20" : "shadow-lg"
           }`}
           animate={{
-            height: isExpanded ? 'auto' : '64px'
+            height: isExpanded ? "auto" : "64px",
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
@@ -105,7 +101,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
             {isExpanded && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="border-t border-white/10"
@@ -119,7 +115,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                         <MapPin size={16} className="mr-2" />
                         Location
                       </label>
-                      <select 
+                      <select
                         className="w-full bg-white/10 border border-white/20 rounded-lg p-3 text-white"
                         value={filters.location}
                         onChange={(e) => updateFilters({ location: e.target.value })}
@@ -141,7 +137,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                         <Users size={16} className="mr-2" />
                         Guests
                       </label>
-                      <select 
+                      <select
                         className="w-full bg-white/10 border border-white/20 rounded-lg p-3 text-white"
                         value={filters.guests}
                         onChange={(e) => updateFilters({ guests: parseInt(e.target.value) })}
@@ -160,10 +156,17 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                         <Star size={16} className="mr-2" />
                         Difficulty
                       </label>
-                      <select 
+                      <select
                         className="w-full bg-white/10 border border-white/20 rounded-lg p-3 text-white"
                         value={filters.difficulty}
-                        onChange={(e) => updateFilters({ difficulty: e.target.value === 'any' || isDifficulty(e.target.value) ? e.target.value : 'any' })}
+                        onChange={(e) =>
+                          updateFilters({
+                            difficulty:
+                              e.target.value === "any" || isDifficulty(e.target.value)
+                                ? e.target.value
+                                : "any",
+                          })
+                        }
                       >
                         <option value="any">Any Level</option>
                         <option value="easy">Easy</option>
@@ -183,14 +186,14 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                           key={amenity.id}
                           className={`p-3 rounded-lg border transition-all text-left ${
                             filters.amenities.includes(amenity.id)
-                              ? 'bg-emerald-500/30 border-emerald-400 text-white'
-                              : 'bg-white/5 border-white/20 text-white/70 hover:bg-white/10'
+                              ? "bg-emerald-500/30 border-emerald-400 text-white"
+                              : "bg-white/5 border-white/20 text-white/70 hover:bg-white/10"
                           }`}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => {
                             const newAmenities = filters.amenities.includes(amenity.id)
-                              ? filters.amenities.filter(a => a !== amenity.id)
+                              ? filters.amenities.filter((a) => a !== amenity.id)
                               : [...filters.amenities, amenity.id];
                             updateFilters({ amenities: newAmenities });
                           }}
@@ -216,9 +219,11 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                         max="200"
                         step="10"
                         value={filters.priceRange[1]}
-                        onChange={(e) => updateFilters({
-                          priceRange: [filters.priceRange[0], parseInt(e.target.value)]
-                        })}
+                        onChange={(e) =>
+                          updateFilters({
+                            priceRange: [filters.priceRange[0], parseInt(e.target.value)],
+                          })
+                        }
                         className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
                       />
                     </div>
@@ -241,7 +246,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
 
         {/* Popular searches */}
         <AnimatePresence>
-          {isExpanded && searchQuery === '' && (
+          {isExpanded && searchQuery === "" && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

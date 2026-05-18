@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 // Hook for tracking user engagement
 export const useEngagementTracking = () => {
   useEffect(() => {
@@ -7,7 +7,9 @@ export const useEngagementTracking = () => {
     let interactions = 0;
 
     const trackScroll = () => {
-      const depth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      const depth = Math.round(
+        (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100,
+      );
       scrollDepth = Math.max(scrollDepth, depth);
     };
 
@@ -21,21 +23,21 @@ export const useEngagementTracking = () => {
         timeSpent: Math.round(timeSpent / 1000),
         scrollDepth,
         interactions,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
-      
+
       // Send to analytics service
-      console.log('Engagement data:', engagementData);
+      console.log("Engagement data:", engagementData);
     };
 
-    window.addEventListener('scroll', trackScroll);
-    window.addEventListener('click', trackInteraction);
-    window.addEventListener('beforeunload', trackEngagement);
+    window.addEventListener("scroll", trackScroll);
+    window.addEventListener("click", trackInteraction);
+    window.addEventListener("beforeunload", trackEngagement);
 
     return () => {
-      window.removeEventListener('scroll', trackScroll);
-      window.removeEventListener('click', trackInteraction);
-      window.removeEventListener('beforeunload', trackEngagement);
+      window.removeEventListener("scroll", trackScroll);
+      window.removeEventListener("click", trackInteraction);
+      window.removeEventListener("beforeunload", trackEngagement);
     };
   }, []);
 };

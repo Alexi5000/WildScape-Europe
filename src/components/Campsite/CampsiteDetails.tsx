@@ -1,8 +1,8 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Star, Euro, Users, Mountain, Calendar, Check } from 'lucide-react';
-import { Campsite } from '@/types/campsite';
-import { WeatherIcon } from '../UI/WeatherIcon';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, MapPin, Star, Euro, Users, Mountain, Calendar, Check } from "lucide-react";
+import { Campsite } from "@/types/campsite";
+import { WeatherIcon } from "../UI/WeatherIcon";
 
 interface CampsiteDetailsProps {
   campsite: Campsite;
@@ -21,18 +21,16 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
   const totalPrice = selectedDates.length * campsite.price_per_night;
 
   const handleDateSelect = (date: string) => {
-    setSelectedDates(prev => 
-      prev.includes(date) 
-        ? prev.filter(d => d !== date)
-        : [...prev, date].sort()
+    setSelectedDates((prev) =>
+      prev.includes(date) ? prev.filter((d) => d !== date) : [...prev, date].sort(),
     );
   };
 
   const handleBooking = async () => {
     setIsBooking(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsBooking(false);
-    alert('Booking confirmed! You will receive a confirmation email shortly.');
+    alert("Booking confirmed! You will receive a confirmation email shortly.");
   };
 
   return (
@@ -61,7 +59,7 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              
+
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm transition-colors"
@@ -73,7 +71,9 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                 <h1 className="text-3xl font-bold text-white mb-2">{campsite.name}</h1>
                 <div className="flex items-center gap-2 text-white/90">
                   <MapPin className="w-5 h-5" />
-                  <span>{campsite.location.region}, {campsite.location.country}</span>
+                  <span>
+                    {campsite.location.region}, {campsite.location.country}
+                  </span>
                   <span className="mx-2">•</span>
                   <Mountain className="w-5 h-5" />
                   <span>{campsite.location.elevation}m elevation</span>
@@ -100,8 +100,8 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                   <div className="text-sm text-gray-600">max capacity</div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <WeatherIcon 
-                    condition={campsite.weather.current} 
+                  <WeatherIcon
+                    condition={campsite.weather.current}
                     temperature={campsite.weather.temperature}
                     className="mx-auto mb-2"
                   />
@@ -121,11 +121,16 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                 <h2 className="text-xl font-bold mb-3">Features</h2>
                 <div className="grid grid-cols-2 gap-3">
                   {Object.entries(campsite.features).map(([key, value]) => (
-                    <div key={key} className={`flex items-center gap-2 p-2 rounded-lg ${value ? 'bg-green-50 text-green-800' : 'bg-gray-50 text-gray-500'}`}>
-                      <span className={value ? 'text-green-600' : 'text-gray-400'}>
-                        {value ? '✓' : '✗'}
+                    <div
+                      key={key}
+                      className={`flex items-center gap-2 p-2 rounded-lg ${value ? "bg-green-50 text-green-800" : "bg-gray-50 text-gray-500"}`}
+                    >
+                      <span className={value ? "text-green-600" : "text-gray-400"}>
+                        {value ? "✓" : "✗"}
                       </span>
-                      <span className="capitalize text-sm">{key.replace('has_', '').replace('_', ' ')}</span>
+                      <span className="capitalize text-sm">
+                        {key.replace("has_", "").replace("_", " ")}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -136,9 +141,12 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                 <h2 className="text-xl font-bold mb-3">Amenities</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {campsite.amenities.map((amenity) => (
-                    <div key={amenity} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                    <div
+                      key={amenity}
+                      className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg"
+                    >
                       <span className="text-primary">✓</span>
-                      <span className="capitalize text-sm">{amenity.replace('_', ' ')}</span>
+                      <span className="capitalize text-sm">{amenity.replace("_", " ")}</span>
                     </div>
                   ))}
                 </div>
@@ -191,13 +199,13 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                       onClick={() => handleDateSelect(date)}
                       className={`p-2 text-xs rounded-lg border transition-colors ${
                         selectedDates.includes(date)
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-white hover:bg-gray-100 border-gray-200'
+                          ? "bg-primary text-white border-primary"
+                          : "bg-white hover:bg-gray-100 border-gray-200"
                       }`}
                     >
-                      {new Date(date).toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric' 
+                      {new Date(date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
                       })}
                     </button>
                   ))}
@@ -224,9 +232,7 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                   >
                     +
                   </button>
-                  <span className="text-sm text-gray-600 ml-2">
-                    (max {campsite.capacity})
-                  </span>
+                  <span className="text-sm text-gray-600 ml-2">(max {campsite.capacity})</span>
                 </div>
               </div>
 
@@ -257,8 +263,8 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                 disabled={selectedDates.length === 0 || isBooking}
                 className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
                   selectedDates.length === 0
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : 'bg-primary hover:bg-primary/90 text-white hover:shadow-lg'
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-primary hover:bg-primary/90 text-white hover:shadow-lg"
                 }`}
               >
                 {isBooking ? (
@@ -267,7 +273,7 @@ export const CampsiteDetails: React.FC<CampsiteDetailsProps> = ({ campsite, onCl
                     Processing...
                   </div>
                 ) : selectedDates.length === 0 ? (
-                  'Select dates to book'
+                  "Select dates to book"
                 ) : (
                   <div className="flex items-center justify-center gap-2">
                     <Check className="w-4 h-4" />

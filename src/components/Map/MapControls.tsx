@@ -1,9 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Minus, RotateCcw, Cloud } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useUIStore } from '@/store/uiStore';
-import type { MapViewState } from '@/types/map';
+import React from "react";
+import { motion } from "framer-motion";
+import { Plus, Minus, RotateCcw, Cloud } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useUIStore } from "@/store/uiStore";
+import type { MapViewState } from "@/types/map";
 
 interface MapControlsProps {
   onViewChange: (viewState: Partial<MapViewState>) => void;
@@ -26,15 +26,15 @@ export const MapControls: React.FC<MapControlsProps> = ({ onViewChange, currentV
   };
 
   const controls = [
-    { icon: Plus, action: zoomIn, label: 'Zoom In' },
-    { icon: Minus, action: zoomOut, label: 'Zoom Out' },
-    { icon: RotateCcw, action: resetView, label: 'Reset View' },
+    { icon: Plus, action: zoomIn, label: "Zoom In" },
+    { icon: Minus, action: zoomOut, label: "Zoom Out" },
+    { icon: RotateCcw, action: resetView, label: "Reset View" },
     {
       icon: Cloud,
       action: () => setWeatherEffectsEnabled(!weatherEffectsEnabled),
-      label: 'Toggle Weather',
-      active: weatherEffectsEnabled
-    }
+      label: "Toggle Weather",
+      active: weatherEffectsEnabled,
+    },
   ];
 
   return (
@@ -51,7 +51,7 @@ export const MapControls: React.FC<MapControlsProps> = ({ onViewChange, currentV
             whileTap={{ scale: 0.95 }}
           >
             <Button
-              variant={control.active ? 'default' : 'secondary'}
+              variant={control.active ? "default" : "secondary"}
               size="icon"
               onClick={control.action}
               className="bg-black/50 backdrop-blur-sm border-white/20 text-white hover:bg-white/20"

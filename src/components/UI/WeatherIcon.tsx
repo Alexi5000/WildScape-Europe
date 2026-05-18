@@ -1,31 +1,31 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Cloud, CloudRain, CloudSnow, Sun, CloudDrizzle } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { Cloud, CloudRain, CloudSnow, Sun, CloudDrizzle } from "lucide-react";
 
 interface WeatherIconProps {
-  condition: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
+  condition: "clear" | "rain" | "snow" | "fog" | "cloudy";
   temperature?: number;
   className?: string;
   animated?: boolean;
 }
 
-export const WeatherIcon: React.FC<WeatherIconProps> = ({ 
-  condition, 
-  temperature, 
-  className = '', 
-  animated = true 
+export const WeatherIcon: React.FC<WeatherIconProps> = ({
+  condition,
+  temperature,
+  className = "",
+  animated = true,
 }) => {
   const getIcon = () => {
     switch (condition) {
-      case 'clear':
+      case "clear":
         return <Sun className="w-6 h-6 text-yellow-500" />;
-      case 'cloudy':
+      case "cloudy":
         return <Cloud className="w-6 h-6 text-gray-500" />;
-      case 'rain':
+      case "rain":
         return <CloudRain className="w-6 h-6 text-blue-500" />;
-      case 'snow':
+      case "snow":
         return <CloudSnow className="w-6 h-6 text-blue-200" />;
-      case 'fog':
+      case "fog":
         return <CloudDrizzle className="w-6 h-6 text-gray-400" />;
       default:
         return <Sun className="w-6 h-6 text-yellow-500" />;
@@ -34,28 +34,28 @@ export const WeatherIcon: React.FC<WeatherIconProps> = ({
 
   const getBackgroundColor = () => {
     switch (condition) {
-      case 'clear':
-        return 'bg-yellow-500/20';
-      case 'cloudy':
-        return 'bg-gray-500/20';
-      case 'rain':
-        return 'bg-blue-500/20';
-      case 'snow':
-        return 'bg-blue-200/20';
-      case 'fog':
-        return 'bg-gray-400/20';
+      case "clear":
+        return "bg-yellow-500/20";
+      case "cloudy":
+        return "bg-gray-500/20";
+      case "rain":
+        return "bg-blue-500/20";
+      case "snow":
+        return "bg-blue-200/20";
+      case "fog":
+        return "bg-gray-400/20";
       default:
-        return 'bg-yellow-500/20';
+        return "bg-yellow-500/20";
     }
   };
 
   const iconElement = (
-    <div className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm ${getBackgroundColor()} ${className}`}>
+    <div
+      className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm ${getBackgroundColor()} ${className}`}
+    >
       {getIcon()}
       {temperature !== undefined && (
-        <span className="text-white font-medium text-sm">
-          {temperature}°C
-        </span>
+        <span className="text-white font-medium text-sm">{temperature}°C</span>
       )}
     </div>
   );

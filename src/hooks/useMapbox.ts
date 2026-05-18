@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import { mapboxService } from '@/services/mapbox';
-import { Campsite } from '@/types/campsite';
-import type { MapViewState } from '@/types/map';
+import { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import { mapboxService } from "@/services/mapbox";
+import { Campsite } from "@/types/campsite";
+import type { MapViewState } from "@/types/map";
 
 interface UseMapboxOptions {
   campsites: Campsite[];
@@ -22,7 +22,7 @@ export const useMapbox = (options: UseMapboxOptions) => {
 
     map.current = mapboxService.createMap(mapContainer.current, options.initialViewState);
 
-    map.current.on('load', () => {
+    map.current.on("load", () => {
       setIsLoaded(true);
       if (map.current) {
         mapboxService.addTerrainLayer(map.current);
@@ -59,6 +59,6 @@ export const useMapbox = (options: UseMapboxOptions) => {
     map: map.current,
     isLoaded,
     flyToLocation,
-    updateViewState
+    updateViewState,
   };
 };

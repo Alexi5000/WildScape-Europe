@@ -5,12 +5,15 @@ Mountain hiking-themed landing page components for WildScape Europe.
 ## Components Overview
 
 ### MountainHero
+
 Main hero section with large headline and destination navigation.
 
 **Props:**
+
 - `onExploreClick: () => void` - Callback for explore button
 
 **Features:**
+
 - Full-height hero section
 - Destination sidebar navigation
 - Header with logo and phone
@@ -18,21 +21,26 @@ Main hero section with large headline and destination navigation.
 - Scroll indicator
 
 ### TourFilters
+
 Filter selection section with icon-based categories.
 
 **Props:**
+
 - `onFilterSelect?: (filter: string) => void` - Filter selection callback
 
 **Features:**
+
 - 5 filter categories
 - Icon-based buttons
 - Hover effects
 - Clean grid layout
 
 ### TourCard
+
 Individual tour card with image, details, and pricing.
 
 **Props:**
+
 - `image: string` - Tour image URL
 - `title: string` - Tour title
 - `date: string` - Tour date
@@ -42,6 +50,7 @@ Individual tour card with image, details, and pricing.
 - `index?: number` - Animation delay index
 
 **Features:**
+
 - Large image with overlay
 - Category badge
 - Date and duration info
@@ -50,18 +59,22 @@ Individual tour card with image, details, and pricing.
 - Arrow CTA button
 
 ### ToursSection
+
 Grid of tour cards with decorative elements.
 
 **Features:**
+
 - 2-column grid layout
 - 4 featured tours
 - View all button
 - Wave dividers
 
 ### InfoSections
+
 Alternating content sections with images and text.
 
 **Features:**
+
 - 4 sections with different topics
 - Alternating left/right layout
 - Organic image shapes
@@ -70,9 +83,11 @@ Alternating content sections with images and text.
 - CTA buttons
 
 ### Footer
+
 Site footer with links and contact information.
 
 **Features:**
+
 - 4-column layout
 - Social media links
 - Contact information
@@ -82,21 +97,26 @@ Site footer with links and contact information.
 - Wave divider top
 
 ### ScrollIndicator
+
 Animated scroll indicator for hero section.
 
 **Features:**
+
 - "SCROLL TO EXPLORE" text
 - Animated chevron
 - Click to scroll
 - Bounce animation
 
 ### LandingPage
+
 Main container that assembles all sections.
 
 **Props:**
+
 - `onExploreClick: () => void` - Explore button callback
 
 **Features:**
+
 - Complete page assembly
 - Smooth flow
 - Consistent spacing
@@ -104,7 +124,7 @@ Main container that assembles all sections.
 ## Usage
 
 ```tsx
-import { LandingPage } from './components/Landing/LandingPage';
+import { LandingPage } from "./components/Landing/LandingPage";
 
 function App() {
   const handleExplore = () => {
@@ -118,6 +138,7 @@ function App() {
 ## Styling
 
 All components use:
+
 - Tailwind CSS utilities
 - Framer Motion animations
 - Custom color palette (#E8E3DB, #3E2723, #C85A54)
@@ -139,4 +160,3 @@ All components use:
 - Responsive typography
 - Mobile-optimized spacing
 - Touch-friendly interactions
-

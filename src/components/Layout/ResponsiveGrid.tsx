@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 interface ResponsiveGridProps {
   children: React.ReactNode;
@@ -9,32 +9,32 @@ interface ResponsiveGridProps {
     lg?: number;
     xl?: number;
   };
-  gap?: 'sm' | 'md' | 'lg' | 'xl';
+  gap?: "sm" | "md" | "lg" | "xl";
   className?: string;
 }
 
 export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
   children,
   columns = { sm: 1, md: 2, lg: 3, xl: 4 },
-  gap = 'md',
-  className = ''
+  gap = "md",
+  className = "",
 }) => {
   const gapClasses = {
-    sm: 'gap-4',
-    md: 'gap-6',
-    lg: 'gap-8',
-    xl: 'gap-12'
+    sm: "gap-4",
+    md: "gap-6",
+    lg: "gap-8",
+    xl: "gap-12",
   };
 
   const gridClasses = [
-    'grid',
+    "grid",
     `grid-cols-${columns.sm || 1}`,
     `md:grid-cols-${columns.md || 2}`,
     `lg:grid-cols-${columns.lg || 3}`,
     `xl:grid-cols-${columns.xl || 4}`,
     gapClasses[gap],
-    className
-  ].join(' ');
+    className,
+  ].join(" ");
 
   return (
     <div className={gridClasses}>
@@ -55,26 +55,21 @@ export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
 // Card component with proper spacing and visual hierarchy
 export const ContentCard: React.FC<{
   children: React.ReactNode;
-  padding?: 'sm' | 'md' | 'lg';
-  elevation?: 'none' | 'sm' | 'md' | 'lg';
+  padding?: "sm" | "md" | "lg";
+  elevation?: "none" | "sm" | "md" | "lg";
   className?: string;
-}> = ({
-  children,
-  padding = 'md',
-  elevation = 'md',
-  className = ''
-}) => {
+}> = ({ children, padding = "md", elevation = "md", className = "" }) => {
   const paddingClasses = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8'
+    sm: "p-4",
+    md: "p-6",
+    lg: "p-8",
   };
 
   const elevationClasses = {
-    none: '',
-    sm: 'shadow-sm',
-    md: 'shadow-forest-lg',
-    lg: 'shadow-forest-xl'
+    none: "",
+    sm: "shadow-sm",
+    md: "shadow-forest-lg",
+    lg: "shadow-forest-xl",
   };
 
   return (

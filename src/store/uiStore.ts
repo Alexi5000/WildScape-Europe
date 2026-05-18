@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import type { PerformanceMode, ThemeMode, WeatherCondition } from '@/types/common';
-import type { MapViewState } from '@/types/map';
+import { create } from "zustand";
+import type { PerformanceMode, ThemeMode, WeatherCondition } from "@/types/common";
+import type { MapViewState } from "@/types/map";
 
 interface UIStore {
   theme: ThemeMode;
@@ -17,35 +17,35 @@ interface UIStore {
   setPerformanceMode: (mode: PerformanceMode) => void;
 }
 
-const weatherConditions: WeatherCondition[] = ['clear', 'rain', 'snow', 'fog', 'cloudy'];
-const performanceModes: PerformanceMode[] = ['high', 'medium', 'low'];
+const weatherConditions: WeatherCondition[] = ["clear", "rain", "snow", "fog", "cloudy"];
+const performanceModes: PerformanceMode[] = ["high", "medium", "low"];
 
 export const useUIStore = create<UIStore>((set, get) => ({
-  theme: 'dark',
+  theme: "dark",
   sidebarOpen: false,
   mapViewState: {
     longitude: 10.0,
     latitude: 60.0,
     zoom: 4,
     pitch: 60,
-    bearing: 0
+    bearing: 0,
   },
   weatherEffectsEnabled: true,
-  currentWeatherCondition: 'clear',
-  performanceMode: 'high',
+  currentWeatherCondition: "clear",
+  performanceMode: "high",
 
-  setTheme: theme => set({ theme }),
-  setSidebarOpen: open => set({ sidebarOpen: open }),
-  setMapViewState: viewState => set({ mapViewState: { ...get().mapViewState, ...viewState } }),
-  setWeatherEffectsEnabled: enabled => set({ weatherEffectsEnabled: enabled }),
-  setCurrentWeatherCondition: condition => {
+  setTheme: (theme) => set({ theme }),
+  setSidebarOpen: (open) => set({ sidebarOpen: open }),
+  setMapViewState: (viewState) => set({ mapViewState: { ...get().mapViewState, ...viewState } }),
+  setWeatherEffectsEnabled: (enabled) => set({ weatherEffectsEnabled: enabled }),
+  setCurrentWeatherCondition: (condition) => {
     if (weatherConditions.includes(condition)) {
       set({ currentWeatherCondition: condition });
     }
   },
-  setPerformanceMode: mode => {
+  setPerformanceMode: (mode) => {
     if (performanceModes.includes(mode)) {
       set({ performanceMode: mode });
     }
-  }
+  },
 }));

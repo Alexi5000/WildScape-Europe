@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Settings, Cloud, Calendar, Star, AlertTriangle } from 'lucide-react';
-import { useRealTime } from '@/hooks/useRealTime';
-import { LiveUpdate } from '@/services/realTimeService';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bell, X, Settings, Cloud, Calendar, Star, AlertTriangle } from "lucide-react";
+import { useRealTime } from "@/hooks/useRealTime";
+import { LiveUpdate } from "@/services/realTimeService";
 
 export const NotificationCenter: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const { notifications, clearNotifications, updatePreferences, preferences } = useRealTime();
 
-  const getNotificationIcon = (type: LiveUpdate['type']) => {
+  const getNotificationIcon = (type: LiveUpdate["type"]) => {
     switch (type) {
-      case 'weather':
+      case "weather":
         return <Cloud className="w-4 h-4 text-blue-500" />;
-      case 'booking':
+      case "booking":
         return <Calendar className="w-4 h-4 text-green-500" />;
-      case 'review':
+      case "review":
         return <Star className="w-4 h-4 text-yellow-500" />;
-      case 'availability':
+      case "availability":
         return <AlertTriangle className="w-4 h-4 text-orange-500" />;
       default:
         return <Bell className="w-4 h-4 text-gray-500" />;
@@ -26,16 +26,16 @@ export const NotificationCenter: React.FC = () => {
 
   const formatNotificationMessage = (notification: LiveUpdate) => {
     switch (notification.type) {
-      case 'weather':
+      case "weather":
         return `Weather update: ${notification.data.condition} at ${notification.data.temperature}°C`;
-      case 'booking':
-        return notification.data.message || 'Booking status updated';
-      case 'review':
+      case "booking":
+        return notification.data.message || "Booking status updated";
+      case "review":
         return `New ${notification.data.rating}⭐ review: "${notification.data.preview}"`;
-      case 'availability':
-        return `Availability changed: ${notification.data.available ? 'Spots available' : 'Fully booked'}`;
+      case "availability":
+        return `Availability changed: ${notification.data.available ? "Spots available" : "Fully booked"}`;
       default:
-        return 'System notification';
+        return "System notification";
     }
   };
 
@@ -44,8 +44,8 @@ export const NotificationCenter: React.FC = () => {
     const diff = now - timestamp;
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
-    
-    if (minutes < 1) return 'Just now';
+
+    if (minutes < 1) return "Just now";
     if (minutes < 60) return `${minutes}m ago`;
     if (hours < 24) return `${hours}h ago`;
     return new Date(timestamp).toLocaleDateString();
@@ -68,7 +68,7 @@ export const NotificationCenter: React.FC = () => {
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 500, damping: 30 }}
           >
-            {notifications.length > 9 ? '9+' : notifications.length}
+            {notifications.length > 9 ? "9+" : notifications.length}
           </motion.span>
         )}
       </motion.button>
@@ -108,16 +108,18 @@ export const NotificationCenter: React.FC = () => {
                 <motion.div
                   className="p-4 border-b bg-gray-50"
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
+                  animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <h4 className="text-sm font-medium text-gray-900 mb-3">Notification Preferences</h4>
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">
+                    Notification Preferences
+                  </h4>
                   <div className="space-y-2">
                     {Object.entries(preferences).map(([key, value]) => (
                       <label key={key} className="flex items-center justify-between">
                         <span className="text-sm text-gray-700 capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                          {key.replace(/([A-Z])/g, " $1").toLowerCase()}
                         </span>
                         <input
                           type="checkbox"

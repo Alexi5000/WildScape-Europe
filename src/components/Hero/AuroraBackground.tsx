@@ -1,30 +1,30 @@
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+import { useRef, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Points, PointMaterial } from "@react-three/drei";
+import * as THREE from "three";
 
 const AuroraParticles = () => {
   const ref = useRef<THREE.Points>(null);
   const sphereRef = useRef<THREE.Mesh>(null);
-  
+
   const particles = useMemo(() => {
     const positions = new Float32Array(8000 * 3);
     const colors = new Float32Array(8000 * 3);
-    
+
     for (let i = 0; i < 8000; i++) {
       // Create aurora wave pattern
       const x = (Math.random() - 0.5) * 200;
       const y = Math.random() * 80 + 20;
       const z = (Math.random() - 0.5) * 200;
-      
+
       positions[i * 3] = x;
       positions[i * 3 + 1] = y + Math.sin(x * 0.01) * 20;
       positions[i * 3 + 2] = z;
-      
+
       // Aurora colors with intensity variation
       const intensity = Math.random() * 0.8 + 0.2;
       const colorChoice = Math.random();
-      
+
       if (colorChoice < 0.4) {
         // Green aurora
         colors[i * 3] = 0.0;
@@ -42,15 +42,15 @@ const AuroraParticles = () => {
         colors[i * 3 + 2] = intensity;
       }
     }
-    
+
     return { positions, colors };
   }, []);
-  
+
   useFrame((state) => {
     if (ref.current) {
       ref.current.rotation.y = state.clock.elapsedTime * 0.02;
       ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.1;
-      
+
       // Animate aurora waves
       const positions = ref.current.geometry.attributes.position.array as Float32Array;
       for (let i = 0; i < positions.length; i += 3) {
@@ -59,7 +59,7 @@ const AuroraParticles = () => {
       ref.current.geometry.attributes.position.needsUpdate = true;
     }
   });
-  
+
   return (
     <>
       <Points ref={ref} positions={particles.positions} colors={particles.colors}>
@@ -72,16 +72,11 @@ const AuroraParticles = () => {
           blending={THREE.AdditiveBlending}
         />
       </Points>
-      
+
       {/* Atmospheric glow */}
       <mesh ref={sphereRef} position={[0, 0, -50]}>
         <sphereGeometry args={[100, 32, 32]} />
-        <meshBasicMaterial 
-          color="#8B5CF6" 
-          transparent 
-          opacity={0.1}
-          side={THREE.BackSide}
-        />
+        <meshBasicMaterial color="#8B5CF6" transparent opacity={0.1} side={THREE.BackSide} />
       </mesh>
     </>
   );
@@ -94,7 +89,7 @@ export const AuroraBackground = () => {
         <ambientLight intensity={0.2} />
         <pointLight position={[0, 50, 0]} intensity={0.5} color="#8B5CF6" />
         <AuroraParticles />
-        <fog attach="fog" args={['#0F172A', 50, 200]} />
+        <fog attach="fog" args={["#0F172A", 50, 200]} />
       </Canvas>
     </div>
   );

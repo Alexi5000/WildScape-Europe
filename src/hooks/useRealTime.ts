@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { realTimeService, LiveUpdate, NotificationPreferences } from '@/services/realTimeService';
+import { useState, useEffect, useCallback } from "react";
+import { realTimeService, LiveUpdate, NotificationPreferences } from "@/services/realTimeService";
 
 export const useRealTime = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -9,15 +9,15 @@ export const useRealTime = () => {
   useEffect(() => {
     const handleUpdate = (update: LiveUpdate) => {
       setLastUpdate(update);
-      setNotifications(prev => [update, ...prev.slice(0, 9)]); // Keep last 10 notifications
+      setNotifications((prev) => [update, ...prev.slice(0, 9)]); // Keep last 10 notifications
     };
 
-    realTimeService.subscribe('main', handleUpdate);
+    realTimeService.subscribe("main", handleUpdate);
     realTimeService.connect();
     setIsConnected(true);
 
     return () => {
-      realTimeService.unsubscribe('main');
+      realTimeService.unsubscribe("main");
       realTimeService.disconnect();
       setIsConnected(false);
     };
@@ -37,6 +37,6 @@ export const useRealTime = () => {
     notifications,
     clearNotifications,
     updatePreferences,
-    preferences: realTimeService.getNotificationPreferences()
+    preferences: realTimeService.getNotificationPreferences(),
   };
 };

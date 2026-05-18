@@ -1,9 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Star, Euro, Users, Mountain, Waves } from 'lucide-react';
-import { Campsite } from '@/types/campsite';
-import { useCampsiteStore } from '@/store/campsiteStore';
-import { WeatherIcon } from '../UI/WeatherIcon';
+import React from "react";
+import { motion } from "framer-motion";
+import { MapPin, Star, Euro, Users, Mountain, Waves } from "lucide-react";
+import { Campsite } from "@/types/campsite";
+import { useCampsiteStore } from "@/store/campsiteStore";
+import { WeatherIcon } from "../UI/WeatherIcon";
 
 interface CampsiteCardProps {
   campsite: Campsite;
@@ -14,10 +14,14 @@ export const CampsiteCard: React.FC<CampsiteCardProps> = ({ campsite }) => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'text-green-600 bg-green-100';
-      case 'moderate': return 'text-yellow-600 bg-yellow-100';
-      case 'challenging': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case "easy":
+        return "text-green-600 bg-green-100";
+      case "moderate":
+        return "text-yellow-600 bg-yellow-100";
+      case "challenging":
+        return "text-red-600 bg-red-100";
+      default:
+        return "text-gray-600 bg-gray-100";
     }
   };
 
@@ -48,18 +52,20 @@ export const CampsiteCard: React.FC<CampsiteCardProps> = ({ campsite }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        
+
         {/* Weather overlay */}
         <div className="absolute top-3 right-3">
-          <WeatherIcon 
-            condition={campsite.weather.current} 
+          <WeatherIcon
+            condition={campsite.weather.current}
             temperature={campsite.weather.temperature}
           />
         </div>
 
         {/* Difficulty badge */}
         <div className="absolute top-3 left-3">
-          <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getDifficultyColor(campsite.difficulty)}`}>
+          <span
+            className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getDifficultyColor(campsite.difficulty)}`}
+          >
             {campsite.difficulty}
           </span>
         </div>
@@ -81,7 +87,9 @@ export const CampsiteCard: React.FC<CampsiteCardProps> = ({ campsite }) => {
             </h3>
             <div className="flex items-center gap-1 text-gray-300 text-sm">
               <MapPin className="w-4 h-4" />
-              <span>{campsite.location.region}, {campsite.location.country}</span>
+              <span>
+                {campsite.location.region}, {campsite.location.country}
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-1 text-yellow-400">
@@ -90,9 +98,7 @@ export const CampsiteCard: React.FC<CampsiteCardProps> = ({ campsite }) => {
           </div>
         </div>
 
-        <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-          {campsite.description}
-        </p>
+        <p className="text-gray-300 text-sm mb-4 line-clamp-2">{campsite.description}</p>
 
         {/* Amenities */}
         <div className="flex flex-wrap gap-2 mb-4">
@@ -100,7 +106,7 @@ export const CampsiteCard: React.FC<CampsiteCardProps> = ({ campsite }) => {
             <div
               key={amenity}
               className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full text-xs text-gray-300"
-              title={amenity.replace('_', ' ')}
+              title={amenity.replace("_", " ")}
             >
               {getAmenityIcon(amenity)}
             </div>

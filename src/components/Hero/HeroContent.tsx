@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { Trees, Mountain, Star, Wind, Leaf, Camera } from 'lucide-react';
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Trees, Mountain, Star, Wind, Leaf, Camera } from "lucide-react";
 
 interface HeroContentProps {
   onExploreClick: () => void;
@@ -10,9 +10,9 @@ export const HeroContent = ({ onExploreClick }: HeroContentProps) => {
   const [currentText, setCurrentText] = useState(0);
   const heroTexts = [
     "Discover Forest Sanctuaries",
-    "Experience Nature's Magic", 
+    "Experience Nature's Magic",
     "Find Your Wild Adventure",
-    "Camp Among Ancient Trees"
+    "Camp Among Ancient Trees",
   ];
 
   useEffect(() => {
@@ -33,23 +33,23 @@ export const HeroContent = ({ onExploreClick }: HeroContentProps) => {
             key={index}
             className="absolute text-forest-300/30"
             initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
+            animate={{
               opacity: [0, 0.6, 0],
               scale: [0, 1.2, 0],
               x: [
-                Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-                Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200)
+                Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1200),
+                Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1200),
               ],
               y: [
-                Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800)
-              ]
+                Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
+                Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
+              ],
             }}
             transition={{
               duration: 12,
               repeat: Infinity,
               delay: index * 2,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
           >
             <Icon size={48} />
@@ -89,18 +89,19 @@ export const HeroContent = ({ onExploreClick }: HeroContentProps) => {
       </div>
 
       {/* Enhanced description */}
-      <motion.p 
+      <motion.p
         className="text-lg md:text-xl text-forest-700 max-w-3xl mb-12 leading-relaxed"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        Immerse yourself in Europe's most enchanting forest sanctuaries. From ancient woodlands to mountain groves, 
-        discover premium camping experiences with real-time weather, 3D terrain maps, and wildlife tracking.
+        Immerse yourself in Europe's most enchanting forest sanctuaries. From ancient woodlands to
+        mountain groves, discover premium camping experiences with real-time weather, 3D terrain
+        maps, and wildlife tracking.
       </motion.p>
 
       {/* Enhanced CTA Buttons */}
-      <motion.div 
+      <motion.div
         className="flex flex-col sm:flex-row gap-6"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -120,7 +121,7 @@ export const HeroContent = ({ onExploreClick }: HeroContentProps) => {
             transition={{ duration: 2, repeat: Infinity }}
           />
         </motion.button>
-        
+
         <motion.button
           className="group px-8 py-4 border-2 border-forest-500 text-forest-700 rounded-full font-semibold text-lg backdrop-blur-sm hover:bg-forest-500 hover:text-white transition-all duration-300 flex items-center gap-3"
           whileHover={{ scale: 1.05, y: -2 }}
@@ -132,13 +133,13 @@ export const HeroContent = ({ onExploreClick }: HeroContentProps) => {
       </motion.div>
 
       {/* Enhanced scroll indicator */}
-      <motion.div 
+      <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="w-6 h-10 border-2 border-forest-500 rounded-full flex justify-center relative">
-          <motion.div 
+          <motion.div
             className="w-1 h-3 bg-forest-500 rounded-full mt-2"
             animate={{ opacity: [0.3, 1, 0.3], y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
