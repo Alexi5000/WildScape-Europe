@@ -18,7 +18,7 @@ concurrency:
 
 env:
   NODE_VERSION: '20'
-  CACHE_VERSION: 'v1'
+  CACHE_VERSION: 'v2'
 
 jobs:
   setup:
@@ -41,13 +41,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
             ~/.npm
           key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-
       - name: Install Dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
         run: npm ci --prefer-offline --no-audit
       - name: Verify Installation
         run: npm list --depth=0
@@ -68,9 +66,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
             ~/.npm
           key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci --prefer-offline --no-audit
       - name: Run ESLint
         run: npm run lint
       - name: Run Prettier Check
@@ -102,9 +101,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
             ~/.npm
           key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci --prefer-offline --no-audit
       - name: Type Check
         run: npm run type-check
       - name: Generate Type Coverage Report
@@ -130,9 +130,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
             ~/.npm
           key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci --prefer-offline --no-audit
       - name: Build Application
         run: npm run build
         env:
@@ -276,9 +277,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
             ~/.npm
           key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci --prefer-offline --no-audit
       - name: Run Tests
         run: npm run test:ci
       - name: Upload Coverage
