@@ -1,6 +1,21 @@
 import { create } from 'zustand';
-import { Campsite, CampsiteFilter, SearchFilters } from '@/types/campsite';
+import { Campsite, CampsiteFilter, SearchFilters, isDifficulty } from '@/types/campsite';
+import type { WeatherCondition } from '@/types/common';
 import campsitesData from '@/data/europeCampsites.json';
+
+
+const normalizeCampsite = (campsite: typeof campsitesData[number]): Campsite => ({
+  ...campsite,
+  location: {
+    ...campsite.location,
+    coordinates: [campsite.location.coordinates[0] ?? 0, campsite.location.coordinates[1] ?? 0]
+  },
+  difficulty: isDifficulty(campsite.difficulty) ? campsite.difficulty : 'moderate',
+  weather: {
+    ...campsite.weather,
+    current: (campsite.weather.current === 'cloudy' ? 'clear' : campsite.weather.current) as WeatherCondition
+  }
+});
 
 interface CampsiteStore {
   campsites: Campsite[];
@@ -92,7 +107,7 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       return;
     }
     
-    let filtered = campsites.filter((campsite) => {
+    const filtered = campsites.filter((campsite) => {
       // Ensure campsite is a valid object
       if (!campsite || typeof campsite !== 'object') {
         return false;
@@ -165,15 +180,9 @@ export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Safely parse campsites data
-      let campsites: Campsite[] = [];
-      
-      if (Array.isArray(campsitesData)) {
-        campsites = campsitesData as Campsite[];
-      } else {
-        console.warn('Campsites data is not an array:', campsitesData);
-        campsites = [];
-      }
+      const campsites: Campsite[] = Array.isArray(campsitesData)
+        ? campsitesData.map(normalizeCampsite)
+        : [];
       
       set({ 
         campsites, 

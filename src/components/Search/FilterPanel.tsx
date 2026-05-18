@@ -3,20 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, X, ChevronDown } from 'lucide-react';
 import { useCampsiteStore } from '@/store/campsiteStore';
 import { CampsiteFilter } from '@/types/campsite';
+import type { Difficulty } from '@/types/common';
 
 export const FilterPanel: React.FC = () => {
   const { filters, setFilters } = useCampsiteStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   const countries = ['Norway', 'Switzerland', 'Portugal', 'Germany', 'Italy'];
-  const difficulties = ['easy', 'moderate', 'challenging'];
+  const difficulties: Difficulty[] = ['easy', 'moderate', 'challenging'];
   const amenities = [
     'aurora_viewing', 'hiking_trails', 'fishing', 'wildlife_watching',
     'mountain_views', 'beach_access', 'surfing', 'stargazing'
   ];
 
-  const handleFilterChange = (key: keyof CampsiteFilter, value: any) => {
+  const handleFilterChange = <K extends keyof CampsiteFilter>(key: K, value: CampsiteFilter[K]) => {
     setFilters({ ...filters, [key]: value });
   };
 

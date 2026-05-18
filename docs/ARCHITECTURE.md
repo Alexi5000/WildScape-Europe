@@ -1,472 +1,92 @@
-# Architecture Guide
+# WildScape Europe Architecture
 
-This document provides a comprehensive overview of WildScape Europe's architecture, design patterns, and technical decisions.
+WildScape Europe is a Vite, React, and TypeScript single-page application that models a premium camping marketplace prototype.[1] [2] The codebase is organized around **explicit domain boundaries** so UI components do not own data generation, booking logic, weather calculation, or real-time event delivery.
 
-## 🏗️ System Overview
+> The architectural goal is to make every module easy to reason about, test, and replace. Components render state, stores coordinate UI-level state, services expose application use cases, repositories own domain data operations, and shared types keep contracts explicit.
 
-WildScape Europe is a modern single-page application (SPA) built with React, focusing on performance, user experience, and maintainability.
+## Architectural principles
 
-### Architecture Principles
+| SOLID principle | Repository implementation |
+|---|---|
+| Single responsibility | `CampsiteRepository`, `BookingRepository`, `UserRepository`, and `WeatherRepository` each own one domain concern. |
+| Open/closed | Service facades expose stable methods while repositories can be extended with real HTTP clients later. |
+| Liskov substitution | Repository classes can be replaced by remote adapters as long as they preserve the same typed method contracts. |
+| Interface segregation | UI code consumes narrow use-case methods rather than a broad untyped object. |
+| Dependency inversion | `mockBackend` and `enhancedApiService` depend on domain repositories and typed contracts rather than UI components. |
 
-1. **Component-Based**: Modular, reusable React components
-2. **Type-Safe**: Comprehensive TypeScript coverage
-3. **Performance-First**: Optimized rendering and loading
-4. **Accessibility**: WCAG 2.1 AA compliant
-5. **Mobile-First**: Responsive design for all devices
+## Runtime layers
 
-## 📦 Tech Stack
+| Layer | Primary files | Responsibility |
+|---|---|---|
+| Application shell | `src/App.tsx` | Coordinates view mode, selected campsite, dashboard visibility, weather state, and high-level user flows. |
+| Components | `src/components/**` | Render visual states, user interactions, map controls, search panels, detail views, and dashboard sections. |
+| State stores | `src/store/campsiteStore.ts`, `src/store/uiStore.ts` | Hold client-side filter state, selected campsite state, map preferences, and UI preferences. |
+| Application services | `src/services/mockBackend.ts`, `src/services/enhancedApi.ts` | Expose product use cases such as search, booking, profile, reviews, weather, and recommendations. |
+| Domain repositories | `src/services/repositories/*` | Own deterministic data generation and domain-specific mutations. |
+| Shared contracts | `src/types/*` | Define campsite, map, weather, API, and real-time event structures. |
+| Tests | `src/services/__tests__`, `src/store/__tests__` | Validate services, repositories, stores, event publishing, and UI adapters with Vitest.[3] |
 
-### Core Technologies
+## Service decomposition
 
-```
-┌─────────────────────────────────────┐
-│         React 18 + TypeScript       │
-├─────────────────────────────────────┤
-│  UI Layer                           │
-│  - Framer Motion (animations)       │
-│  - Tailwind CSS (styling)           │
-│  - Lucide React (icons)             │
-├─────────────────────────────────────┤
-│  3D & Graphics                      │
-│  - Three.js (3D engine)             │
-│  - React Three Fiber (React)        │
-│  - @react-three/drei (helpers)      │
-├─────────────────────────────────────┤
-│  State Management                   │
-│  - Zustand (global state)           │
-│  - React Hooks (local state)        │
-├─────────────────────────────────────┤
-│  Mapping                            │
-│  - Mapbox GL JS (maps)              │
-├─────────────────────────────────────┤
-│  Build & Dev                        │
-│  - Vite (build tool)                │
-│  - ESLint + Prettier (quality)      │
-└─────────────────────────────────────┘
-```
+The service layer was split so application workflows can evolve without creating another god module. `mockBackend` remains the compatibility facade for existing components, while repository classes hold separate responsibilities.
 
-### Key Libraries
+| Service boundary | Responsibility | Typical consumers |
+|---|---|---|
+| `CampsiteRepository` | Deterministic campsite catalogue generation, search filtering, suggestion generation, and campsite lookup. | Search components, campsite store, enhanced API. |
+| `BookingRepository` | Booking submission, cancellation, availability checks, seeded user bookings, and confirmation identifiers. | Booking form, user dashboard, tests. |
+| `UserRepository` | Current user, profile creation, preferences, wishlist, search history, and recently viewed campsites. | Dashboard and enhanced API. |
+| `WeatherRepository` | Current weather, multi-day forecasts, route conditions, and aurora forecast logic. | Map panels, detail views, enhanced API. |
+| `RealTimeService` | Discriminated event delivery for availability, weather alerts, reviews, bookings, and system events. | Notification surfaces and tests. |
 
-| Library | Version | Purpose |
-|---------|---------|---------|
-| React | 18.2.0 | UI framework |
-| React Router | 6.8.0 | Routing |
-| TypeScript | 5.2.0 | Type safety |
-| Vite | 4.5.0 | Build tool |
-| Three.js | 0.157.0 | 3D graphics |
-| @react-three/fiber | 8.15.0 | React Three.js renderer |
-| @react-three/drei | 9.88.0 | Three.js helpers |
-| Mapbox GL | 2.15.0 | Interactive maps |
-| Framer Motion | 10.16.0 | Animations |
-| GSAP | 3.12.0 | Advanced animations |
-| Zustand | 4.4.0 | State management |
-| Tailwind CSS | 3.3.0 | Styling |
-| Lucide React | 0.263.0 | Icons |
-| Lenis | 1.3.4 | Smooth scrolling |
-| clsx | 2.0.0 | Conditional classes |
+## Data flow
 
-## 🗂️ Project Structure
+The default product flow starts in the application shell. User actions update store or service state, services delegate domain operations to repositories, and components re-render from typed results.
 
-```
-src/
-├── components/              # React components (by feature)
-│   ├── Hero/               # Landing page
-│   │   ├── AuroraBackground.tsx
-│   │   ├── EnhancedHeroContent.tsx
-│   │   └── FloatingCTA.tsx
-│   ├── Map/                # 3D mapping
-│   │   ├── Terrain3DMap.tsx
-│   │   ├── CampsiteMarkers.tsx
-│   │   ├── MapControls.tsx
-│   │   └── WeatherParticles.tsx
-│   ├── Background/         # Visual effects
-│   │   ├── AuroraEffect.tsx
-│   │   ├── EnhancedForestParallax.tsx
-│   │   └── WeatherSystem.tsx
-│   ├── Search/             # Search & filtering
-│   │   ├── MorphingSearchBar.tsx
-│   │   ├── FilterPanel.tsx
-│   │   └── SearchResults.tsx
-│   ├── Campsite/           # Campsite features
-│   │   ├── CampsiteCard.tsx
-│   │   ├── CampsiteDetails.tsx
-│   │   ├── BookingPanel.tsx
-│   │   └── VirtualTour.tsx
-│   └── UI/                 # Reusable UI
-│       ├── LoadingSpinner.tsx
-│       ├── ThemeToggle.tsx
-│       ├── NotificationCenter.tsx
-│       └── OptimizedImage.tsx
-├── hooks/                  # Custom React hooks
-│   ├── useMapbox.ts       # Mapbox integration
-│   ├── useThree.ts        # Three.js utilities
-│   ├── useWeather.ts      # Weather data
-│   ├── useSearch.ts       # Search logic
-│   └── useRealTime.ts     # Real-time updates
-├── services/               # External services & API
-│   ├── api.ts             # Main API client
-│   ├── enhancedApi.ts     # Enhanced features
-│   ├── mapbox.ts          # Mapbox service
-│   ├── weather.ts         # Weather service
-│   ├── mockBackend.ts     # Mock data
-│   └── realTimeService.ts # WebSocket/SSE
-├── store/                  # Zustand stores
-│   ├── campsiteStore.ts   # Campsite data
-│   ├── searchStore.ts     # Search state
-│   └── uiStore.ts         # UI state
-├── types/                  # TypeScript types
-│   ├── campsite.ts        # Campsite types
-│   ├── map.ts             # Map types
-│   └── weather.ts         # Weather types
-├── data/                   # Static data
-│   ├── europeCampsites.json
-│   ├── amenities.json
-│   └── weatherData.json
-├── styles/                 # Global styles
-│   └── accessibility.css
-├── App.tsx                 # Root component
-└── main.tsx                # Entry point
+```text
+User interaction
+  -> React component event handler
+  -> Zustand store or application service
+  -> Domain repository or typed event bus
+  -> Typed result, state update, or notification event
+  -> React component render
 ```
 
-## 🎯 Design Patterns
+This flow keeps data access and UI rendering separate. For example, campsite filtering is not duplicated in a visual search component; the store and service layer own that behavior so both the UI and tests can exercise the same contract.
 
-### Component Architecture
+## State management
 
-#### 1. Presentational vs Container Components
+Zustand provides lightweight state management without imposing reducers or provider boilerplate.[4] WildScape Europe uses it for client state that must be shared across components but does not belong in a repository.
 
-**Presentational** (Pure UI):
-```typescript
-// components/UI/Button.tsx
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
-}
+| Store | State scope | Design note |
+|---|---|---|
+| `useCampsiteStore` | Campsite list, filtered list, selected campsite, search query, filters, loading, and errors. | JSON data is normalized into strict `Campsite` objects before use. |
+| `useUIStore` | Map viewport, selected coordinates, weather layer mode, and global UI preferences. | Map and weather options are typed so visual controls cannot emit invalid state. |
 
-export const Button = ({ label, onClick, variant = 'primary' }: ButtonProps) => {
-  return (
-    <button onClick={onClick} className={`btn-${variant}`}>
-      {label}
-    </button>
-  );
-};
-```
+## Testing architecture
 
-**Container** (Logic + Data):
-```typescript
-// components/Campsite/CampsiteContainer.tsx
-export const CampsiteContainer = ({ id }: { id: string }) => {
-  const campsite = useCampsiteStore((state) => state.getCampsite(id));
-  const [isLoading, setIsLoading] = useState(false);
-  
-  // Logic and data fetching
-  
-  return <CampsiteDetails campsite={campsite} />;
-};
-```
+The test suite intentionally targets architectural seams. Service tests verify that repositories and facades preserve product behavior, store tests verify state transitions and data normalization, and UI adapter tests verify semantic rendering. The stack uses Vitest for fast Vite-native testing and Testing Library for user-centered React assertions.[3] [5]
 
-#### 2. Custom Hooks for Logic Reuse
+| Test file | Coverage |
+|---|---|
+| `src/services/__tests__/services.test.ts` | Campsite catalogue, search, booking lifecycle, enhanced API history, aurora rules, wishlist operations, and real-time events. |
+| `src/store/__tests__/campsiteStore.test.tsx` | Campsite loading, filtering, search-filter translation, and reusable button semantics. |
 
-```typescript
-// hooks/useSearch.ts
-export const useSearch = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Campsite[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  
-  const search = useDebouncedCallback(async (q: string) => {
-    setIsSearching(true);
-    const data = await searchCampsites(q);
-    setResults(data);
-    setIsSearching(false);
-  }, 300);
-  
-  return { query, setQuery, results, isSearching, search };
-};
-```
+## Extension strategy
 
-#### 3. Compound Components
+The current repository uses deterministic local data so it is safe to run without credentials. A production back end can be introduced by replacing repository implementations with API clients while keeping the current facades and domain types intact. This approach limits change impact to infrastructure code and avoids forcing visual components to understand transport details.
 
-```typescript
-// components/Search/SearchBar.tsx
-export const SearchBar = ({ children }: { children: ReactNode }) => {
-  return <div className="search-bar">{children}</div>;
-};
+| Future replacement | Low-risk migration path |
+|---|---|
+| Remote campsite API | Implement a `CampsiteRepository` adapter that returns the existing `Campsite` type. |
+| Real booking service | Replace `BookingRepository` internals while keeping `submitBooking`, `cancelBooking`, and `getUserBookings`. |
+| Authenticated profiles | Replace `UserRepository` persistence and keep typed profile methods. |
+| Live weather provider | Replace `WeatherRepository` calculations with provider calls normalized to current weather types. |
+| WebSocket notifications | Replace simulated intervals in `RealTimeService` with socket messages mapped to existing event discriminants. |
 
-SearchBar.Input = ({ ... }) => { /* ... */ };
-SearchBar.Suggestions = ({ ... }) => { /* ... */ };
-SearchBar.Filters = ({ ... }) => { /* ... */ };
+## References
 
-// Usage
-<SearchBar>
-  <SearchBar.Input />
-  <SearchBar.Suggestions />
-  <SearchBar.Filters />
-</SearchBar>
-```
-
-### State Management
-
-#### Zustand Stores
-
-```typescript
-// store/campsiteStore.ts
-interface CampsiteStore {
-  campsites: Campsite[];
-  selectedCampsite: Campsite | null;
-  setCampsites: (campsites: Campsite[]) => void;
-  selectCampsite: (id: string) => void;
-  filters: FilterState;
-  updateFilters: (filters: Partial<FilterState>) => void;
-}
-
-export const useCampsiteStore = create<CampsiteStore>((set, get) => ({
-  campsites: [],
-  selectedCampsite: null,
-  filters: defaultFilters,
-  
-  setCampsites: (campsites) => set({ campsites }),
-  
-  selectCampsite: (id) => {
-    const campsite = get().campsites.find(c => c.id === id);
-    set({ selectedCampsite: campsite || null });
-  },
-  
-  updateFilters: (filters) => 
-    set((state) => ({ 
-      filters: { ...state.filters, ...filters } 
-    })),
-}));
-```
-
-#### Local State with useState
-
-```typescript
-// For component-specific state
-const [isOpen, setIsOpen] = useState(false);
-const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-```
-
-## 🎨 Styling Architecture
-
-### Tailwind CSS Approach
-
-```typescript
-// Utility-first styling with custom forest theme
-<div className="
-  flex items-center justify-between
-  px-6 py-4
-  bg-white dark:bg-slate-900
-  rounded-lg shadow-forest-lg
-  hover:shadow-forest-xl transition-all
-  glass-forest
-">
-  {/* Content */}
-</div>
-```
-
-### Theme Configuration
-
-```typescript
-// tailwind.config.ts - Forest-themed design system
-export default {
-  darkMode: 'class',
-  theme: {
-    extend: {
-      colors: {
-        forest: {
-          50: '#F0FDF4', 100: '#DCFCE7', 200: '#BBF7D0',
-          500: '#22C55E', 700: '#15803D', 900: '#14532D'
-        },
-        earth: {
-          brown: '#8B4513', tan: '#D2B48C', moss: '#228B22'
-        },
-        nature: {
-          sky: '#87CEEB', water: '#4682B4', sun: '#FFD700'
-        }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Poppins', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace']
-      },
-      animation: {
-        'forest-sway': 'forestSway 4s ease-in-out infinite',
-        'leaf-fall': 'leafFall 8s linear infinite',
-        'aurora': 'aurora 8s ease-in-out infinite',
-        'float': 'float 6s ease-in-out infinite'
-      }
-    }
-  },
-  plugins: [
-    // Custom forest utilities plugin
-  ]
-}
-```
-
-## 🚀 Performance Optimizations
-
-### Code Splitting
-
-```typescript
-// Lazy loading routes
-const CampsiteDetails = lazy(() => import('./components/Campsite/CampsiteDetails'));
-const UserDashboard = lazy(() => import('./components/Dashboard/UserDashboard'));
-
-// With Suspense
-<Suspense fallback={<LoadingSpinner />}>
-  <CampsiteDetails />
-</Suspense>
-```
-
-### Memoization
-
-```typescript
-// useMemo for expensive calculations
-const filteredCampsites = useMemo(() => {
-  return campsites.filter(site => matchesFilters(site, filters));
-}, [campsites, filters]);
-
-// useCallback for function references
-const handleSearch = useCallback((query: string) => {
-  performSearch(query);
-}, []);
-
-// React.memo for components
-export const CampsiteCard = React.memo(({ campsite }: Props) => {
-  // Component
-});
-```
-
-### Virtual Scrolling
-
-```typescript
-// For large lists
-import { FixedSizeList } from 'react-window';
-
-<FixedSizeList
-  height={600}
-  itemCount={campsites.length}
-  itemSize={120}
->
-  {({ index, style }) => (
-    <CampsiteCard campsite={campsites[index]} style={style} />
-  )}
-</FixedSizeList>
-```
-
-## 🗺️ 3D Graphics Architecture
-
-### Three.js Integration
-
-```typescript
-// Using React Three Fiber
-<Canvas>
-  <PerspectiveCamera position={[0, 10, 20]} />
-  <ambientLight intensity={0.5} />
-  <pointLight position={[10, 10, 10]} />
-  <Terrain heightMap={heightMapData} />
-  <WeatherParticles type="rain" count={1000} />
-</Canvas>
-```
-
-### Custom Shaders
-
-```glsl
-// Aurora effect shader
-uniform float time;
-uniform vec3 color1;
-uniform vec3 color2;
-
-void main() {
-  vec2 uv = gl_FragCoord.xy / resolution.xy;
-  float wave = sin(uv.x * 10.0 + time) * 0.5 + 0.5;
-  vec3 color = mix(color1, color2, wave);
-  gl_FragColor = vec4(color, 0.7);
-}
-```
-
-## 🔌 API Integration
-
-### Service Layer
-
-```typescript
-// services/api.ts
-class ApiService {
-  private baseURL = import.meta.env.VITE_API_BASE_URL;
-  
-  async getCampsites(filters?: FilterState): Promise<Campsite[]> {
-    const params = new URLSearchParams(filters);
-    const response = await fetch(`${this.baseURL}/campsites?${params}`);
-    return response.json();
-  }
-  
-  async getCampsite(id: string): Promise<Campsite> {
-    const response = await fetch(`${this.baseURL}/campsites/${id}`);
-    return response.json();
-  }
-}
-
-export const api = new ApiService();
-```
-
-## 📱 Responsive Design
-
-### Breakpoint Strategy
-
-```typescript
-// Mobile-first approach
-const breakpoints = {
-  sm: '640px',   // Small devices
-  md: '768px',   // Tablets
-  lg: '1024px',  // Laptops
-  xl: '1280px',  // Desktops
-  '2xl': '1536px' // Large screens
-};
-```
-
-### Adaptive Features
-
-- **Mobile**: Simplified 3D, reduced particles, touch gestures
-- **Tablet**: Medium detail, optimized layouts
-- **Desktop**: Full effects, keyboard shortcuts, multi-panel views
-
-## 🔒 Security Considerations
-
-- **API Keys**: Stored in environment variables
-- **Input Validation**: Client-side validation for UX
-- **XSS Prevention**: React's built-in escaping
-- **CORS**: Configured for specific domains
-- **Content Security Policy**: Defined headers
-
-## 📊 Monitoring & Analytics
-
-```typescript
-// Performance monitoring
-import { reportWebVitals } from './reportWebVitals';
-
-reportWebVitals((metric) => {
-  console.log(metric);
-  // Send to analytics
-});
-```
-
-## 🧪 Testing Strategy
-
-- **Unit Tests**: Utilities and pure functions
-- **Component Tests**: User interactions
-- **Integration Tests**: Feature workflows
-- **E2E Tests**: Critical user journeys
-
-## 📚 Further Reading
-
-- [Getting Started Guide](./GETTING_STARTED.md)
-- [API Documentation](./API.md)
-- [Deployment Guide](./DEPLOYMENT.md)
-- [Contributing Guidelines](../CONTRIBUTING.md)
-
----
-
-**System Architect**: Alex Cinovoj (TechTideAI)  
-**Architecture Approach**: Component-based, performance-optimized, type-safe design
-
+[1]: https://react.dev/ "React Documentation"
+[2]: https://vite.dev/ "Vite Documentation"
+[3]: https://vitest.dev/ "Vitest Documentation"
+[4]: https://zustand.docs.pmnd.rs/ "Zustand Documentation"
+[5]: https://testing-library.com/docs/react-testing-library/intro/ "React Testing Library Introduction"

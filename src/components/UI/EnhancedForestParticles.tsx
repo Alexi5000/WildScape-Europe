@@ -117,7 +117,8 @@ export const EnhancedForestParticles: React.FC<EnhancedForestParticlesProps> = (
     const animate = () => {
       setParticles(prevParticles => 
         prevParticles.map(particle => {
-          let { x, y, rotation, life, direction, speed } = particle;
+          let { x, y, rotation, life, direction } = particle;
+          const { speed } = particle;
           
           // Mouse interaction - particles avoid cursor
           const dx = x - mousePosition.x;

@@ -5,7 +5,7 @@ import * as THREE from 'three';
 export const useThree = () => {
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.1;
     }
@@ -46,7 +46,7 @@ export const useParticleSystem = (count: number = 1000) => {
     }
   }, [count]);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (particlesRef.current && positions.current && velocities.current) {
       for (let i = 0; i < count; i++) {
         positions.current[i * 3] += velocities.current[i * 3] * delta * 10;

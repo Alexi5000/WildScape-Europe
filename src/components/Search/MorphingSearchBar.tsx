@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, MapPin, Users, Star } from 'lucide-react';
-import { SearchFilters } from '@/types/campsite';
+import { SearchFilters, isDifficulty } from '@/types/campsite';
 
 interface MorphingSearchBarProps {
   onSearch: (data: { query: string; filters: SearchFilters }) => void;
@@ -163,7 +163,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                       <select 
                         className="w-full bg-white/10 border border-white/20 rounded-lg p-3 text-white"
                         value={filters.difficulty}
-                        onChange={(e) => updateFilters({ difficulty: e.target.value })}
+                        onChange={(e) => updateFilters({ difficulty: e.target.value === 'any' || isDifficulty(e.target.value) ? e.target.value : 'any' })}
                       >
                         <option value="any">Any Level</option>
                         <option value="easy">Easy</option>

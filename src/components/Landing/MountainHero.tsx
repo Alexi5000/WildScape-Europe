@@ -6,7 +6,7 @@ interface MountainHeroProps {
   onExploreClick: () => void;
 }
 
-export const MountainHero = ({ onExploreClick }: MountainHeroProps) => {
+export const MountainHero = (_props: MountainHeroProps) => {
   const destinations = [
     { name: 'Norway', highlight: true },
     { name: 'Iceland', highlight: false },

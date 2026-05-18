@@ -16,7 +16,8 @@ import { EnhancedForestParticles } from './components/UI/EnhancedForestParticles
 import { AmbientSoundManager } from './components/Audio/AmbientSoundManager';
 import { StorytellingElements } from './components/Interactive/StorytellingElements';
 import { AccessibilityControls } from './components/UI/AccessibleContent';
-import { EngagementMetrics, useEngagementTracking } from './components/Content/EngagementMetrics';
+import { EngagementMetrics } from './components/Content/EngagementMetrics';
+import { useEngagementTracking } from './hooks/useEngagementTracking';
 
 // Existing Components
 import { WeatherParticles } from './components/Map/WeatherParticles';
@@ -32,6 +33,8 @@ import { ForestLoadingSpinner } from './components/UI/ForestLoadingSpinner';
 // Services
 import { enhancedApiService } from './services/enhancedApi';
 import { realTimeService } from './services/realTimeService';
+import type { SearchFilters } from './types/campsite';
+import type { WeatherCondition } from './types/common';
 
 // Import accessibility styles
 import './styles/accessibility.css';
@@ -128,11 +131,11 @@ function App() {
       };
       
       const timeConditions = conditions[timeOfDay];
-      return timeConditions[Math.floor(Math.random() * timeConditions.length)];
+      return timeConditions[Math.floor(Math.random() * timeConditions.length)] as WeatherCondition;
     };
     
     const interval = setInterval(() => {
-      setCurrentWeatherCondition(getWeatherForTime() as any);
+      setCurrentWeatherCondition(getWeatherForTime());
     }, 20000); // Change every 20 seconds
 
     return () => clearInterval(interval);
@@ -158,12 +161,12 @@ function App() {
     setCurrentView('explore');
   };
 
-  const handleSearch = ({ query, filters }: { query: string; filters: any }) => {
+  const handleSearch = ({ query, filters }: { query: string; filters: SearchFilters }) => {
     if (setSearchQuery) setSearchQuery(query);
     if (setSearchFilters) setSearchFilters(filters);
   };
 
-  const handleFilterChange = (filters: any) => {
+  const handleFilterChange = (filters: SearchFilters) => {
     if (setSearchFilters) setSearchFilters(filters);
   };
 

@@ -1,23 +1,20 @@
-// Real-time service for live updates and notifications
-export interface LiveUpdate {
-  type: 'booking' | 'weather' | 'availability' | 'review' | 'system';
-  data: any;
-  timestamp: number;
-}
+import type { BookingStatus, WeatherCondition } from '@/types/common';
+import type { LiveUpdate, NotificationPreferences } from '@/types/realtime';
 
-export interface NotificationPreferences {
-  weatherAlerts: boolean;
-  bookingUpdates: boolean;
-  priceDrops: boolean;
-  newReviews: boolean;
-  systemMessages: boolean;
-}
+export type { LiveUpdate, NotificationPreferences } from '@/types/realtime';
+
+type Listener = (update: LiveUpdate) => void;
+
+const weatherConditions: WeatherCondition[] = ['clear', 'rain', 'snow', 'fog', 'cloudy'];
+const bookingStatuses: BookingStatus[] = ['confirmed', 'cancelled', 'modified'];
+const randomItem = <T>(items: readonly T[]): T => items[Math.floor(Math.random() * items.length)];
+const randomCampsiteId = (): string => `camp_${String(Math.floor(Math.random() * 150) + 1).padStart(3, '0')}`;
 
 export class RealTimeService {
   private static instance: RealTimeService;
-  private listeners: Map<string, (update: LiveUpdate) => void> = new Map();
+  private readonly listeners = new Map<string, Listener>();
   private isConnected = false;
-  private updateInterval: NodeJS.Timeout | null = null;
+  private updateInterval: ReturnType<typeof setInterval> | null = null;
   private notificationPreferences: NotificationPreferences = {
     weatherAlerts: true,
     bookingUpdates: true,
@@ -30,33 +27,34 @@ export class RealTimeService {
     if (!RealTimeService.instance) {
       RealTimeService.instance = new RealTimeService();
     }
+
     return RealTimeService.instance;
   }
 
   connect(): void {
-    if (this.isConnected) return;
-    
+    if (this.isConnected) {
+      return;
+    }
+
     this.isConnected = true;
-    console.log('🔗 Real-time service connected');
-    
-    // Simulate real-time updates
     this.updateInterval = setInterval(() => {
       this.generateRandomUpdate();
-    }, 15000); // Update every 15 seconds
+    }, 15000);
   }
 
   disconnect(): void {
-    if (!this.isConnected) return;
-    
+    if (!this.isConnected) {
+      return;
+    }
+
     this.isConnected = false;
     if (this.updateInterval) {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
     }
-    console.log('🔌 Real-time service disconnected');
   }
 
-  subscribe(id: string, callback: (update: LiveUpdate) => void): void {
+  subscribe(id: string, callback: Listener): void {
     this.listeners.set(id, callback);
   }
 
@@ -64,72 +62,114 @@ export class RealTimeService {
     this.listeners.delete(id);
   }
 
+  updateNotificationPreferences(preferences: Partial<NotificationPreferences>): void {
+    this.notificationPreferences = { ...this.notificationPreferences, ...preferences };
+  }
+
+  getNotificationPreferences(): NotificationPreferences {
+    return { ...this.notificationPreferences };
+  }
+
+  simulateWeatherAlert(campsiteId: string, severity: 'low' | 'medium' | 'high'): void {
+    this.broadcastUpdate({
+      type: 'weather',
+      data: {
+        campsiteId,
+        severity,
+        alert: `${severity.toUpperCase()} weather alert: Check conditions before traveling`,
+        condition: severity === 'high' ? 'snow' : 'rain',
+        temperature: severity === 'high' ? -10 : 5
+      },
+      timestamp: Date.now()
+    });
+  }
+
+  simulateBookingUpdate(bookingId: string, status: BookingStatus): void {
+    this.broadcastUpdate({
+      type: 'booking',
+      data: {
+        bookingId,
+        status,
+        message: `Booking ${bookingId} status updated to ${status}`,
+        timestamp: new Date().toISOString()
+      },
+      timestamp: Date.now()
+    });
+  }
+
+  simulateAvailabilityChange(campsiteId: string, date: string, available: boolean): void {
+    this.broadcastUpdate({
+      type: 'availability',
+      data: {
+        campsiteId,
+        date,
+        available,
+        spotsRemaining: available ? Math.floor(Math.random() * 10) + 1 : 0,
+        message: available ? 'New spots available!' : 'Fully booked'
+      },
+      timestamp: Date.now()
+    });
+  }
+
   private generateRandomUpdate(): void {
-    const updateTypes = ['weather', 'availability', 'booking', 'review'];
-    const type = updateTypes[Math.floor(Math.random() * updateTypes.length)] as LiveUpdate['type'];
-    
-    let data: any;
-    
-    switch (type) {
-      case 'weather':
-        data = {
-          campsiteId: `camp_${String(Math.floor(Math.random() * 150) + 1).padStart(3, '0')}`,
-          condition: ['clear', 'rain', 'snow', 'fog', 'cloudy'][Math.floor(Math.random() * 5)],
+    const factories: Array<() => LiveUpdate> = [
+      () => ({
+        type: 'weather',
+        data: {
+          campsiteId: randomCampsiteId(),
+          condition: randomItem(weatherConditions),
           temperature: Math.floor(Math.random() * 30) - 5,
           alert: Math.random() > 0.8 ? 'Severe weather warning in effect' : null
-        };
-        break;
-        
-      case 'availability':
-        data = {
-          campsiteId: `camp_${String(Math.floor(Math.random() * 150) + 1).padStart(3, '0')}`,
+        },
+        timestamp: Date.now()
+      }),
+      () => ({
+        type: 'availability',
+        data: {
+          campsiteId: randomCampsiteId(),
           date: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           available: Math.random() > 0.5,
           spotsRemaining: Math.floor(Math.random() * 10) + 1
-        };
-        break;
-        
-      case 'booking':
-        data = {
-          campsiteId: `camp_${String(Math.floor(Math.random() * 150) + 1).padStart(3, '0')}`,
+        },
+        timestamp: Date.now()
+      }),
+      () => ({
+        type: 'booking',
+        data: {
+          campsiteId: randomCampsiteId(),
           bookingId: `booking_${Date.now()}`,
-          status: ['confirmed', 'cancelled', 'modified'][Math.floor(Math.random() * 3)],
+          status: randomItem(bookingStatuses),
           message: 'Your booking status has been updated'
-        };
-        break;
-        
-      case 'review':
-        data = {
-          campsiteId: `camp_${String(Math.floor(Math.random() * 150) + 1).padStart(3, '0')}`,
+        },
+        timestamp: Date.now()
+      }),
+      () => ({
+        type: 'review',
+        data: {
+          campsiteId: randomCampsiteId(),
           rating: Math.floor(Math.random() * 2) + 4,
           reviewer: 'Anonymous User',
           preview: 'Amazing experience with beautiful views...'
-        };
-        break;
-    }
-    
-    const update: LiveUpdate = {
-      type,
-      data,
-      timestamp: Date.now()
-    };
-    
-    this.broadcastUpdate(update);
+        },
+        timestamp: Date.now()
+      })
+    ];
+
+    this.broadcastUpdate(randomItem(factories)());
   }
 
   private broadcastUpdate(update: LiveUpdate): void {
-    // Check notification preferences
-    const shouldNotify = this.shouldNotifyForUpdate(update);
-    
-    if (shouldNotify) {
-      this.listeners.forEach(callback => {
-        try {
-          callback(update);
-        } catch (error) {
-          console.error('Error in real-time update callback:', error);
-        }
-      });
+    if (!this.shouldNotifyForUpdate(update)) {
+      return;
     }
+
+    this.listeners.forEach(callback => {
+      try {
+        callback(update);
+      } catch (error) {
+        console.error('Error in real-time update callback:', error);
+      }
+    });
   }
 
   private shouldNotifyForUpdate(update: LiveUpdate): boolean {
@@ -142,65 +182,9 @@ export class RealTimeService {
         return this.notificationPreferences.newReviews;
       case 'system':
         return this.notificationPreferences.systemMessages;
-      default:
+      case 'availability':
         return true;
     }
-  }
-
-  updateNotificationPreferences(preferences: Partial<NotificationPreferences>): void {
-    this.notificationPreferences = { ...this.notificationPreferences, ...preferences };
-  }
-
-  getNotificationPreferences(): NotificationPreferences {
-    return { ...this.notificationPreferences };
-  }
-
-  // Simulate specific updates for testing
-  simulateWeatherAlert(campsiteId: string, severity: 'low' | 'medium' | 'high'): void {
-    const update: LiveUpdate = {
-      type: 'weather',
-      data: {
-        campsiteId,
-        severity,
-        alert: `${severity.toUpperCase()} weather alert: Check conditions before traveling`,
-        condition: severity === 'high' ? 'snow' : 'rain',
-        temperature: severity === 'high' ? -10 : 5
-      },
-      timestamp: Date.now()
-    };
-    
-    this.broadcastUpdate(update);
-  }
-
-  simulateBookingUpdate(bookingId: string, status: string): void {
-    const update: LiveUpdate = {
-      type: 'booking',
-      data: {
-        bookingId,
-        status,
-        message: `Booking ${bookingId} status updated to ${status}`,
-        timestamp: new Date().toISOString()
-      },
-      timestamp: Date.now()
-    };
-    
-    this.broadcastUpdate(update);
-  }
-
-  simulateAvailabilityChange(campsiteId: string, date: string, available: boolean): void {
-    const update: LiveUpdate = {
-      type: 'availability',
-      data: {
-        campsiteId,
-        date,
-        available,
-        spotsRemaining: available ? Math.floor(Math.random() * 10) + 1 : 0,
-        message: available ? 'New spots available!' : 'Fully booked'
-      },
-      timestamp: Date.now()
-    };
-    
-    this.broadcastUpdate(update);
   }
 }
 

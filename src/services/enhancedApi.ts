@@ -1,71 +1,49 @@
-import { Campsite, Review } from '@/types/campsite';
-import { WeatherData } from '@/types/weather';
+import type { Campsite, Review } from '@/types/campsite';
+import type {
+  AuroraForecast,
+  BookingRequest,
+  BookingResponse,
+  BookingSummary,
+  CampsiteAnalytics,
+  CampsiteSearchFilters,
+  NearbyAttraction,
+  OperationResult,
+  PopularDestination,
+  ReviewStats,
+  ReviewSubmission,
+  TrendingSearch,
+  UserPreferences,
+  UserProfile,
+  WeatherForecastDay
+} from '@/types/api';
+import type { WeatherData } from '@/types/weather';
 import { mockBackend } from './mockBackend';
+import { UserRepository } from './mock/userRepository';
+import { WeatherRepository } from './mock/weatherRepository';
+import { delay } from './mock/delay';
 
-// Enhanced API service with comprehensive backend simulation
-export interface BookingRequest {
-  campsiteId: string;
-  selectedDates: string[];
-  guests: number;
-  totalPrice: number;
-  userDetails: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-}
-
-export interface BookingResponse {
-  success: boolean;
-  message: string;
-  bookingId?: string;
-  confirmationNumber?: string;
-}
-
-export interface SearchFilters {
-  query?: string;
-  country?: string;
-  difficulty?: string;
-  priceRange?: [number, number];
-  amenities?: string[];
-  capacity?: number;
-  dateRange?: [string, string];
-}
-
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  preferences: {
-    favoriteActivities: string[];
-    preferredDifficulty: string;
-    budgetRange: [number, number];
-  };
-  bookingHistory: string[];
-  wishlist: string[];
-}
-
-export interface PopularDestination {
-  id: string;
-  name: string;
-  country: string;
-  imageUrl: string;
-  averageRating: number;
-  totalCampsites: number;
-  popularActivities: string[];
-}
-
-export interface TrendingSearch {
-  term: string;
-  category: 'destination' | 'activity' | 'country';
-  growth: number;
-  searchCount: number;
-}
+export type {
+  AuroraForecast,
+  BookingRequest,
+  BookingResponse,
+  BookingSummary,
+  CampsiteAnalytics,
+  CampsiteSearchFilters as SearchFilters,
+  NearbyAttraction,
+  OperationResult,
+  PopularDestination,
+  ReviewStats,
+  ReviewSubmission,
+  TrendingSearch,
+  UserPreferences,
+  UserProfile,
+  WeatherForecastDay
+} from '@/types/api';
 
 export class EnhancedApiService {
   private static instance: EnhancedApiService;
-  private currentUser: UserProfile | null = null;
+  private readonly users = new UserRepository();
+  private readonly weather = new WeatherRepository();
   private searchHistory: string[] = [];
   private recentlyViewed: string[] = [];
 
@@ -73,10 +51,10 @@ export class EnhancedApiService {
     if (!EnhancedApiService.instance) {
       EnhancedApiService.instance = new EnhancedApiService();
     }
+
     return EnhancedApiService.instance;
   }
 
-  // Campsite Management
   async getCampsites(): Promise<Campsite[]> {
     return mockBackend.getCampsites();
   }
@@ -89,7 +67,7 @@ export class EnhancedApiService {
     return campsite;
   }
 
-  async searchCampsites(filters: SearchFilters): Promise<Campsite[]> {
+  async searchCampsites(filters: CampsiteSearchFilters): Promise<Campsite[]> {
     if (filters.query) {
       this.addToSearchHistory(filters.query);
     }
@@ -97,117 +75,64 @@ export class EnhancedApiService {
   }
 
   async getFeaturedCampsites(): Promise<Campsite[]> {
-    await this.delay(400);
+    await delay(100);
     const allCampsites = await this.getCampsites();
-    return allCampsites
-      .filter(c => c.rating >= 4.5)
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, 12);
+    return allCampsites.filter(campsite => campsite.rating >= 4.5).sort((a, b) => b.rating - a.rating).slice(0, 12);
   }
 
-  async getNearbyAttractions(campsiteId: string): Promise<any[]> {
-    await this.delay(300);
-    const attractions = [
+  async getNearbyAttractions(campsiteId: string): Promise<NearbyAttraction[]> {
+    await delay(75);
+    const attractions: Omit<NearbyAttraction, 'id' | 'campsiteId'>[] = [
       { name: 'Historic Castle', distance: '2.3 km', type: 'historical' },
       { name: 'Scenic Waterfall', distance: '1.8 km', type: 'nature' },
       { name: 'Local Market', distance: '5.1 km', type: 'cultural' },
       { name: 'Adventure Park', distance: '3.7 km', type: 'recreation' },
       { name: 'Museum', distance: '4.2 km', type: 'educational' }
     ];
-    
-    return attractions.slice(0, Math.floor(Math.random() * 3) + 2);
+
+    return attractions.slice(0, 4).map((attraction, index) => ({
+      ...attraction,
+      id: `${campsiteId}_attraction_${index + 1}`,
+      campsiteId
+    }));
   }
 
-  // Booking Management
   async submitBooking(bookingDetails: BookingRequest): Promise<BookingResponse> {
     return mockBackend.submitBooking(bookingDetails);
   }
 
-  async getUserBookings(userId: string): Promise<any[]> {
-    await this.delay(500);
-    // Mock user bookings
-    return [
-      {
-        id: 'booking_001',
-        campsiteId: 'camp_001',
-        campsiteName: 'Aurora Valley Wilderness',
-        startDate: '2024-02-15',
-        endDate: '2024-02-17',
-        guests: 2,
-        totalPrice: 180,
-        status: 'confirmed'
-      },
-      {
-        id: 'booking_002',
-        campsiteId: 'camp_005',
-        campsiteName: 'Coastal Dunes Paradise',
-        startDate: '2024-03-10',
-        endDate: '2024-03-12',
-        guests: 4,
-        totalPrice: 240,
-        status: 'pending'
-      }
-    ];
+  async getUserBookings(userId: string): Promise<BookingSummary[]> {
+    return mockBackend.getUserBookings(userId);
   }
 
-  async cancelBooking(bookingId: string): Promise<{ success: boolean; message: string }> {
-    await this.delay(600);
+  async cancelBooking(bookingId: string): Promise<OperationResult> {
+    const cancelled = await mockBackend.cancelBooking(bookingId);
     return {
-      success: true,
-      message: 'Booking cancelled successfully. Refund will be processed within 3-5 business days.'
+      success: cancelled,
+      message: cancelled ? 'Booking cancelled successfully. Refund will be processed within 3-5 business days.' : `Booking ${bookingId} could not be found.`
     };
   }
 
-  // Weather Services
   async getWeatherData(coordinates: [number, number]): Promise<WeatherData> {
     return mockBackend.getWeatherData(coordinates);
   }
 
-  async getWeatherForecast(coordinates: [number, number], days: number = 7): Promise<any[]> {
-    await this.delay(400);
-    const forecast = [];
-    const conditions = ['clear', 'cloudy', 'rain', 'snow', 'fog'];
-    
-    for (let i = 0; i < days; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      
-      forecast.push({
-        date: date.toISOString().split('T')[0],
-        temperature_high: Math.floor(Math.random() * 20 + 5),
-        temperature_low: Math.floor(Math.random() * 10 - 5),
-        condition: conditions[Math.floor(Math.random() * conditions.length)],
-        precipitation_chance: Math.floor(Math.random() * 100),
-        wind_speed: Math.floor(Math.random() * 20 + 5),
-        humidity: Math.floor(Math.random() * 40 + 40)
-      });
-    }
-    
-    return forecast;
+  async getWeatherForecast(coordinates: [number, number], days = 7): Promise<WeatherForecastDay[]> {
+    await delay(80);
+    return this.weather.getWeatherForecast(coordinates, days);
   }
 
-  async getAuroraForecast(coordinates: [number, number]): Promise<any> {
-    await this.delay(300);
-    if (coordinates[1] < 60) {
-      return { probability: 0, message: 'Aurora not visible at this latitude' };
-    }
-    
-    return {
-      probability: Math.floor(Math.random() * 100),
-      kpIndex: Math.floor(Math.random() * 9),
-      visibility: ['Poor', 'Fair', 'Good', 'Excellent'][Math.floor(Math.random() * 4)],
-      peakTime: '22:30 - 02:00',
-      cloudCover: Math.floor(Math.random() * 100)
-    };
+  async getAuroraForecast(coordinates: [number, number]): Promise<AuroraForecast> {
+    await delay(80);
+    return this.weather.getAuroraForecast(coordinates);
   }
 
-  // Search and Discovery
   async getSuggestions(query: string): Promise<string[]> {
     return mockBackend.getSuggestions(query);
   }
 
   async getTrendingSearches(): Promise<TrendingSearch[]> {
-    await this.delay(200);
+    await delay(60);
     return [
       { term: 'Northern Lights Norway', category: 'destination', growth: 45, searchCount: 1250 },
       { term: 'Alpine Camping', category: 'activity', growth: 32, searchCount: 980 },
@@ -218,175 +143,104 @@ export class EnhancedApiService {
   }
 
   async getPopularDestinations(): Promise<PopularDestination[]> {
-    await this.delay(350);
+    await delay(80);
     return [
-      {
-        id: 'dest_001',
-        name: 'Lofoten Islands',
-        country: 'Norway',
-        imageUrl: 'https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg',
-        averageRating: 4.8,
-        totalCampsites: 12,
-        popularActivities: ['aurora_viewing', 'hiking_trails', 'photography']
-      },
-      {
-        id: 'dest_002',
-        name: 'Bernese Oberland',
-        country: 'Switzerland',
-        imageUrl: 'https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg',
-        averageRating: 4.7,
-        totalCampsites: 8,
-        popularActivities: ['mountain_views', 'hiking_trails', 'rock_climbing']
-      },
-      {
-        id: 'dest_003',
-        name: 'Black Forest',
-        country: 'Germany',
-        imageUrl: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
-        averageRating: 4.6,
-        totalCampsites: 15,
-        popularActivities: ['forest_trails', 'wildlife_watching', 'meditation']
-      }
+      { id: 'dest_001', name: 'Lofoten Islands', country: 'Norway', imageUrl: 'https://images.pexels.com/photos/1687845/pexels-photo-1687845.jpeg', averageRating: 4.8, totalCampsites: 12, popularActivities: ['aurora_viewing', 'hiking_trails', 'photography'] },
+      { id: 'dest_002', name: 'Bernese Oberland', country: 'Switzerland', imageUrl: 'https://images.pexels.com/photos/2422915/pexels-photo-2422915.jpeg', averageRating: 4.7, totalCampsites: 8, popularActivities: ['mountain_views', 'hiking_trails', 'rock_climbing'] },
+      { id: 'dest_003', name: 'Black Forest', country: 'Germany', imageUrl: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', averageRating: 4.6, totalCampsites: 15, popularActivities: ['forest_trails', 'wildlife_watching', 'meditation'] }
     ];
   }
 
-  // User Management
   async createUserProfile(userData: Partial<UserProfile>): Promise<UserProfile> {
-    await this.delay(500);
-    const user: UserProfile = {
-      id: `user_${Date.now()}`,
-      name: userData.name || 'Anonymous User',
-      email: userData.email || '',
-      preferences: {
-        favoriteActivities: userData.preferences?.favoriteActivities || [],
-        preferredDifficulty: userData.preferences?.preferredDifficulty || 'moderate',
-        budgetRange: userData.preferences?.budgetRange || [30, 100]
-      },
-      bookingHistory: [],
-      wishlist: []
-    };
-    
-    this.currentUser = user;
-    return user;
+    await delay(100);
+    return this.users.createProfile(userData);
   }
 
   async getUserProfile(userId: string): Promise<UserProfile | null> {
-    await this.delay(300);
-    return this.currentUser;
+    await delay(75);
+    return this.users.findProfile(userId);
   }
 
-  async updateUserPreferences(userId: string, preferences: any): Promise<boolean> {
-    await this.delay(400);
-    if (this.currentUser) {
-      this.currentUser.preferences = { ...this.currentUser.preferences, ...preferences };
-      return true;
-    }
-    return false;
+  async updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<boolean> {
+    await delay(75);
+    return this.users.updatePreferences(userId, preferences);
   }
 
   async addToWishlist(userId: string, campsiteId: string): Promise<boolean> {
-    await this.delay(200);
-    if (this.currentUser && !this.currentUser.wishlist.includes(campsiteId)) {
-      this.currentUser.wishlist.push(campsiteId);
-      return true;
-    }
-    return false;
+    await delay(50);
+    return this.users.addToWishlist(userId, campsiteId);
   }
 
   async removeFromWishlist(userId: string, campsiteId: string): Promise<boolean> {
-    await this.delay(200);
-    if (this.currentUser) {
-      this.currentUser.wishlist = this.currentUser.wishlist.filter(id => id !== campsiteId);
-      return true;
-    }
-    return false;
+    await delay(50);
+    return this.users.removeFromWishlist(userId, campsiteId);
   }
 
-  // Reviews and Ratings
-  async submitReview(reviewData: any): Promise<{ success: boolean; message: string }> {
-    await this.delay(600);
+  async submitReview(reviewData: ReviewSubmission): Promise<OperationResult> {
+    await delay(100);
     return {
-      success: true,
-      message: 'Thank you for your review! It will be published after moderation.'
+      success: reviewData.rating >= 1 && reviewData.rating <= 5,
+      message: `Thank you for reviewing ${reviewData.campsiteId}. It will be published after moderation.`
     };
   }
 
   async getCampsiteReviews(campsiteId: string): Promise<Review[]> {
-    await this.delay(300);
+    await delay(75);
     const campsite = await this.getCampsiteById(campsiteId);
-    return campsite?.reviews || [];
+    return campsite?.reviews ?? [];
   }
 
-  async getReviewStats(campsiteId: string): Promise<any> {
-    await this.delay(250);
+  async getReviewStats(campsiteId: string): Promise<ReviewStats> {
     const reviews = await this.getCampsiteReviews(campsiteId);
-    
-    const ratingCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    const ratingDistribution: Record<1 | 2 | 3 | 4 | 5, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
     reviews.forEach(review => {
-      ratingCounts[review.rating as keyof typeof ratingCounts]++;
+      const rating = Math.max(1, Math.min(5, Math.round(review.rating))) as 1 | 2 | 3 | 4 | 5;
+      ratingDistribution[rating] += 1;
     });
-    
+
     return {
       totalReviews: reviews.length,
-      averageRating: reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length,
-      ratingDistribution: ratingCounts,
+      averageRating: reviews.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0,
+      ratingDistribution,
       recentReviews: reviews.slice(-5)
     };
   }
 
-  // Analytics and Insights
-  async getCampsiteAnalytics(campsiteId: string): Promise<any> {
-    await this.delay(400);
+  async getCampsiteAnalytics(campsiteId: string): Promise<CampsiteAnalytics> {
+    await delay(90);
+    const seed = campsiteId.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
     return {
-      viewCount: Math.floor(Math.random() * 1000) + 100,
-      bookingRate: Math.floor(Math.random() * 30) + 10,
-      averageStayDuration: Math.floor(Math.random() * 5) + 2,
+      campsiteId,
+      viewCount: (seed % 1000) + 100,
+      bookingRate: (seed % 30) + 10,
+      averageStayDuration: (seed % 5) + 2,
       peakSeason: ['June', 'July', 'August'],
       popularAmenities: ['hiking_trails', 'mountain_views', 'stargazing'],
       visitorDemographics: {
         ageGroups: { '18-25': 20, '26-35': 35, '36-45': 25, '46+': 20 },
-        countries: { 'Germany': 30, 'UK': 25, 'France': 20, 'Others': 25 }
+        countries: { Germany: 30, UK: 25, France: 20, Others: 25 }
       }
     };
   }
 
   async getPersonalizedRecommendations(userId: string): Promise<Campsite[]> {
-    await this.delay(500);
+    await delay(100);
+    const profile = await this.getUserProfile(userId);
     const allCampsites = await this.getCampsites();
-    
-    // Simple recommendation based on user preferences
-    if (this.currentUser) {
-      const preferredActivities = this.currentUser.preferences.favoriteActivities;
-      const [minBudget, maxBudget] = this.currentUser.preferences.budgetRange;
-      
-      return allCampsites
-        .filter(campsite => {
-          const inBudget = campsite.price_per_night >= minBudget && campsite.price_per_night <= maxBudget;
-          const hasPreferredActivity = preferredActivities.some(activity => 
-            campsite.amenities.includes(activity)
-          );
-          return inBudget && (hasPreferredActivity || preferredActivities.length === 0);
-        })
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, 8);
-    }
-    
-    return allCampsites.slice(0, 8);
-  }
 
-  // Utility Methods
-  private addToSearchHistory(query: string) {
-    if (!this.searchHistory.includes(query)) {
-      this.searchHistory.unshift(query);
-      this.searchHistory = this.searchHistory.slice(0, 10); // Keep last 10 searches
+    if (!profile) {
+      return allCampsites.slice(0, 8);
     }
-  }
 
-  private addToRecentlyViewed(campsiteId: string) {
-    if (!this.recentlyViewed.includes(campsiteId)) {
-      this.recentlyViewed.unshift(campsiteId);
-      this.recentlyViewed = this.recentlyViewed.slice(0, 5); // Keep last 5 viewed
-    }
+    const preferredActivities = profile.preferences.favoriteActivities;
+    const [minBudget, maxBudget] = profile.preferences.budgetRange;
+
+    return allCampsites
+      .filter(campsite => campsite.price_per_night >= minBudget && campsite.price_per_night <= maxBudget)
+      .filter(campsite => preferredActivities.length === 0 || preferredActivities.some(activity => campsite.amenities.includes(activity)))
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 8);
   }
 
   async getSearchHistory(): Promise<string[]> {
@@ -397,8 +251,12 @@ export class EnhancedApiService {
     return [...this.recentlyViewed];
   }
 
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  private addToSearchHistory(query: string): void {
+    this.searchHistory = [query, ...this.searchHistory.filter(item => item !== query)].slice(0, 10);
+  }
+
+  private addToRecentlyViewed(campsiteId: string): void {
+    this.recentlyViewed = [campsiteId, ...this.recentlyViewed.filter(item => item !== campsiteId)].slice(0, 5);
   }
 }
 

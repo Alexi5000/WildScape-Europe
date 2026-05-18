@@ -38,7 +38,6 @@ export const ForestParallax: React.FC = () => {
     for (let i = 0; i < count; i++) {
       // Calculate base position for even distribution
       const sectionStart = i * sectionsPerTree;
-      const sectionEnd = (i + 1) * sectionsPerTree;
       const basePosition = sectionStart + (sectionsPerTree * 0.5); // Center of section
       
       // Add controlled randomness within the section

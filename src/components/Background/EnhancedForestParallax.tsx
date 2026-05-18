@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { CSSProperties } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { gsap } from 'gsap';
 
@@ -78,7 +79,6 @@ export const EnhancedForestParallax: React.FC = () => {
     
     for (let i = 0; i < count; i++) {
       const sectionStart = i * sectionsPerTree;
-      const sectionEnd = (i + 1) * sectionsPerTree;
       const basePosition = sectionStart + (sectionsPerTree * 0.5);
       
       const randomOffset = (Math.sin(i * 2.5 + seed) * 0.5 + 0.5) * (sectionsPerTree * 0.7) - (sectionsPerTree * 0.35);
@@ -109,14 +109,31 @@ export const EnhancedForestParallax: React.FC = () => {
   };
 
   // Create multiple detailed forest layers
-  const distantMountains = generateTreeLayer(8, 1, 'mountains');
   const distantTrees = generateTreeLayer(25, 2, 'distant');
   const middleTrees = generateTreeLayer(30, 3, 'middle');
   const nearTrees = generateTreeLayer(22, 4, 'near');
   const foregroundTrees = generateTreeLayer(18, 5, 'foreground');
 
+  interface GeneratedTree {
+    left: number;
+    height: number;
+    width: number;
+    rotation: number;
+    opacity: number;
+    hue: number;
+    treeType: number;
+    hasCanopy: boolean;
+    branchCount: number;
+  }
+
+  interface TreeComponentProps {
+    tree: GeneratedTree;
+    className?: string;
+    style?: CSSProperties;
+  }
+
   // Tree component with enhanced details
-  const TreeComponent = ({ tree, className, style }: any) => {
+  const TreeComponent = ({ tree, className, style }: TreeComponentProps) => {
     const treeShapes = [
       'polygon(50% 0%, 20% 100%, 80% 100%)', // Classic pine
       'polygon(50% 0%, 15% 100%, 85% 100%)', // Tall pine

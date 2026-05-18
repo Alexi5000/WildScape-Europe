@@ -2,8 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Trees, Mountain, Star, Wind, Leaf, Camera, Compass, Heart } from 'lucide-react';
 import { BrandingSystem } from '../UI/BrandingSystem';
-import { OptimizedImage } from '../UI/OptimizedImage';
-import { VisualHierarchy, Heading1, BodyText } from '../Layout/VisualHierarchy';
+import { VisualHierarchy, BodyText } from '../Layout/VisualHierarchy';
 
 interface EnhancedHeroContentProps {
   onExploreClick: () => void;

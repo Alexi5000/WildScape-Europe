@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
 interface VirtualTourProps {
-  campsite: any;
+  campsite: { name: string };
 }
 
 const CampsiteScene = () => {

@@ -1,18 +1,23 @@
+import type { WeatherCondition } from './common';
+import type { WeatherForecastDay } from './api';
+
 export interface WeatherData {
   temperature: number;
-  condition: 'clear' | 'rain' | 'snow' | 'fog' | 'cloudy';
+  condition: WeatherCondition;
   wind_speed: number;
   humidity: number;
-  aurora_probability?: number;
-  forecast: WeatherForecast[];
+  aurora_probability: number;
+  forecast: WeatherForecastDay[];
 }
 
 export interface WeatherForecast {
   date: string;
-  temperature_high: number;
-  temperature_low: number;
-  condition: string;
-  precipitation_chance: number;
+  temperature: {
+    min: number;
+    max: number;
+  };
+  condition: WeatherCondition;
+  precipitation: number;
 }
 
 export interface WeatherParticle {
@@ -29,9 +34,11 @@ export interface WeatherParticle {
   maxLife: number;
   size: number;
   opacity: number;
+  type?: 'rain' | 'snow' | 'leaf' | 'fog';
 }
 
 export interface WeatherParticlesProps {
-  condition: "clear" | "rain" | "snow" | "fog" | "cloudy";
-  intensity: number;
+  condition: WeatherCondition;
+  intensity?: number;
+  className?: string;
 }

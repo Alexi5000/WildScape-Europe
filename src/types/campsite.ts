@@ -1,3 +1,5 @@
+import type { Difficulty, WeatherCondition } from './common';
+
 export interface Review {
   id: string;
   user: string;
@@ -17,12 +19,12 @@ export interface Campsite {
   };
   description: string;
   amenities: string[];
-  difficulty: 'easy' | 'moderate' | 'challenging' | 'expert';
+  difficulty: Difficulty;
   capacity: number;
   price_per_night: number;
   images: string[];
   weather: {
-    current: 'clear' | 'rain' | 'snow' | 'fog';
+    current: WeatherCondition;
     temperature: number;
     wind_speed: number;
     aurora_probability?: number;
@@ -40,7 +42,7 @@ export interface Campsite {
 
 export interface CampsiteFilter {
   country?: string;
-  difficulty?: string;
+  difficulty?: Difficulty;
   amenities?: string[];
   priceRange?: [number, number];
   capacity?: number;
@@ -51,6 +53,11 @@ export interface SearchFilters {
   dateRange: [Date | null, Date | null];
   guests: number;
   amenities: string[];
-  difficulty: string;
+  difficulty: 'any' | Difficulty;
   priceRange: [number, number];
 }
+
+export const CAMPSITE_DIFFICULTIES: Difficulty[] = ['easy', 'moderate', 'challenging', 'expert'];
+
+export const isDifficulty = (value: string): value is Difficulty =>
+  CAMPSITE_DIFFICULTIES.includes(value as Difficulty);

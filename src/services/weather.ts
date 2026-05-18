@@ -1,4 +1,4 @@
-import { WeatherData, WeatherParticle } from '@/types/weather';
+import { WeatherParticle } from '@/types/weather';
 
 export class WeatherService {
   private static instance: WeatherService;

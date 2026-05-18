@@ -1,294 +1,121 @@
-# Getting Started with WildScape Europe
+# Getting Started
 
-This guide will help you set up and run WildScape Europe on your local machine.
+This guide explains how to run, validate, and understand WildScape Europe locally. The application is a Vite-powered React and TypeScript SPA with deterministic local services, so a new contributor can run the full product without provisioning a back end.[1] [2]
 
-## 📋 Prerequisites
+> The fastest successful setup is `npm install`, `npm run dev`, and `npm run validate`. A Mapbox token is optional.
 
-Before you begin, ensure you have the following installed:
+## Prerequisites
 
-- **Node.js** (v18.0.0 or higher)
-- **npm** (v9.0.0 or higher) or **pnpm** (v8.0.0 or higher)
-- **Git** for version control
-- A modern code editor (VS Code recommended)
+| Tool | Required version | Notes |
+|---|---:|---|
+| Node.js | 18 or newer | Node 20 or newer is recommended for modern local development. |
+| npm | 9 or newer | The repository includes `package-lock.json`, so npm is the default package manager. |
+| Git | Current stable | Required for branch, commit, and contribution workflow. |
+| Browser | Current Chromium, Firefox, Safari, or Edge | WebGL-capable browsers provide the best visual experience. |
 
-### Checking Your Installation
-
-```bash
-node --version   # Should be v18.0.0+
-npm --version    # Should be v9.0.0+
-git --version    # Any recent version
-```
-
-## 🚀 Installation
-
-### 1. Clone the Repository
+## Installation
 
 ```bash
-# Using HTTPS
 git clone https://github.com/Alexi5000/WildScape-Europe.git
-
-# Or using SSH
-git clone git@github.com:Alexi5000/WildScape-Europe.git
-
-# Navigate to project directory
 cd WildScape-Europe
-```
-
-### 2. Install Dependencies
-
-```bash
-# Using npm
 npm install
-
-# Or using pnpm (faster)
-pnpm install
-
-# Or using yarn
-yarn install
-```
-
-### 3. Environment Configuration (Optional)
-
-The application works with mock data out of the box, but you can configure additional features:
-
-```bash
-# Copy environment template
-cp .env.example .env
-```
-
-Edit `.env` and add your API keys:
-
-```env
-# For enhanced map features
-VITE_MAPBOX_TOKEN=your_mapbox_token_here
-
-# For analytics (optional)
-VITE_GA_TRACKING_ID=your_ga_id
-```
-
-**Getting a Mapbox Token** (Optional):
-1. Sign up at [mapbox.com](https://account.mapbox.com/auth/signup/)
-2. Go to [Access Tokens](https://account.mapbox.com/access-tokens/)
-3. Copy your default public token or create a new one
-4. Add it to your `.env` file
-
-### 4. Start Development Server
-
-```bash
 npm run dev
 ```
 
-The application will open at `http://localhost:3000`
+The Vite development server prints the local URL in the terminal. If the default port is occupied, Vite will either choose another port or can be started explicitly with `npm run dev -- --port 5173`.
 
-## 🎯 First Run
+## Optional environment setup
 
-When you first launch the application:
-
-1. **Landing Page**: You'll see the hero section with aurora effects
-2. **Scroll Down**: Explore the parallax forest scenes
-3. **Search**: Click the search bar to find campsites
-4. **Filter**: Use filters to refine your search
-5. **Map**: Click on markers to view campsite details
-6. **Booking**: Select dates and proceed with booking
-
-## 🛠️ Development Tools
-
-### Available Scripts
+Create a local `.env` file only when you need a public Mapbox token for authenticated map rendering.
 
 ```bash
-# Start development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build locally
-npm run preview
-
-# Run linter
-npm run lint
-
-# Fix linting issues automatically
-npm run lint:fix
-
-# Type checking
-npm run type-check
-
-# Format code
-npm run format
-
-# Analyze bundle size
-npm run analyze
+cat > .env <<'EOF'
+VITE_MAPBOX_ACCESS_TOKEN=your_public_mapbox_token
+EOF
 ```
 
-### Recommended VS Code Extensions
+Vite only exposes variables prefixed with `VITE_` to the browser bundle.[3] Do not place private server credentials in `.env` for this frontend application.
 
-- **ESLint** - Real-time linting
-- **Prettier** - Code formatting
-- **Tailwind CSS IntelliSense** - Autocomplete for Tailwind
-- **TypeScript Vue Plugin (Volar)** - Enhanced TypeScript support
+## First product walkthrough
 
-### VS Code Settings
+| Step | What to verify |
+|---|---|
+| Landing | The mountain-themed hero, background effects, and primary calls to action render. |
+| Search | Search text and filters return a deterministic campsite list. |
+| Map | Map controls and selected campsite state respond without runtime errors. |
+| Details | Campsite detail views show pricing, location, amenities, weather, and booking actions. |
+| Booking | A mock booking returns a confirmation payload. |
+| Dashboard | User bookings, recommendations, and wishlist-related surfaces render. |
 
-Add to `.vscode/settings.json`:
+## Validation workflow
 
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "tailwindCSS.experimental.classRegex": [
-    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ]
-}
-```
-
-## 📁 Project Structure
-
-```
-wildscape-europe/
-├── src/
-│   ├── components/        # React components
-│   │   ├── Hero/         # Landing page components
-│   │   ├── Map/          # 3D map and terrain
-│   │   ├── Background/   # Visual effects
-│   │   ├── Search/       # Search and filters
-│   │   ├── Campsite/     # Campsite details
-│   │   └── UI/           # Reusable UI components
-│   ├── hooks/            # Custom React hooks
-│   ├── services/         # API services
-│   ├── store/            # State management (Zustand)
-│   ├── data/             # Mock data
-│   ├── types/            # TypeScript types
-│   ├── styles/           # Global styles
-│   ├── App.tsx           # Main app component
-│   └── main.tsx          # Entry point
-├── public/               # Static assets
-├── docs/                 # Documentation
-├── .env.example          # Environment template
-├── package.json          # Dependencies
-├── vite.config.ts        # Vite configuration
-├── tailwind.config.ts    # Tailwind configuration
-└── tsconfig.json         # TypeScript configuration
-```
-
-## 🔧 Configuration
-
-### Vite Configuration
-
-Key settings in `vite.config.ts`:
-
-- **Port**: 3000 (development), 4173 (preview)
-- **Hot Module Replacement**: Enabled
-- **Build Target**: ES2015
-- **Minification**: Terser (with console/debugger removal)
-- **Manual Chunks**: React, Three.js, Mapbox, Animations, UI libraries
-- **Alias**: `@/` points to `src/`
-- **Host**: Exposed for network access
-
-### Tailwind Configuration
-
-Customization in `tailwind.config.ts`:
-
-- **Custom Colors**: Forest theme (50-950 scale), earth tones, nature colors
-- **Custom Fonts**: Inter (sans), Poppins (display), JetBrains Mono (mono)
-- **Custom Animations**: Forest sway, leaf fall, mist float, aurora, glow, morph
-- **Dark Mode**: Class-based strategy
-- **Custom Utilities**: Glass-forest, backdrop-forest, scrollbar-forest, text-shadow
-- **Custom Shadows**: Forest-themed box shadows
-- **Breakpoints**: xs (475px), 3xl (1600px) in addition to defaults
-
-## 🌐 Browser Support
-
-WildScape Europe supports:
-
-- **Chrome/Edge**: Latest 2 versions
-- **Firefox**: Latest 2 versions
-- **Safari**: Latest 2 versions
-- **Mobile**: iOS Safari 14+, Chrome Android latest
-
-### Feature Detection
-
-The app gracefully degrades for older browsers:
-- 3D effects disabled if WebGL not supported
-- Simplified animations for lower-end devices
-- Fallback for custom CSS properties
-
-## 🐛 Troubleshooting
-
-### Port Already in Use
+Run the full repository gate before committing changes.
 
 ```bash
-# Kill process on port 3000
-npx kill-port 3000
-
-# On Windows
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-
-# On Mac/Linux
-lsof -ti:3000 | xargs kill -9
-
-# Or use different port
-npm run dev -- --port 5173
+npm run validate
 ```
 
-### Module Not Found Errors
+The validation command is intentionally strict. It runs type checking, linting, unit tests, and the production build so failures are caught before deployment.
 
-```bash
-# Clear node modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
+| Command | When to use it |
+|---|---|
+| `npm run type-check` | After changing TypeScript contracts, services, stores, or component props. |
+| `npm run lint` | After changing implementation code. |
+| `npm run test` | After changing services, stores, utilities, or components covered by tests. |
+| `npm run test:watch` | While actively developing tests. |
+| `npm run build` | Before deployment or when modifying build configuration. |
+| `npm run preview` | To inspect the production artifact locally. |
 
-### Build Errors
+## Where to start in the codebase
 
-```bash
-# Clear Vite cache
-rm -rf node_modules/.vite
-npm run dev
-```
+| Area | Entry point |
+|---|---|
+| Application orchestration | `src/App.tsx` |
+| Campsite domain types | `src/types/campsite.ts` |
+| API and response types | `src/types/api.ts` |
+| Repository layer | `src/services/repositories/` |
+| Compatibility facade | `src/services/mockBackend.ts` |
+| Enhanced product workflows | `src/services/enhancedApi.ts` |
+| Real-time events | `src/services/realTimeService.ts` |
+| Campsite state | `src/store/campsiteStore.ts` |
+| UI/map state | `src/store/uiStore.ts` |
+| Test setup | `src/test/setup.ts` |
 
-### Type Errors
+## Development expectations
 
-```bash
-# Regenerate types
-npm run type-check
-```
+Changes should preserve the SOLID boundaries documented in [`ARCHITECTURE.md`](ARCHITECTURE.md). UI components should not generate domain data or contain booking/weather business rules. New service behavior should be represented in typed contracts and tested through Vitest.[4]
 
-### Mapbox Not Loading
+| Change type | Expected follow-up |
+|---|---|
+| New domain behavior | Add or update service/repository tests. |
+| New store action | Add a store transition test. |
+| New component adapter | Add a Testing Library test for user-visible behavior. |
+| Type changes | Run `npm run type-check` and update docs if public contracts changed. |
+| Build configuration changes | Run `npm run build` and `npm run preview`. |
 
-- Check if `VITE_MAPBOX_TOKEN` is set correctly
-- Verify token has correct permissions
-- Check browser console for specific errors
-- The app works with mock data if token is missing
+## Troubleshooting
 
-## 📚 Next Steps
+| Problem | Resolution |
+|---|---|
+| Dependency install fails | Delete `node_modules`, keep `package-lock.json`, and run `npm install` again. |
+| Port is occupied | Start with `npm run dev -- --port 5173`. |
+| Browser API missing in tests | Add a targeted mock to `src/test/setup.ts`. |
+| TypeScript fails after data changes | Normalize data into the `Campsite` type instead of weakening types. |
+| Map does not show external tiles | Check `VITE_MAPBOX_ACCESS_TOKEN`, or continue with local deterministic service data. |
+| Production preview differs from dev | Run `npm run build`, then `npm run preview`, and inspect console output for bundled-runtime errors. |
 
-Now that you have the project running:
+## Next reading
 
-1. Read the [Architecture Guide](./ARCHITECTURE.md) to understand the codebase
-2. Check the [API Documentation](./API.md) for service integration
-3. Review [Contributing Guidelines](../CONTRIBUTING.md) before making changes
-4. Explore [Deployment Guide](./DEPLOYMENT.md) for production deployment
+| Document | Purpose |
+|---|---|
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Understand SOLID layers and data flow. |
+| [`API.md`](API.md) | Review service contracts and migration path to a real API. |
+| [`TESTING.md`](TESTING.md) | Understand the Vitest strategy and how to add coverage. |
+| [`DEPLOYMENT.md`](DEPLOYMENT.md) | Prepare a production static deployment. |
 
-## 💡 Tips
+## References
 
-- **Hot Reload**: Changes auto-refresh in development
-- **Fast Refresh**: React state preserved across updates
-- **Source Maps**: Full debugging support in browser DevTools
-- **Performance**: Use React DevTools Profiler to identify bottlenecks
-
-## ❓ Need Help?
-
-- Check [Troubleshooting Section](#-troubleshooting)
-- Review [API Documentation](./API.md)
-- Open an [Issue](https://github.com/Alexi5000/WildScape-Europe/issues)
-- Join our [Discussions](https://github.com/Alexi5000/WildScape-Europe/discussions)
-- Contact: Alex Cinovoj (TechTideAI)
-
-Happy coding! 🏕️🌲
-
+[1]: https://vite.dev/ "Vite Documentation"
+[2]: https://react.dev/ "React Documentation"
+[3]: https://vite.dev/guide/env-and-mode "Vite Environment Variables and Modes"
+[4]: https://vitest.dev/ "Vitest Documentation"

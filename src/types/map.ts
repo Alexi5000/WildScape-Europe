@@ -1,3 +1,5 @@
+import type { Campsite } from './campsite';
+
 export interface MapViewState {
   longitude: number;
   latitude: number;
@@ -6,11 +8,11 @@ export interface MapViewState {
   bearing: number;
 }
 
-export interface MapMarker {
+export interface MapMarker<TData = Campsite> {
   id: string;
   coordinates: [number, number];
-  type: 'campsite' | 'poi' | 'weather';
-  data: any;
+  type: 'campsite' | 'poi' | 'user_location';
+  data: TData;
 }
 
 export interface TerrainSettings {
