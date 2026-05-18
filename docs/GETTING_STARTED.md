@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide helps a new contributor run WildScape Europe, understand the repository layout, and verify Release 1.0 quality expectations.
+This guide helps a new contributor run WildScape Europe, understand the repository layout, and verify Release 1.0.0 quality expectations.
 
 ## Prerequisites
 
@@ -47,4 +47,4 @@ The hygiene command checks documentation style, TypeScript, ESLint, tests, and t
 | Lint failures | Run `npm run lint` and fix the first warning or error before rerunning. |
 | Test failures | Run `npm run test` and inspect the failing service or store behavior. |
 | Build failures | Run `npm run build` after type and lint pass. |
-| Docs check failures | Remove em dashes, remove placeholder language, or restore a required release document. |
+| Docs check failures | Remove em dashes, remove incomplete release wording, or restore a required release document. |

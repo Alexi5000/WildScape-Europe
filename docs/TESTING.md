@@ -9,7 +9,7 @@ WildScape Europe uses a layered test strategy that protects service contracts, s
 | `npm run test` | Runs the complete Vitest suite once. |
 | `npm run test:watch` | Runs Vitest in watch mode during development. |
 | `npm run test:coverage` | Runs Vitest with coverage output. |
-| `npm run test:ci` | Runs Vitest once with the Release 1.0 coverage reporter. |
+| `npm run test:ci` | Runs Vitest once with the Release 1.0.0 coverage reporter. |
 | `npm run validate` | Runs docs, types, lint, tests, and production build. |
 | `npm run hygiene` | Runs the complete CloseLight release gate. |
 
@@ -26,7 +26,7 @@ WildScape Europe uses a layered test strategy that protects service contracts, s
 
 ## Coverage reporting
 
-The Release 1.0 coverage reporter uses the Vitest V8 provider and focuses on the tested service, store, and reusable UI adapter surface. This keeps coverage actionable instead of mixing deterministic logic coverage with animation-heavy visual components that are better protected by interaction tests, accessibility reviews, and visual QA.
+The Release 1.0.0 coverage reporter uses the Vitest V8 provider and focuses on the tested service, store, and reusable UI adapter surface. This keeps coverage actionable instead of mixing deterministic logic coverage with animation-heavy visual components that are better protected by interaction tests, accessibility reviews, and visual QA.
 
 | Coverage scope | Reason |
 |---|---|

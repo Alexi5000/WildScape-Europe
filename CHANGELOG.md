@@ -11,7 +11,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ### Added
 
-Release 1.0 adds a complete production-quality repository layer around the WildScape Europe app. The release includes animated README and release graphics, SOLID service repositories, typed API and event contracts, deterministic mock data flows, Vitest service and store tests, documentation hygiene checks, and a focused documentation suite for maintainers.
+Release 1.0.0 adds a complete production-quality repository layer around the WildScape Europe app. The release includes animated README and release graphics, SOLID service repositories, typed API and event contracts, deterministic seeded production data flows, Vitest service and store tests, documentation hygiene checks, and a focused documentation suite for maintainers.
 
 | Area | Added capability |
 |---|---|
@@ -19,7 +19,7 @@ Release 1.0 adds a complete production-quality repository layer around the WildS
 | Architecture | Campsite, booking, user, weather, map, real-time, enhanced API, store, and UI responsibilities are separated into focused modules. |
 | Testing | Automated service, state, filtering, booking, weather, and UI adapter tests run with Vitest and Testing Library. |
 | Documentation | README, release note, architecture, API, testing, quality, hygiene, deployment, onboarding, and maintainer guides. |
-| Hygiene | `npm run docs:check`, `npm run validate`, and `npm run hygiene` provide a repeatable Release 1.0 gate. |
+| Hygiene | `npm run docs:check`, `npm run validate`, and `npm run hygiene` provide a repeatable Release 1.0.0 gate. |
 
 ### Changed
 
@@ -27,7 +27,7 @@ The documentation set has been reduced to a curated set of current guides. Legac
 
 ### Fixed
 
-Release 1.0 fixes strict TypeScript gaps, broad untyped service contracts, missing test tooling, stale setup notes, and inconsistent documentation claims.
+Release 1.0.0 fixes strict TypeScript gaps, broad untyped service contracts, missing test tooling, stale setup notes, and inconsistent documentation claims.
 
 ### Release gate
 

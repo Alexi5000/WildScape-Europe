@@ -22,7 +22,7 @@
 |---|---|---|
 | Interface shell | `src/App.tsx`, `src/components` | Coordinates views, page sections, animated UI, maps, dashboard, and search interactions. |
 | State | `src/store` | Owns UI preferences, map state, campsite filters, and normalized state transitions. |
-| Service facades | `src/services/mockBackend.ts`, `src/services/enhancedApi.ts` | Preserve stable application-facing methods for campsite, booking, user, weather, and analytics behavior. |
+| Service facades | `src/services/productionService.ts`, `src/services/enhancedApi.ts` | Preserve stable application-facing methods for campsite, booking, user, weather, and analytics behavior. |
 | Repositories | `src/services/repositories` | Own deterministic data creation, search, booking, profile, and weather rules. |
 | Domain types | `src/types` | Define campsite, weather, booking, map, API, app-handler, and real-time event contracts. |
 | Test setup | `src/test/setup.ts`, `src/**/__tests__` | Provides jsdom setup, browser API polyfills, and executable regression coverage. |

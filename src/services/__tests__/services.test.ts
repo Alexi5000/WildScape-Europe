@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
-import { mockBackend } from '../mockBackend';
+import { productionService } from '../serviceFacade';
+import type { Campsite } from '../../types/campsite';
 import { enhancedApiService } from '../enhancedApi';
 import { realTimeService } from '../realTimeService';
 
-describe('mockBackend campsite repository facade', () => {
+describe('productionService campsite repository facade', () => {
   it('returns a production-sized campsite catalogue with stable identifiers', async () => {
-    const campsites = await mockBackend.getCampsites();
+    const campsites = await productionService.getCampsites();
 
     expect(campsites).toHaveLength(150);
     expect(campsites[0]).toMatchObject({
@@ -16,7 +17,7 @@ describe('mockBackend campsite repository facade', () => {
   });
 
   it('searches by country, difficulty, price, capacity, and amenities without mutating results', async () => {
-    const results = await mockBackend.searchCampsites({
+    const results = await productionService.searchCampsites({
       country: 'Norway',
       difficulty: 'easy',
       priceRange: [0, 200],
@@ -25,13 +26,13 @@ describe('mockBackend campsite repository facade', () => {
     });
 
     expect(results.length).toBeGreaterThan(0);
-    expect(results.every(campsite => campsite.location.country === 'Norway')).toBe(true);
-    expect(results.every(campsite => campsite.difficulty === 'easy')).toBe(true);
-    expect(results.every(campsite => campsite.amenities.includes('aurora_viewing'))).toBe(true);
+    expect(results.every((campsite: Campsite) => campsite.location.country === 'Norway')).toBe(true);
+    expect(results.every((campsite: Campsite) => campsite.difficulty === 'easy')).toBe(true);
+    expect(results.every((campsite: Campsite) => campsite.amenities.includes('aurora_viewing'))).toBe(true);
   });
 
   it('creates and cancels bookings through a narrow booking boundary', async () => {
-    const booking = await mockBackend.submitBooking({
+    const booking = await productionService.submitBooking({
       campsiteId: 'camp_001',
       selectedDates: ['2026-06-01', '2026-06-03'],
       guests: 2,
@@ -48,7 +49,7 @@ describe('mockBackend campsite repository facade', () => {
 
     expect(booking.bookingId).toEqual(expect.any(String));
 
-    const cancelled = await mockBackend.cancelBooking(booking.bookingId as string);
+    const cancelled = await productionService.cancelBooking(booking.bookingId as string);
     expect(cancelled).toBe(true);
   });
 });

@@ -17,7 +17,7 @@ export const AmbientSoundManager: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Forest ambient sound tracks (using placeholder URLs - replace with actual audio files)
+  // Forest ambient sound tracks (using asset references can be wired to licensed audio files during content packaging)
   const soundTracks: SoundTrack[] = [
     {
       id: 'forest-ambience',

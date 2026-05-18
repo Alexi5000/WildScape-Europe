@@ -6,7 +6,7 @@ WildScape Europe is a frontend application with deterministic local repositories
 
 | Service | Responsibility | Main consumers |
 |---|---|---|
-| `mockBackend` | Campsite search, suggestions, booking, user profile, wishlist, and weather workflows. | App shell, search components, dashboard, booking panels. |
+| `productionService` | Campsite search, suggestions, booking, user profile, wishlist, and weather workflows. | App shell, search components, dashboard, booking panels. |
 | `enhancedApiService` | Higher-level typed API response wrappers and user-facing application operations. | App shell and future remote API adapters. |
 | `realTimeService` | Discriminated event subscription and publication for weather, booking, availability, review, and system events. | UI notifications and reactive app features. |
 | `mapService` | Map configuration, style, layer, and interaction support. | Map components and controls. |

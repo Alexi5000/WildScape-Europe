@@ -1,93 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
-  <title id="title">WildScape Europe Release 1.0 animated hero</title>
-  <desc id="desc">Animated European wilderness landscape with aurora, route lines, campsite markers, and release badges.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">WildScape Europe Release 1.0 app experience hero</title>
+  <desc id="desc">Animated camping discovery scene showing campsite search, weather, aurora, map exploration, and booking flow across Europe.</desc>
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#071629"/>
-      <stop offset="44%" stop-color="#0f3b4c"/>
-      <stop offset="100%" stop-color="#12331f"/>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071826"/>
+      <stop offset="45%" stop-color="#123b3f"/>
+      <stop offset="100%" stop-color="#1f5f4a"/>
     </linearGradient>
     <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#2ef7a0" stop-opacity="0"/>
-      <stop offset="35%" stop-color="#38f8c7" stop-opacity="0.75"/>
-      <stop offset="70%" stop-color="#7d7cff" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#2ef7a0" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#7cf7c5" stop-opacity="0.15"/>
+      <stop offset="45%" stop-color="#b8f7ff" stop-opacity="0.76"/>
+      <stop offset="100%" stop-color="#8aff8a" stop-opacity="0.2"/>
     </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <style>
-      .title { font: 800 54px Inter, Segoe UI, Arial, sans-serif; fill: #f7fff6; letter-spacing: -1px; }
-      .subtitle { font: 500 21px Inter, Segoe UI, Arial, sans-serif; fill: #d7f7e6; }
-      .badge { font: 700 16px Inter, Segoe UI, Arial, sans-serif; fill: #092319; }
-      .small { font: 700 13px Inter, Segoe UI, Arial, sans-serif; fill: #dfffee; }
-      .path { stroke-dasharray: 14 12; animation: dash 5s linear infinite; }
-      .pulse { transform-origin: center; animation: pulse 2.4s ease-in-out infinite; }
-      .float { animation: float 5.5s ease-in-out infinite; }
-      .aurora { animation: wave 8s ease-in-out infinite alternate; }
-      .spark { animation: blink 2.6s ease-in-out infinite; }
-      @keyframes dash { to { stroke-dashoffset: -160; } }
-      @keyframes pulse { 0%, 100% { opacity: .72; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
-      @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-      @keyframes wave { from { transform: translateX(-30px) skewX(-8deg); opacity: .55; } to { transform: translateX(42px) skewX(8deg); opacity: .9; } }
-      @keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+      .title{font:800 58px Inter,Segoe UI,sans-serif;fill:#f7fff9;letter-spacing:-1px}.subtitle{font:500 22px Inter,Segoe UI,sans-serif;fill:#c7f8df}.panel{fill:rgba(7,24,38,.78);stroke:#8be8bc;stroke-width:1.5}.label{font:700 18px Inter,Segoe UI,sans-serif;fill:#f7fff9}.small{font:500 13px Inter,Segoe UI,sans-serif;fill:#bfe9d0}.route{fill:none;stroke:#9df7c8;stroke-width:5;stroke-linecap:round;stroke-dasharray:16 16;filter:url(#glow)}.pulse{animation:pulse 2.8s ease-in-out infinite}.drift{animation:drift 8s ease-in-out infinite alternate}.float{animation:float 5s ease-in-out infinite alternate}.draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 6s ease-in-out infinite}.slide{animation:slide 7s ease-in-out infinite}.blink{animation:blink 2s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:.48;transform:scale(.96);transform-origin:center}50%{opacity:1;transform:scale(1.05);transform-origin:center}}@keyframes drift{0%{transform:translateX(-24px)}100%{transform:translateX(28px)}}@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-16px)}}@keyframes draw{0%{stroke-dashoffset:900;opacity:.25}45%,70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-900;opacity:.25}}@keyframes slide{0%,100%{transform:translateX(0)}50%{transform:translateX(34px)}}@keyframes blink{0%,100%{opacity:.45}50%{opacity:1}}
     </style>
   </defs>
-  <rect width="1280" height="420" fill="url(#sky)"/>
-  <g class="aurora" filter="url(#glow)">
-    <path d="M-60 95 C130 20 210 135 380 68 C560 -4 690 123 860 54 C1020 -10 1135 84 1340 31 L1340 150 C1140 205 1010 118 870 178 C680 255 520 132 360 212 C160 310 40 170 -60 250 Z" fill="url(#aurora)" opacity="0.85"/>
-    <path d="M-20 135 C145 80 250 177 420 105 C600 32 720 182 910 94 C1050 30 1170 142 1320 82" fill="none" stroke="#cbfff1" stroke-width="3" opacity="0.45"/>
+  <rect width="1200" height="460" rx="34" fill="url(#sky)"/>
+  <path class="drift" d="M-80 92 C160 8 260 128 438 62 C626 -8 742 90 930 42 C1082 4 1192 44 1310 18 L1310 172 C1070 118 994 184 808 120 C626 58 512 158 326 108 C146 58 42 142 -80 98 Z" fill="url(#aurora)" filter="url(#glow)"/>
+  <circle class="pulse" cx="1015" cy="86" r="34" fill="#e8fff3" opacity=".82"/>
+  <g opacity=".8">
+    <circle cx="128" cy="70" r="2" fill="#ecfff5"/><circle cx="270" cy="38" r="1.8" fill="#ecfff5"/><circle cx="418" cy="92" r="2.2" fill="#ecfff5"/><circle cx="742" cy="60" r="1.7" fill="#ecfff5"/><circle cx="888" cy="112" r="2" fill="#ecfff5"/>
   </g>
-  <g opacity="0.9">
-    <circle class="spark" cx="90" cy="58" r="2.4" fill="#ffffff"/>
-    <circle class="spark" cx="260" cy="115" r="1.8" fill="#ffffff" style="animation-delay:.4s"/>
-    <circle class="spark" cx="980" cy="54" r="2.2" fill="#ffffff" style="animation-delay:.8s"/>
-    <circle class="spark" cx="1130" cy="132" r="2" fill="#ffffff" style="animation-delay:1.2s"/>
-  </g>
-  <path d="M0 330 L125 240 L230 315 L375 190 L510 315 L660 210 L780 318 L940 175 L1110 318 L1280 210 L1280 420 L0 420 Z" fill="#102d20"/>
-  <path d="M0 370 L150 285 L290 372 L430 255 L590 370 L760 285 L910 370 L1070 245 L1280 340 L1280 420 L0 420 Z" fill="#17422b"/>
-  <path d="M130 336 C275 300 425 344 575 316 C735 287 865 335 1005 300 C1115 271 1205 292 1270 270" class="path" fill="none" stroke="#a7f3d0" stroke-width="4" opacity="0.8"/>
-  <g class="pulse" transform="translate(302 314)">
-    <circle r="22" fill="#34d399" opacity="0.2"/>
-    <circle r="9" fill="#34d399"/>
-  </g>
-  <g class="pulse" transform="translate(635 306)" style="animation-delay:.45s">
-    <circle r="24" fill="#fde68a" opacity="0.22"/>
-    <circle r="9" fill="#fde68a"/>
-  </g>
-  <g class="pulse" transform="translate(980 300)" style="animation-delay:.9s">
-    <circle r="25" fill="#93c5fd" opacity="0.24"/>
-    <circle r="10" fill="#93c5fd"/>
-  </g>
-  <g transform="translate(70 78)">
+  <g transform="translate(58 52)">
     <text class="title" x="0" y="0">WildScape Europe</text>
-    <text class="subtitle" x="3" y="44">Release 1.0: typed wilderness discovery, immersive maps, validated services, and CloseLight repo hygiene</text>
-    <g class="float" transform="translate(0 82)">
-      <rect x="0" y="0" rx="18" width="150" height="38" fill="#a7f3d0"/>
-      <text class="badge" x="21" y="25">v1.0 Stable</text>
+    <text class="subtitle" x="3" y="42">Release 1.0.0: search wild campsites, read weather, explore maps, and reserve the trip</text>
+  </g>
+  <g transform="translate(72 154)" class="float">
+    <rect class="panel" width="282" height="180" rx="24"/>
+    <text class="label" x="24" y="38">Discover campsites</text>
+    <text class="small" x="24" y="66">Search Norway, Alps, lakes, forests</text>
+    <rect x="24" y="88" width="214" height="28" rx="14" fill="#e9fff2" opacity=".95"/>
+    <text x="42" y="108" font-family="Inter,Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#123b3f">aurora friendly cabin</text>
+    <circle class="blink" cx="249" cy="102" r="7" fill="#34d399"/>
+    <text class="small" x="24" y="145">150 curated European stays</text>
+  </g>
+  <g transform="translate(424 128)">
+    <path class="draw route" d="M16 222 C110 102 204 182 292 72 C374 -28 482 28 562 14"/>
+    <g class="pulse"><circle cx="16" cy="222" r="15" fill="#34d399"/><text x="-7" y="258" class="small">search</text></g>
+    <g class="pulse"><circle cx="292" cy="72" r="15" fill="#facc15"/><text x="257" y="108" class="small">weather</text></g>
+    <g class="pulse"><circle cx="562" cy="14" r="15" fill="#fb7185"/><text x="529" y="50" class="small">reserve</text></g>
+  </g>
+  <g transform="translate(810 144)" class="slide">
+    <rect class="panel" width="300" height="214" rx="26"/>
+    <text class="label" x="24" y="38">Trip cockpit</text>
+    <text class="small" x="24" y="66">Map controls, booking state, and alerts</text>
+    <g transform="translate(24 88)">
+      <rect width="252" height="32" rx="16" fill="#0f2e32" stroke="#7cf7c5"/>
+      <text class="small" x="18" y="22">Live weather: clear skies</text>
+      <circle class="blink" cx="224" cy="16" r="8" fill="#facc15"/>
     </g>
-    <g class="float" transform="translate(170 82)" style="animation-delay:.35s">
-      <rect x="0" y="0" rx="18" width="164" height="38" fill="#bae6fd"/>
-      <text class="badge" x="20" y="25">12 Tests Pass</text>
-    </g>
-    <g class="float" transform="translate(354 82)" style="animation-delay:.7s">
-      <rect x="0" y="0" rx="18" width="196" height="38" fill="#fef3c7"/>
-      <text class="badge" x="20" y="25">Zero Lint Warnings</text>
+    <g transform="translate(24 132)">
+      <rect width="118" height="44" rx="14" fill="#34d399" opacity=".9"/>
+      <text x="22" y="28" font-family="Inter,Segoe UI,sans-serif" font-size="14" font-weight="800" fill="#06251f">Book stay</text>
+      <rect x="134" width="118" height="44" rx="14" fill="#143f41" stroke="#8be8bc"/>
+      <text class="small" x="154" y="28">Dashboard</text>
     </g>
   </g>
-  <g transform="translate(875 86)">
-    <rect x="0" y="0" width="300" height="150" rx="28" fill="#06131f" opacity="0.72" stroke="#6ee7b7"/>
-    <text class="small" x="28" y="42">SOLID Services</text>
-    <text class="small" x="28" y="73">Typed Repositories</text>
-    <text class="small" x="28" y="104">Vitest Quality Gate</text>
-    <text class="small" x="28" y="135">Release Docs Ready</text>
-    <circle class="pulse" cx="238" cy="38" r="9" fill="#34d399"/>
-    <circle class="pulse" cx="238" cy="69" r="9" fill="#60a5fa" style="animation-delay:.35s"/>
-    <circle class="pulse" cx="238" cy="100" r="9" fill="#fbbf24" style="animation-delay:.7s"/>
-    <circle class="pulse" cx="238" cy="131" r="9" fill="#f472b6" style="animation-delay:1.05s"/>
+  <path d="M0 358 C132 304 226 330 350 292 C520 238 668 338 836 276 C990 218 1080 286 1200 230 L1200 460 L0 460 Z" fill="#09291f" opacity=".9"/>
+  <path d="M0 394 C172 342 282 386 424 342 C560 300 688 390 848 334 C1010 276 1104 350 1200 306 L1200 460 L0 460 Z" fill="#051c18"/>
+  <g fill="#183c2d" opacity=".95">
+    <path d="M96 388 l28 -72 l28 72 h-18 l22 50 h-64 l22 -50z"/><path d="M206 406 l22 -56 l22 56 h-14 l18 42 h-52 l18 -42z"/><path d="M1030 390 l30 -78 l30 78 h-19 l24 54 h-70 l24 -54z"/><path d="M930 410 l20 -52 l20 52 h-13 l17 38 h-48 l17 -38z"/>
   </g>
 </svg>

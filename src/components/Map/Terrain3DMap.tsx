@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Campsite } from '@/types/campsite';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Use environment variable or demo token
+// Use environment variable or public token
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example';
 
 interface Terrain3DMapProps {

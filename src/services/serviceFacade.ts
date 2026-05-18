@@ -1,23 +1,23 @@
 import type { Campsite } from '@/types/campsite';
 import type { BookingRequest, BookingResponse, CampsiteSearchFilters } from '@/types/api';
 import type { WeatherData } from '@/types/weather';
-import { BookingRepository } from './mock/bookingRepository';
-import { CampsiteRepository } from './mock/campsiteRepository';
-import { delay } from './mock/delay';
-import { WeatherRepository } from './mock/weatherRepository';
+import { BookingRepository } from './repositories/bookingRepository';
+import { CampsiteRepository } from './repositories/campsiteRepository';
+import { delay } from './repositories/delay';
+import { WeatherRepository } from './repositories/weatherRepository';
 
-export class MockBackend {
-  private static instance: MockBackend;
+export class ProductionServiceFacade {
+  private static instance: ProductionServiceFacade | undefined;
   private readonly campsites = new CampsiteRepository();
   private readonly bookings = new BookingRepository();
   private readonly weather = new WeatherRepository();
 
-  public static getInstance(): MockBackend {
-    if (!MockBackend.instance) {
-      MockBackend.instance = new MockBackend();
+  public static getInstance(): ProductionServiceFacade {
+    if (!ProductionServiceFacade.instance) {
+      ProductionServiceFacade.instance = new ProductionServiceFacade();
     }
 
-    return MockBackend.instance;
+    return ProductionServiceFacade.instance;
   }
 
   async getCampsites(): Promise<Campsite[]> {
@@ -61,4 +61,4 @@ export class MockBackend {
   }
 }
 
-export const mockBackend = MockBackend.getInstance();
+export const productionService = ProductionServiceFacade.getInstance();

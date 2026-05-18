@@ -8,6 +8,7 @@ const requiredFiles = [
   'SUPPORT.md',
   'docs/README.md',
   'docs/RELEASE_1_0.md',
+  'docs/SESSION_AND_DATA.md',
   'docs/ARCHITECTURE.md',
   'docs/API.md',
   'docs/TESTING.md',
@@ -39,7 +40,7 @@ const walk = (target) => {
 const markdownFiles = markdownRoots.flatMap((entry) => walk(entry));
 for (const file of markdownFiles) {
   const text = fs.readFileSync(file, 'utf8');
-  if (text.includes('—')) {
+  if (text.includes('\u2014')) {
     failures.push(`Em dash found in ${file}`);
   }
   if (/TODO|TBD|coming soon/i.test(text)) {
@@ -48,7 +49,8 @@ for (const file of markdownFiles) {
 }
 
 const readme = fs.existsSync('README.md') ? fs.readFileSync('README.md', 'utf8') : '';
-for (const expected of ['docs/assets/wildscape-release-hero.svg', 'docs/RELEASE_1_0.md', 'docs/REPO_HYGIENE.md', 'npm run hygiene']) {
+for (const expected of ['docs/assets/wildscape-release-hero.svg', 'docs/RELEASE_1_0.md',
+  'docs/SESSION_AND_DATA.md', 'docs/REPO_HYGIENE.md', 'npm run hygiene']) {
   if (!readme.includes(expected)) {
     failures.push(`README.md does not reference ${expected}`);
   }

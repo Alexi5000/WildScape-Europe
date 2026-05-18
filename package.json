@@ -36,7 +36,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "validate": "npm run docs:check && npm run type-check && npm run lint && npm run test && npm run build",
+    "validate": "npm run docs:check && npm run type-check && npm run lint && npm run test:ci && npm run build",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "analyze": "npx vite-bundle-analyzer",
     "docs:check": "node scripts/check-docs.mjs",
@@ -87,5 +87,10 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
+  },
+  "release": {
+    "current": "1.0.0",
+    "channel": "stable",
+    "codename": "Release 1.0"
   }
 }

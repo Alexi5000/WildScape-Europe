@@ -1,7 +1,7 @@
-# WildScape Europe Release 1.0
+# WildScape Europe Release 1.0.0
 
 <p align="center">
-  <img src="assets/wildscape-release-hero.svg" alt="Animated WildScape Europe Release 1.0 hero" width="100%" />
+  <img src="assets/wildscape-release-hero.svg" alt="Animated WildScape Europe Release 1.0.0 hero" width="100%" />
 </p>
 
 **Release 1.0** is the stable production-quality milestone for WildScape Europe. It packages the immersive camping discovery experience with strict typing, SOLID service decomposition, automated tests, animated README assets, and CloseLight Repo Hygiene.
@@ -21,7 +21,7 @@
 
 ## What shipped
 
-Release 1.0 includes the complete campsite discovery loop. The application supports typed campsite search, filter translation, user bookings, seeded profile behavior, weather and aurora data, real-time events, map controls, and immersive animated interface layers. The service layer is split by responsibility so each module owns one domain concern and the top-level facades remain stable for UI consumers.
+Release 1.0.0 includes the complete campsite discovery loop. The application supports typed campsite search, filter translation, user bookings, seeded profile behavior, weather and aurora data, real-time events, map controls, and immersive animated interface layers. The service layer is split by responsibility so each module owns one domain concern and the top-level facades remain stable for UI consumers.
 
 | Capability | Release detail |
 |---|---|
@@ -33,7 +33,7 @@ Release 1.0 includes the complete campsite discovery loop. The application suppo
 
 ## Validation evidence
 
-The Release 1.0 validation gate is designed to be run locally before every push and before every tagged release.
+The Release 1.0.0 validation gate is designed to be run locally before every push and before every tagged release.
 
 ```bash
 npm run hygiene

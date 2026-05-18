@@ -17,10 +17,10 @@ import type {
   WeatherForecastDay
 } from '@/types/api';
 import type { WeatherData } from '@/types/weather';
-import { mockBackend } from './mockBackend';
-import { UserRepository } from './mock/userRepository';
-import { WeatherRepository } from './mock/weatherRepository';
-import { delay } from './mock/delay';
+import { productionService } from './serviceFacade';
+import { UserRepository } from './repositories/userRepository';
+import { WeatherRepository } from './repositories/weatherRepository';
+import { delay } from './repositories/delay';
 
 export type {
   AuroraForecast,
@@ -56,11 +56,11 @@ export class EnhancedApiService {
   }
 
   async getCampsites(): Promise<Campsite[]> {
-    return mockBackend.getCampsites();
+    return productionService.getCampsites();
   }
 
   async getCampsiteById(id: string): Promise<Campsite | null> {
-    const campsite = await mockBackend.getCampsiteById(id);
+    const campsite = await productionService.getCampsiteById(id);
     if (campsite) {
       this.addToRecentlyViewed(id);
     }
@@ -71,7 +71,7 @@ export class EnhancedApiService {
     if (filters.query) {
       this.addToSearchHistory(filters.query);
     }
-    return mockBackend.searchCampsites(filters);
+    return productionService.searchCampsites(filters);
   }
 
   async getFeaturedCampsites(): Promise<Campsite[]> {
@@ -98,15 +98,15 @@ export class EnhancedApiService {
   }
 
   async submitBooking(bookingDetails: BookingRequest): Promise<BookingResponse> {
-    return mockBackend.submitBooking(bookingDetails);
+    return productionService.submitBooking(bookingDetails);
   }
 
   async getUserBookings(userId: string): Promise<BookingSummary[]> {
-    return mockBackend.getUserBookings(userId);
+    return productionService.getUserBookings(userId);
   }
 
   async cancelBooking(bookingId: string): Promise<OperationResult> {
-    const cancelled = await mockBackend.cancelBooking(bookingId);
+    const cancelled = await productionService.cancelBooking(bookingId);
     return {
       success: cancelled,
       message: cancelled ? 'Booking cancelled successfully. Refund will be processed within 3-5 business days.' : `Booking ${bookingId} could not be found.`
@@ -114,7 +114,7 @@ export class EnhancedApiService {
   }
 
   async getWeatherData(coordinates: [number, number]): Promise<WeatherData> {
-    return mockBackend.getWeatherData(coordinates);
+    return productionService.getWeatherData(coordinates);
   }
 
   async getWeatherForecast(coordinates: [number, number], days = 7): Promise<WeatherForecastDay[]> {
@@ -128,7 +128,7 @@ export class EnhancedApiService {
   }
 
   async getSuggestions(query: string): Promise<string[]> {
-    return mockBackend.getSuggestions(query);
+    return productionService.getSuggestions(query);
   }
 
   async getTrendingSearches(): Promise<TrendingSearch[]> {
