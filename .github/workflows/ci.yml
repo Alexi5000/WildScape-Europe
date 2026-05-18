@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
   CACHE_VERSION: 'v1'
 
 jobs:
@@ -117,7 +117,7 @@ jobs:
     needs: [lint, typecheck]
     strategy:
       matrix:
-        node-version: ['18', '20']
+        node-version: ['20']
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -144,14 +144,14 @@ jobs:
           du -sh dist/
           echo "Build size: $(du -sh dist/ | cut -f1)"
       - name: Upload Build Artifacts
-        if: matrix.node-version == '18'
+        if: matrix.node-version == '20'
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/
           retention-days: 7
       - name: Cache Build
-        if: matrix.node-version == '18'
+        if: matrix.node-version == '20'
         uses: actions/cache@v3
         with:
           path: dist/
