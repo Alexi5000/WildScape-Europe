@@ -36,9 +36,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "validate": "npm run type-check && npm run lint && npm run test && npm run build",
+    "validate": "npm run docs:check && npm run type-check && npm run lint && npm run test && npm run build",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "analyze": "npx vite-bundle-analyzer"
+    "analyze": "npx vite-bundle-analyzer",
+    "docs:check": "node scripts/check-docs.mjs",
+    "hygiene": "npm run validate",
+    "test:ci": "vitest run --coverage"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",
@@ -67,6 +70,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.1.0",
+    "@vitest/coverage-v8": "^4.1.6",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

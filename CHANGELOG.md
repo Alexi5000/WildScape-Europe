@@ -1,78 +1,47 @@
 # Changelog
 
-All notable changes to WildScape Europe will be documented in this file.
+All notable changes to WildScape Europe are documented in this file.
 
-**Developer**: Alex Cinovoj (TechTideAI)  
+**Developer**: Alex Cinovoj, TechTideAI  
 **Repository**: https://github.com/Alexi5000/WildScape-Europe
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and the project version follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-- Initial documentation structure
-
-## [1.0.0] - 2024-10-12
+## [1.0.0] - 2026-05-18
 
 ### Added
-- 3D terrain visualization with Mapbox GL
-- Dynamic weather particle systems (rain, snow, fog)
-- Aurora background effects with custom shaders
-- Parallax forest scenes with depth layers
-- Interactive campsite search and filtering
-- Morphing search bar with fluid animations
-- Campsite detail pages with virtual tours
-- Booking panel with date selection
-- User dashboard for managing reservations
-- Real-time weather integration
-- Responsive design for all devices
-- Dark mode support with theme toggle
-- Ambient sound manager for immersive experience
-- Accessibility features and keyboard navigation
-- 500+ European campsite locations
-- Advanced filter system (amenities, terrain, activities)
-- Engagement metrics and analytics
-- Notification center for user alerts
-- Loading states with forest-themed spinners
-- Optimized image loading with lazy loading
-- Performance monitoring and optimization
 
-### Technical
-- React 18.2 with TypeScript 5.2
-- Vite 4.5 build system with manual chunking
-- Three.js 0.157 + React Three Fiber 8.15 + Drei 9.88
-- Framer Motion 10.16 + GSAP 3.12 for animations
-- Zustand 4.4 for state management
-- Tailwind CSS 3.3 with custom forest theme
-- Mapbox GL 2.15 for interactive maps
-- Lucide React 0.263 for icons
-- Lenis 1.3 for smooth scrolling
-- React Router 6.8 for routing
-- ESLint + Prettier + TypeScript strict mode
-- Terser minification with console removal
-- ES2015 build target for compatibility
+Release 1.0 adds a complete production-quality repository layer around the WildScape Europe app. The release includes animated README and release graphics, SOLID service repositories, typed API and event contracts, deterministic mock data flows, Vitest service and store tests, documentation hygiene checks, and a focused documentation suite for maintainers.
 
-### Performance
-- Lighthouse score: 90+ across all categories
-- First Contentful Paint: < 1.5s
-- Largest Contentful Paint: < 2.5s
-- Time to Interactive: < 3.5s
-- Optimized bundle size with code splitting
-- Lazy loading for images and 3D assets
-- Service worker for offline capability
+| Area | Added capability |
+|---|---|
+| Product | Immersive campsite discovery, animated wilderness graphics, maps, booking simulation, dashboard state, weather, and aurora context. |
+| Architecture | Campsite, booking, user, weather, map, real-time, enhanced API, store, and UI responsibilities are separated into focused modules. |
+| Testing | Automated service, state, filtering, booking, weather, and UI adapter tests run with Vitest and Testing Library. |
+| Documentation | README, release note, architecture, API, testing, quality, hygiene, deployment, onboarding, and maintainer guides. |
+| Hygiene | `npm run docs:check`, `npm run validate`, and `npm run hygiene` provide a repeatable Release 1.0 gate. |
 
-## Release Types
+### Changed
 
-- **Added** - New features
-- **Changed** - Changes in existing functionality
-- **Deprecated** - Soon-to-be removed features
-- **Removed** - Removed features
-- **Fixed** - Bug fixes
-- **Security** - Vulnerability fixes
+The documentation set has been reduced to a curated set of current guides. Legacy overlapping docs were removed so the repo remains light and easy to navigate. Validation now includes documentation style checks before TypeScript, lint, tests, and build.
 
----
+### Fixed
 
-**Developed by**: Alex Cinovoj & TechTideAI  
-For detailed changes, see [GitHub Releases](https://github.com/Alexi5000/WildScape-Europe/releases)
+Release 1.0 fixes strict TypeScript gaps, broad untyped service contracts, missing test tooling, stale setup notes, and inconsistent documentation claims.
 
+### Release gate
+
+```bash
+npm run hygiene
+```
+
+## Release types
+
+| Type | Meaning |
+|---|---|
+| Added | New features or documentation. |
+| Changed | Changes in existing functionality. |
+| Deprecated | Features planned for removal. |
+| Removed | Removed features or files. |
+| Fixed | Bug fixes or correctness repairs. |
+| Security | Vulnerability fixes or security hardening. |

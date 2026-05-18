@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="360" viewBox="0 0 1180 360" role="img" aria-labelledby="title desc">
+  <title id="title">WildScape Europe animated system flow</title>
+  <desc id="desc">Animated data flow from interface to state, repositories, services, tests, and release gate.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#eff6ff"/>
+    </linearGradient>
+    <style>
+      .card { fill: url(#panel); stroke: #0f766e; stroke-width: 2; }
+      .label { font: 800 20px Inter, Segoe UI, Arial, sans-serif; fill: #0f172a; }
+      .copy { font: 500 14px Inter, Segoe UI, Arial, sans-serif; fill: #334155; }
+      .wire { fill: none; stroke: #14b8a6; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 10 12; animation: flow 3s linear infinite; }
+      .dot { animation: pulse 2s ease-in-out infinite; transform-origin: center; }
+      @keyframes flow { to { stroke-dashoffset: -88; } }
+      @keyframes pulse { 0%, 100% { opacity: .45; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+    </style>
+  </defs>
+  <rect width="1180" height="360" rx="34" fill="#f8fafc"/>
+  <path class="wire" d="M190 180 H330"/>
+  <path class="wire" d="M510 180 H650"/>
+  <path class="wire" d="M830 180 H970"/>
+  <g transform="translate(40 92)">
+    <rect class="card" width="220" height="176" rx="24"/>
+    <text class="label" x="28" y="52">Experience</text>
+    <text class="copy" x="28" y="86">Animated landing</text>
+    <text class="copy" x="28" y="112">Search and maps</text>
+    <text class="copy" x="28" y="138">Booking flows</text>
+    <circle class="dot" cx="184" cy="50" r="10" fill="#34d399"/>
+  </g>
+  <g transform="translate(360 92)">
+    <rect class="card" width="220" height="176" rx="24"/>
+    <text class="label" x="28" y="52">State</text>
+    <text class="copy" x="28" y="86">Zustand stores</text>
+    <text class="copy" x="28" y="112">Typed filters</text>
+    <text class="copy" x="28" y="138">UI preferences</text>
+    <circle class="dot" cx="184" cy="50" r="10" fill="#60a5fa" style="animation-delay:.35s"/>
+  </g>
+  <g transform="translate(680 92)">
+    <rect class="card" width="220" height="176" rx="24"/>
+    <text class="label" x="28" y="52">Services</text>
+    <text class="copy" x="28" y="86">Campsites</text>
+    <text class="copy" x="28" y="112">Bookings</text>
+    <text class="copy" x="28" y="138">Weather events</text>
+    <circle class="dot" cx="184" cy="50" r="10" fill="#f59e0b" style="animation-delay:.7s"/>
+  </g>
+  <g transform="translate(1000 92)">
+    <rect class="card" width="140" height="176" rx="24"/>
+    <text class="label" x="28" y="52">Gate</text>
+    <text class="copy" x="28" y="86">Types</text>
+    <text class="copy" x="28" y="112">Lint</text>
+    <text class="copy" x="28" y="138">Tests</text>
+    <circle class="dot" cx="108" cy="50" r="10" fill="#a78bfa" style="animation-delay:1.05s"/>
+  </g>
+</svg>

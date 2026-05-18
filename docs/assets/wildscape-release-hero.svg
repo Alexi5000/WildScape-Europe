@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">WildScape Europe Release 1.0 animated hero</title>
+  <desc id="desc">Animated European wilderness landscape with aurora, route lines, campsite markers, and release badges.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#071629"/>
+      <stop offset="44%" stop-color="#0f3b4c"/>
+      <stop offset="100%" stop-color="#12331f"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2ef7a0" stop-opacity="0"/>
+      <stop offset="35%" stop-color="#38f8c7" stop-opacity="0.75"/>
+      <stop offset="70%" stop-color="#7d7cff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#2ef7a0" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .title { font: 800 54px Inter, Segoe UI, Arial, sans-serif; fill: #f7fff6; letter-spacing: -1px; }
+      .subtitle { font: 500 21px Inter, Segoe UI, Arial, sans-serif; fill: #d7f7e6; }
+      .badge { font: 700 16px Inter, Segoe UI, Arial, sans-serif; fill: #092319; }
+      .small { font: 700 13px Inter, Segoe UI, Arial, sans-serif; fill: #dfffee; }
+      .path { stroke-dasharray: 14 12; animation: dash 5s linear infinite; }
+      .pulse { transform-origin: center; animation: pulse 2.4s ease-in-out infinite; }
+      .float { animation: float 5.5s ease-in-out infinite; }
+      .aurora { animation: wave 8s ease-in-out infinite alternate; }
+      .spark { animation: blink 2.6s ease-in-out infinite; }
+      @keyframes dash { to { stroke-dashoffset: -160; } }
+      @keyframes pulse { 0%, 100% { opacity: .72; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
+      @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+      @keyframes wave { from { transform: translateX(-30px) skewX(-8deg); opacity: .55; } to { transform: translateX(42px) skewX(8deg); opacity: .9; } }
+      @keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+    </style>
+  </defs>
+  <rect width="1280" height="420" fill="url(#sky)"/>
+  <g class="aurora" filter="url(#glow)">
+    <path d="M-60 95 C130 20 210 135 380 68 C560 -4 690 123 860 54 C1020 -10 1135 84 1340 31 L1340 150 C1140 205 1010 118 870 178 C680 255 520 132 360 212 C160 310 40 170 -60 250 Z" fill="url(#aurora)" opacity="0.85"/>
+    <path d="M-20 135 C145 80 250 177 420 105 C600 32 720 182 910 94 C1050 30 1170 142 1320 82" fill="none" stroke="#cbfff1" stroke-width="3" opacity="0.45"/>
+  </g>
+  <g opacity="0.9">
+    <circle class="spark" cx="90" cy="58" r="2.4" fill="#ffffff"/>
+    <circle class="spark" cx="260" cy="115" r="1.8" fill="#ffffff" style="animation-delay:.4s"/>
+    <circle class="spark" cx="980" cy="54" r="2.2" fill="#ffffff" style="animation-delay:.8s"/>
+    <circle class="spark" cx="1130" cy="132" r="2" fill="#ffffff" style="animation-delay:1.2s"/>
+  </g>
+  <path d="M0 330 L125 240 L230 315 L375 190 L510 315 L660 210 L780 318 L940 175 L1110 318 L1280 210 L1280 420 L0 420 Z" fill="#102d20"/>
+  <path d="M0 370 L150 285 L290 372 L430 255 L590 370 L760 285 L910 370 L1070 245 L1280 340 L1280 420 L0 420 Z" fill="#17422b"/>
+  <path d="M130 336 C275 300 425 344 575 316 C735 287 865 335 1005 300 C1115 271 1205 292 1270 270" class="path" fill="none" stroke="#a7f3d0" stroke-width="4" opacity="0.8"/>
+  <g class="pulse" transform="translate(302 314)">
+    <circle r="22" fill="#34d399" opacity="0.2"/>
+    <circle r="9" fill="#34d399"/>
+  </g>
+  <g class="pulse" transform="translate(635 306)" style="animation-delay:.45s">
+    <circle r="24" fill="#fde68a" opacity="0.22"/>
+    <circle r="9" fill="#fde68a"/>
+  </g>
+  <g class="pulse" transform="translate(980 300)" style="animation-delay:.9s">
+    <circle r="25" fill="#93c5fd" opacity="0.24"/>
+    <circle r="10" fill="#93c5fd"/>
+  </g>
+  <g transform="translate(70 78)">
+    <text class="title" x="0" y="0">WildScape Europe</text>
+    <text class="subtitle" x="3" y="44">Release 1.0: typed wilderness discovery, immersive maps, validated services, and CloseLight repo hygiene</text>
+    <g class="float" transform="translate(0 82)">
+      <rect x="0" y="0" rx="18" width="150" height="38" fill="#a7f3d0"/>
+      <text class="badge" x="21" y="25">v1.0 Stable</text>
+    </g>
+    <g class="float" transform="translate(170 82)" style="animation-delay:.35s">
+      <rect x="0" y="0" rx="18" width="164" height="38" fill="#bae6fd"/>
+      <text class="badge" x="20" y="25">12 Tests Pass</text>
+    </g>
+    <g class="float" transform="translate(354 82)" style="animation-delay:.7s">
+      <rect x="0" y="0" rx="18" width="196" height="38" fill="#fef3c7"/>
+      <text class="badge" x="20" y="25">Zero Lint Warnings</text>
+    </g>
+  </g>
+  <g transform="translate(875 86)">
+    <rect x="0" y="0" width="300" height="150" rx="28" fill="#06131f" opacity="0.72" stroke="#6ee7b7"/>
+    <text class="small" x="28" y="42">SOLID Services</text>
+    <text class="small" x="28" y="73">Typed Repositories</text>
+    <text class="small" x="28" y="104">Vitest Quality Gate</text>
+    <text class="small" x="28" y="135">Release Docs Ready</text>
+    <circle class="pulse" cx="238" cy="38" r="9" fill="#34d399"/>
+    <circle class="pulse" cx="238" cy="69" r="9" fill="#60a5fa" style="animation-delay:.35s"/>
+    <circle class="pulse" cx="238" cy="100" r="9" fill="#fbbf24" style="animation-delay:.7s"/>
+    <circle class="pulse" cx="238" cy="131" r="9" fill="#f472b6" style="animation-delay:1.05s"/>
+  </g>
+</svg>

@@ -1,92 +1,60 @@
-# WildScape Europe Architecture
+# Architecture Guide
 
-WildScape Europe is a Vite, React, and TypeScript single-page application that models a premium camping marketplace prototype.[1] [2] The codebase is organized around **explicit domain boundaries** so UI components do not own data generation, booking logic, weather calculation, or real-time event delivery.
+**WildScape Europe** uses a SOLID-oriented frontend architecture for a production-quality React and TypeScript application. The design separates interface orchestration, state stores, repositories, service facades, domain contracts, and visual infrastructure so each layer can evolve independently.[1] [2]
 
-> The architectural goal is to make every module easy to reason about, test, and replace. Components render state, stores coordinate UI-level state, services expose application use cases, repositories own domain data operations, and shared types keep contracts explicit.
+<p align="center">
+  <img src="assets/wildscape-system-flow.svg" alt="Animated WildScape Europe system flow" width="100%" />
+</p>
 
 ## Architectural principles
 
-| SOLID principle | Repository implementation |
+| Principle | Implementation |
 |---|---|
-| Single responsibility | `CampsiteRepository`, `BookingRepository`, `UserRepository`, and `WeatherRepository` each own one domain concern. |
-| Open/closed | Service facades expose stable methods while repositories can be extended with real HTTP clients later. |
-| Liskov substitution | Repository classes can be replaced by remote adapters as long as they preserve the same typed method contracts. |
-| Interface segregation | UI code consumes narrow use-case methods rather than a broad untyped object. |
-| Dependency inversion | `mockBackend` and `enhancedApiService` depend on domain repositories and typed contracts rather than UI components. |
+| Single responsibility | Campsite, booking, user, weather, real-time, map, and UI concerns are implemented in focused modules. |
+| Open and closed design | New campsite filters, service methods, or event payloads can be added through explicit contracts without rewriting the whole app shell. |
+| Liskov-friendly contracts | Service methods return stable typed response shapes that UI consumers can rely on. |
+| Interface segregation | Shared types are separated by domain so consumers import only the contracts they need. |
+| Dependency inversion | UI orchestration depends on service facades and typed stores, not on raw seed data or component internals. |
 
-## Runtime layers
+## Layer map
 
-| Layer | Primary files | Responsibility |
+| Layer | Main paths | Responsibility |
 |---|---|---|
-| Application shell | `src/App.tsx` | Coordinates view mode, selected campsite, dashboard visibility, weather state, and high-level user flows. |
-| Components | `src/components/**` | Render visual states, user interactions, map controls, search panels, detail views, and dashboard sections. |
-| State stores | `src/store/campsiteStore.ts`, `src/store/uiStore.ts` | Hold client-side filter state, selected campsite state, map preferences, and UI preferences. |
-| Application services | `src/services/mockBackend.ts`, `src/services/enhancedApi.ts` | Expose product use cases such as search, booking, profile, reviews, weather, and recommendations. |
-| Domain repositories | `src/services/repositories/*` | Own deterministic data generation and domain-specific mutations. |
-| Shared contracts | `src/types/*` | Define campsite, map, weather, API, and real-time event structures. |
-| Tests | `src/services/__tests__`, `src/store/__tests__` | Validate services, repositories, stores, event publishing, and UI adapters with Vitest.[3] |
-
-## Service decomposition
-
-The service layer was split so application workflows can evolve without creating another god module. `mockBackend` remains the compatibility facade for existing components, while repository classes hold separate responsibilities.
-
-| Service boundary | Responsibility | Typical consumers |
-|---|---|---|
-| `CampsiteRepository` | Deterministic campsite catalogue generation, search filtering, suggestion generation, and campsite lookup. | Search components, campsite store, enhanced API. |
-| `BookingRepository` | Booking submission, cancellation, availability checks, seeded user bookings, and confirmation identifiers. | Booking form, user dashboard, tests. |
-| `UserRepository` | Current user, profile creation, preferences, wishlist, search history, and recently viewed campsites. | Dashboard and enhanced API. |
-| `WeatherRepository` | Current weather, multi-day forecasts, route conditions, and aurora forecast logic. | Map panels, detail views, enhanced API. |
-| `RealTimeService` | Discriminated event delivery for availability, weather alerts, reviews, bookings, and system events. | Notification surfaces and tests. |
+| Interface shell | `src/App.tsx`, `src/components` | Coordinates views, page sections, animated UI, maps, dashboard, and search interactions. |
+| State | `src/store` | Owns UI preferences, map state, campsite filters, and normalized state transitions. |
+| Service facades | `src/services/mockBackend.ts`, `src/services/enhancedApi.ts` | Preserve stable application-facing methods for campsite, booking, user, weather, and analytics behavior. |
+| Repositories | `src/services/repositories` | Own deterministic data creation, search, booking, profile, and weather rules. |
+| Domain types | `src/types` | Define campsite, weather, booking, map, API, app-handler, and real-time event contracts. |
+| Test setup | `src/test/setup.ts`, `src/**/__tests__` | Provides jsdom setup, browser API polyfills, and executable regression coverage. |
 
 ## Data flow
 
-The default product flow starts in the application shell. User actions update store or service state, services delegate domain operations to repositories, and components re-render from typed results.
+The application shell receives user intent through search, filters, map interactions, or dashboard actions. That intent is translated into typed store updates or service facade calls. The facade delegates to deterministic repositories, then returns explicit response shapes to the UI. Real-time behavior uses discriminated event payloads so event subscribers can safely branch on event type.
 
-```text
-User interaction
-  -> React component event handler
-  -> Zustand store or application service
-  -> Domain repository or typed event bus
-  -> Typed result, state update, or notification event
-  -> React component render
-```
+| Flow | Source | Destination | Contract |
+|---|---|---|---|
+| Campsite search | Search UI | Campsite repository | `CampsiteFilter`, search query, and typed result list. |
+| Booking | Booking panel | Booking repository | User, campsite, date range, guest count, and confirmation data. |
+| Weather | Map or detail page | Weather repository | Location and forecast or current condition shape. |
+| Events | Real-time service | Subscribed components | Discriminated event payloads by event name. |
+| UI preferences | Controls | Zustand UI store | Map style, weather layer, and display preferences. |
 
-This flow keeps data access and UI rendering separate. For example, campsite filtering is not duplicated in a visual search component; the store and service layer own that behavior so both the UI and tests can exercise the same contract.
+## Module ownership
 
-## State management
-
-Zustand provides lightweight state management without imposing reducers or provider boilerplate.[4] WildScape Europe uses it for client state that must be shared across components but does not belong in a repository.
-
-| Store | State scope | Design note |
-|---|---|---|
-| `useCampsiteStore` | Campsite list, filtered list, selected campsite, search query, filters, loading, and errors. | JSON data is normalized into strict `Campsite` objects before use. |
-| `useUIStore` | Map viewport, selected coordinates, weather layer mode, and global UI preferences. | Map and weather options are typed so visual controls cannot emit invalid state. |
-
-## Testing architecture
-
-The test suite intentionally targets architectural seams. Service tests verify that repositories and facades preserve product behavior, store tests verify state transitions and data normalization, and UI adapter tests verify semantic rendering. The stack uses Vitest for fast Vite-native testing and Testing Library for user-centered React assertions.[3] [5]
-
-| Test file | Coverage |
+| Ownership boundary | Maintainer rule |
 |---|---|
-| `src/services/__tests__/services.test.ts` | Campsite catalogue, search, booking lifecycle, enhanced API history, aurora rules, wishlist operations, and real-time events. |
-| `src/store/__tests__/campsiteStore.test.tsx` | Campsite loading, filtering, search-filter translation, and reusable button semantics. |
+| Components | Render experiences and call typed handlers. They should not own repository data generation. |
+| Stores | Own state transitions and normalization. They should not fetch remote data directly. |
+| Services | Provide stable app methods. They should not render UI or depend on browser layout state. |
+| Repositories | Own deterministic business behavior. They should not know about React components. |
+| Types | Describe shared contracts. They should not contain runtime side effects. |
 
-## Extension strategy
+## Extension patterns
 
-The current repository uses deterministic local data so it is safe to run without credentials. A production back end can be introduced by replacing repository implementations with API clients while keeping the current facades and domain types intact. This approach limits change impact to infrastructure code and avoids forcing visual components to understand transport details.
-
-| Future replacement | Low-risk migration path |
-|---|---|
-| Remote campsite API | Implement a `CampsiteRepository` adapter that returns the existing `Campsite` type. |
-| Real booking service | Replace `BookingRepository` internals while keeping `submitBooking`, `cancelBooking`, and `getUserBookings`. |
-| Authenticated profiles | Replace `UserRepository` persistence and keep typed profile methods. |
-| Live weather provider | Replace `WeatherRepository` calculations with provider calls normalized to current weather types. |
-| WebSocket notifications | Replace simulated intervals in `RealTimeService` with socket messages mapped to existing event discriminants. |
+A new campsite filter should start with a domain type update, then update the repository search logic, store translation, UI control, and tests. A new real-time event should start with a discriminated payload type, then add publisher and subscriber behavior. A new external API integration should be wrapped behind a service facade so the UI contract remains stable.
 
 ## References
 
-[1]: https://react.dev/ "React Documentation"
-[2]: https://vite.dev/ "Vite Documentation"
-[3]: https://vitest.dev/ "Vitest Documentation"
-[4]: https://zustand.docs.pmnd.rs/ "Zustand Documentation"
-[5]: https://testing-library.com/docs/react-testing-library/intro/ "React Testing Library Introduction"
+[1]: https://react.dev/learn/thinking-in-react "Thinking in React"
+[2]: https://www.typescriptlang.org/docs/ "TypeScript Documentation"
+[3]: https://zustand.docs.pmnd.rs/ "Zustand Documentation"

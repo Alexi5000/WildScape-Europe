@@ -1,54 +1,67 @@
 # Testing Guide
 
-WildScape Europe uses **Vitest** for Vite-native test execution and **React Testing Library** for component assertions based on user-visible behavior.[1] [2] The test suite is intentionally focused on stable product seams: services, repositories, stores, event delivery, and reusable UI adapters.
-
-> Tests should verify contracts, not implementation trivia. A passing suite means the public behavior of the service layer, store layer, and component adapters remains safe to refactor.
+WildScape Europe uses a layered test strategy that protects service contracts, state stores, filter translation, booking lifecycle, weather behavior, real-time event contracts, and reusable UI adapters. The suite is built with Vitest and React Testing Library so tests run quickly in the same TypeScript project used by the application.[1] [2]
 
 ## Test commands
 
 | Command | Purpose |
 |---|---|
-| `npm run test` | Runs the full suite once in CI-style mode. |
-| `npm run test:watch` | Runs Vitest interactively while developing. |
-| `npm run test:coverage` | Produces text, JSON, and HTML coverage output in `coverage/`. |
-| `npm run validate` | Runs type-check, lint, tests, and production build in order. |
+| `npm run test` | Runs the complete Vitest suite once. |
+| `npm run test:watch` | Runs Vitest in watch mode during development. |
+| `npm run test:coverage` | Runs Vitest with coverage output. |
+| `npm run test:ci` | Runs Vitest once with the Release 1.0 coverage reporter. |
+| `npm run validate` | Runs docs, types, lint, tests, and production build. |
+| `npm run hygiene` | Runs the complete CloseLight release gate. |
 
-## Test environment
+## Coverage map
 
-The shared test setup lives in `src/test/setup.ts`. It loads jest-dom matchers, stubs `matchMedia`, and provides a `ResizeObserver` mock so browser-oriented components can render in jsdom.[3]
+| Layer | Covered behavior | Test file |
+|---|---|---|
+| Campsite services | Search, suggestions, lookup behavior, and filtered result contracts. | `src/services/__tests__/services.test.ts` |
+| Booking services | Booking creation, confirmation behavior, cancellation behavior, and user booking retrieval. | `src/services/__tests__/services.test.ts` |
+| Weather services | Current weather and aurora-aware data behavior. | `src/services/__tests__/services.test.ts` |
+| Real-time services | Typed event subscription and event payload handling. | `src/services/__tests__/services.test.ts` |
+| Store behavior | JSON normalization, filter application, and search-filter translation. | `src/store/__tests__/campsiteStore.test.tsx` |
+| UI adapter | Reusable button adapter rendering and interaction contract. | `src/store/__tests__/campsiteStore.test.tsx` |
 
-| Configuration | Location |
+## Coverage reporting
+
+The Release 1.0 coverage reporter uses the Vitest V8 provider and focuses on the tested service, store, and reusable UI adapter surface. This keeps coverage actionable instead of mixing deterministic logic coverage with animation-heavy visual components that are better protected by interaction tests, accessibility reviews, and visual QA.
+
+| Coverage scope | Reason |
 |---|---|
-| Test runner | `vite.config.ts` under the `test` key. |
-| Environment | `jsdom`. |
-| Global setup | `src/test/setup.ts`. |
-| Path alias | `@` points to `src`. |
+| `src/services` | Protects contract, repository, weather, booking, user, and event logic. |
+| `src/store` | Protects state normalization and filter translation. |
+| `src/components/ui` | Protects shared UI primitives that are reused by map controls and feature components. |
 
-## Current coverage areas
+## Test design principles
 
-| Test file | Behavior validated |
+The suite favors deterministic data and domain behavior over brittle snapshots. Tests should verify user-impacting outcomes, typed service contracts, and state transitions. A new feature is considered complete only when the relevant service, store, or component behavior is protected by at least one focused test.
+
+| Principle | Practice |
 |---|---|
-| `src/services/__tests__/services.test.ts` | Campsite catalogue size and identifiers, typed filtering, booking creation and cancellation, search history, recently viewed campsites, aurora latitude rules, wishlist operations, typed booking events, and notification preferences. |
-| `src/store/__tests__/campsiteStore.test.tsx` | Campsite JSON normalization, text and structured filtering, search-filter translation, and semantic button behavior. |
+| Deterministic fixtures | Use local seeded repositories and explicit values. |
+| Contract clarity | Assert response shapes and important domain fields. |
+| User behavior | Prefer Testing Library interactions for rendered UI adapters. |
+| Fast feedback | Keep tests independent and avoid network calls. |
+| Release confidence | Run `npm run hygiene` before merge or release. |
 
-## Adding new tests
+## Adding tests
 
-New tests should live near the code they protect. Service tests belong in `src/services/__tests__`, store tests belong in `src/store/__tests__`, and component tests should be colocated by feature when they verify user behavior.
+Place tests close to the behavior they protect. Service tests belong under `src/services/__tests__`, store tests under `src/store/__tests__`, and shared setup belongs in `src/test/setup.ts`. When a public service contract changes, update both the tests and `docs/API.md`.
 
-| Scenario | Preferred test style |
+## Regression checklist
+
+| Change type | Required tests |
 |---|---|
-| Pure domain logic | Unit test the repository or helper directly. |
-| Service orchestration | Call the public facade and assert typed outputs. |
-| Store transition | Reset Zustand state, execute store actions, and assert final state. |
-| Component interaction | Render with Testing Library and interact with `userEvent`. |
-| Real-time event | Subscribe a listener, emit the event, assert payload, and unsubscribe. |
-
-## Reliability rules
-
-Tests should not rely on external network calls, real credentials, wall-clock timing, or browser APIs that are not controlled by setup mocks. The current suite uses deterministic repository data and local service simulations so failures represent application regressions rather than environmental instability.
+| New service method | Happy path, failure or empty state, and typed response assertion. |
+| New store behavior | Initial state, mutation, and derived selector or translation behavior. |
+| New UI primitive | Rendering, class composition, accessibility role when relevant, and click or keyboard interaction. |
+| New map or animation behavior | Type coverage, smoke behavior, and manual visual QA note in the pull request. |
 
 ## References
 
 [1]: https://vitest.dev/ "Vitest Documentation"
 [2]: https://testing-library.com/docs/react-testing-library/intro/ "React Testing Library Introduction"
-[3]: https://github.com/jsdom/jsdom "jsdom Project"
+[3]: https://typescript-eslint.io/ "typescript-eslint Documentation"
+[4]: https://v8.dev/blog/javascript-code-coverage "V8 JavaScript Code Coverage"

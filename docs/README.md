@@ -1,13 +1,23 @@
 # WildScape Europe Documentation
 
-This directory contains the maintained production documentation for WildScape Europe. The documentation is intentionally concise and aligned with the current SOLID service architecture, validation workflow, and static deployment model.
+<p align="center">
+  <img src="assets/wildscape-system-flow.svg" alt="Animated WildScape Europe system flow" width="100%" />
+</p>
+
+The WildScape Europe documentation set is intentionally focused. Each document owns a clear part of the Release 1.0 repository and supports the CloseLight Repo Hygiene standard.
 
 | Document | Purpose |
 |---|---|
-| [`GETTING_STARTED.md`](GETTING_STARTED.md) | Local setup, first run, validation commands, and troubleshooting. |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Application layers, SOLID boundaries, service decomposition, stores, and extension strategy. |
-| [`API.md`](API.md) | Typed service contracts for campsite, booking, user, weather, enhanced API, and real-time events. |
-| [`TESTING.md`](TESTING.md) | Vitest setup, current coverage, and guidance for adding reliable tests. |
-| [`DEPLOYMENT.md`](DEPLOYMENT.md) | Production build checklist, environment variables, static hosting, and rollback guidance. |
+| [`RELEASE_1_0.md`](RELEASE_1_0.md) | Release 1.0 note, shipped capabilities, validation evidence, and launch checklist. |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | SOLID service boundaries, dependency flow, state ownership, and module responsibilities. |
+| [`API.md`](API.md) | Typed application service contracts, response shapes, and domain behavior. |
+| [`TESTING.md`](TESTING.md) | Automated test strategy, test coverage map, fixtures, and validation commands. |
+| [`QUALITY.md`](QUALITY.md) | State-of-the-art repo quality standard and acceptance gates. |
+| [`REPO_HYGIENE.md`](REPO_HYGIENE.md) | CloseLight maintenance rules for docs, scripts, branches, and release readiness. |
+| [`MAINTAINER_GUIDE.md`](MAINTAINER_GUIDE.md) | Maintainer workflow, review checklist, and release process. |
+| [`DEPLOYMENT.md`](DEPLOYMENT.md) | Production build, static hosting, environment variables, and deployment checklist. |
+| [`GETTING_STARTED.md`](GETTING_STARTED.md) | Local setup, first-run workflow, troubleshooting, and contribution path. |
 
-Run `npm run validate` before relying on a build or publishing changes.
+## Recommended reading order
+
+New maintainers should begin with the README, then read the release note, architecture guide, testing guide, and hygiene guide. Deployment and API documentation should be read when preparing production builds or changing service contracts.

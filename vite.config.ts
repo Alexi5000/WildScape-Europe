@@ -20,9 +20,20 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/test/setup.ts',
     coverage: {
+      provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      reportsDirectory: './coverage'
-    }
+      reportsDirectory: './coverage',
+      include: [
+        'src/services/**/*.{ts,tsx}',
+        'src/store/**/*.{ts,tsx}',
+        'src/components/ui/**/*.{ts,tsx}',
+      ],
+      exclude: [
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/**/__tests__/**',
+      ],
+    },
   },
   build: {
     rollupOptions: {
