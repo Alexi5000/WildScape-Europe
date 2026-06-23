@@ -1,9 +1,12 @@
 name: CD - Deploy to Production
 
+# Right-sized: deployment only runs on release tags (v*) or manual dispatch.
+# It no longer runs on every push to main, because this repository does not
+# provision the deployment secrets (Vercel / Netlify / AWS) required for a real
+# deploy. Secret-dependent jobs are additionally guarded on secret presence so a
+# manual run without configured secrets is skipped rather than failed.
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -18,14 +21,33 @@ on:
           - staging
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
 
 jobs:
+  # Gate: detect whether deployment secrets are configured.
+  check-secrets:
+    name: Check Deployment Secrets
+    runs-on: ubuntu-latest
+    outputs:
+      has-vercel: ${{ steps.check.outputs.has-vercel }}
+    steps:
+      - name: Check for Vercel secrets
+        id: check
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "has-vercel=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-vercel=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::VERCEL_TOKEN not configured - Vercel deploy will be skipped."
+          fi
+
   # Job 1: Build for Production
   build-production:
     name: Build Production Bundle
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -64,7 +86,7 @@ jobs:
           echo "Asset optimization complete"
 
       - name: Upload Production Build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -74,19 +96,19 @@ jobs:
   deploy-vercel:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: build-production
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
-    
+    needs: [check-secrets, build-production]
+    if: needs.check-secrets.outputs.has-vercel == 'true'
+
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -106,21 +128,7 @@ jobs:
         run: |
           echo "Deployment URL: ${{ steps.deploy.outputs.url }}"
           curl -f ${{ steps.deploy.outputs.url }} || exit 1
-          echo "✅ Deployment verified successfully"
-
-      - name: Comment Deployment URL
-        if: github.event_name == 'push'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const deployUrl = '${{ steps.deploy.outputs.url }}';
-            const commitSha = '${{ github.sha }}'.substring(0, 7);
-            github.rest.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: '${{ github.sha }}',
-              body: `🚀 **Deployed to Vercel**\n\n✅ Production: ${deployUrl}\n📦 Build: ${commitSha}\n⏰ Time: ${new Date().toISOString()}`
-            });
+          echo "Deployment verified successfully"
 
   # Job 3: Deploy to Netlify (Alternative)
   deploy-netlify:
@@ -128,17 +136,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-production
     if: false # Enable if using Netlify instead of Vercel
-    
+
     environment:
       name: production-netlify
       url: ${{ steps.deploy.outputs.deploy-url }}
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -163,17 +171,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-production
     if: false # Enable if using AWS
-    
+
     environment:
       name: production-aws
       url: ${{ secrets.CLOUDFRONT_URL }}
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -192,7 +200,7 @@ jobs:
             --cache-control "public, max-age=31536000, immutable" \
             --exclude "*.html" \
             --exclude "*.txt"
-          
+
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} \
             --cache-control "public, max-age=0, must-revalidate" \
             --exclude "*" \
@@ -215,23 +223,23 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: build-production
-    if: github.ref == 'refs/heads/main'
-    
+    if: startsWith(github.ref, 'refs/tags/v')
+
     permissions:
       contents: read
       pages: write
       id-token: write
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Download Production Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: production-build-${{ github.sha }}
           path: dist/
@@ -251,15 +259,15 @@ jobs:
       - name: Verify Deployment
         run: |
           echo "GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
-          echo "✅ Deployment to GitHub Pages complete"
+          echo "Deployment to GitHub Pages complete"
 
   # Job 6: Post-Deployment Tests
   post-deploy-tests:
     name: Post-Deployment Verification
     runs-on: ubuntu-latest
     needs: [deploy-vercel]
-    if: success()
-    
+    if: needs.deploy-vercel.result == 'success'
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -276,40 +284,25 @@ jobs:
         run: |
           DEPLOY_URL="${{ needs.deploy-vercel.outputs.url }}"
           echo "Running smoke tests on: $DEPLOY_URL"
-          
-          # Check if site is accessible
+
           HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" $DEPLOY_URL)
           if [ "$HTTP_CODE" != "200" ]; then
-            echo "❌ Site returned HTTP $HTTP_CODE"
+            echo "Site returned HTTP $HTTP_CODE"
             exit 1
           fi
-          echo "✅ Site is accessible"
+          echo "Site is accessible"
 
       - name: Check Critical Resources
         run: |
           echo "Verifying critical resources..."
           # Add your critical resource checks here
 
-      - name: Send Deployment Notification
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: 'success',
-              target_url: '${{ needs.deploy-vercel.outputs.url }}',
-              description: 'Deployed successfully',
-              context: 'deployment/production'
-            });
-
   # Job 7: Rollback (Manual)
   rollback:
     name: Rollback Deployment
     runs-on: ubuntu-latest
     if: failure() && github.event_name == 'workflow_dispatch'
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -325,7 +318,7 @@ jobs:
 
       - name: Trigger Rollback
         run: |
-          echo "⚠️ Rollback procedure initiated"
+          echo "Rollback procedure initiated"
           echo "Previous SHA: ${{ steps.previous.outputs.previous_sha }}"
           # Add your rollback logic here
 
@@ -335,20 +328,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-vercel, post-deploy-tests]
     if: always()
-    
+
     steps:
       - name: Generate Deployment Report
         run: |
-          echo "# 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Deployment Details" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Time**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Status" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **Deployment Successful**" >> $GITHUB_STEP_SUMMARY
+          echo "- **Vercel deploy**: ${{ needs.deploy-vercel.result }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Send Slack Notification
         if: always()
@@ -362,4 +353,3 @@ jobs:
             Author: ${{ github.actor }}
           webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
         continue-on-error: true
-
