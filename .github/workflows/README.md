@@ -410,3 +410,5 @@ Need help?
 **Last Updated**: January 2024  
 **Maintained By**: @Alexi5000
 
+
+_Workflows right-sized: CD and Security run on tags/schedule/dispatch; CI build+lint+test runs on every push._
