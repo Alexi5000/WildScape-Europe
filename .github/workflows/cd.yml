@@ -174,7 +174,6 @@ jobs:
 
     environment:
       name: production-aws
-      url: ${{ secrets.CLOUDFRONT_URL }}
 
     steps:
       - name: Checkout Code
