@@ -128,7 +128,7 @@ jobs:
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
 
       - name: Add Release Labels
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const version = '${{ steps.get_version.outputs.version }}';
@@ -236,7 +236,7 @@ jobs:
           git push origin --tags
 
       - name: Create Release PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const newVersion = '${{ steps.bump.outputs.new_version }}';
@@ -365,7 +365,7 @@ jobs:
         continue-on-error: true
 
       - name: Create Announcement Issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             await github.rest.issues.create({

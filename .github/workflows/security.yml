@@ -335,7 +335,7 @@ jobs:
 
       - name: Create Security Issue (if vulnerabilities found)
         if: needs.dependency-scan.result == 'failure'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const title = 'Security Vulnerabilities Detected';
