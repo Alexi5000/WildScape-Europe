@@ -31,7 +31,7 @@ export const EnhancedForestParticles: React.FC<EnhancedForestParticlesProps> = (
   timeOfDay = "day",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
