@@ -28,8 +28,8 @@ export const useAuroraAnimation = () => {
 
 export const useParticleSystem = (count: number = 1000) => {
   const particlesRef = useRef<THREE.Points>(null);
-  const positions = useRef<Float32Array>();
-  const velocities = useRef<Float32Array>();
+  const positions = useRef<Float32Array | undefined>(undefined);
+  const velocities = useRef<Float32Array | undefined>(undefined);
 
   useEffect(() => {
     positions.current = new Float32Array(count * 3);

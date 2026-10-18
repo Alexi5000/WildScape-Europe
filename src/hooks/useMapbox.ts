@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import type { Map } from "mapbox-gl";
 import { mapboxService } from "@/services/mapbox";
 import { Campsite } from "@/types/campsite";
 import type { MapViewState } from "@/types/map";
@@ -12,7 +12,7 @@ interface UseMapboxOptions {
 
 export const useMapbox = (options: UseMapboxOptions) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const map = useRef<Map | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
