@@ -80,7 +80,7 @@ export const Footer = () => {
 
           {/* Destinations Column */}
           <div>
-            <h3 className="text-lg font-bold mb-6">Destinations</h3>
+            <h3 className="text-lg font-bold text-white mb-6">Destinations</h3>
             <ul className="space-y-3">
               {footerLinks.tours.map((link) => (
                 <li key={link}>
@@ -97,7 +97,7 @@ export const Footer = () => {
 
           {/* Company Column */}
           <div>
-            <h3 className="text-lg font-bold mb-6">Company</h3>
+            <h3 className="text-lg font-bold text-white mb-6">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link}>
@@ -114,7 +114,7 @@ export const Footer = () => {
 
           {/* Contact Column */}
           <div>
-            <h3 className="text-lg font-bold mb-6">Contact</h3>
+            <h3 className="text-lg font-bold text-white mb-6">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />

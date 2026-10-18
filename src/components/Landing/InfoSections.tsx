@@ -56,7 +56,7 @@ export const InfoSections = () => {
   ];
 
   return (
-    <section id="about" className="py-20 bg-[#F5F2ED]">
+    <section id="about" className="overflow-x-clip py-20 bg-[#F5F2ED]">
       <div className="container mx-auto px-8">
         <motion.div
           className="max-w-4xl mx-auto text-center mb-20"
@@ -144,7 +144,7 @@ export const InfoSections = () => {
                     {section.label}
                   </div>
 
-                  <h2 className="text-5xl font-bold text-[#3E2723] leading-tight font-serif">
+                  <h2 className="text-4xl md:text-5xl font-bold text-[#3E2723] leading-tight font-serif">
                     {section.title}
                   </h2>
 
