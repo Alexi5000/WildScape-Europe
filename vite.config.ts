@@ -38,12 +38,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
-          'vendor-mapbox': ['mapbox-gl'],
-          'vendor-animations': ['framer-motion', 'gsap'],
-          'vendor-ui': ['lucide-react', 'zustand'],
+        manualChunks(id) {
+          if (!id.includes('/node_modules/')) return;
+          if (/\/node_modules\/(react|react-dom)\//.test(id)) return 'vendor-react';
+          if (/\/node_modules\/(three|@react-three)\//.test(id)) return 'vendor-three';
+          if (id.includes('/node_modules/mapbox-gl/')) return 'vendor-mapbox';
+          if (/\/node_modules\/(framer-motion|gsap)\//.test(id)) return 'vendor-animations';
+          if (/\/node_modules\/(lucide-react|zustand)\//.test(id)) return 'vendor-ui';
         }
       }
     },

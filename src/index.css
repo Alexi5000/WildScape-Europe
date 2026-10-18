@@ -1,9 +1,16 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 /* Import Google Fonts for Natural Typography */
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 
 /* 🌲 FOREST THEME CSS CUSTOM PROPERTIES */
 :root {
@@ -55,10 +62,12 @@
 }
 
 /* 🌿 BASE STYLES */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 html {

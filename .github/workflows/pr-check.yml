@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   # Gate: detect whether the optional Vercel preview-deploy secrets are configured.
@@ -266,11 +266,18 @@ jobs:
           name: pr-preview-${{ github.event.pull_request.number }}
           path: dist/
 
-      - name: Run Percy Visual Tests
-        uses: percy/snapshot-action@v0.1.3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          build-directory: dist
-          flags: pr-preview
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run Percy Visual Tests
+        run: |
+          if [ -n "$PERCY_TOKEN" ]; then
+            npx --yes @percy/cli@1.32.11 snapshot dist
+          else
+            echo "Percy comparison unavailable: PERCY_TOKEN is not configured." >> "$GITHUB_STEP_SUMMARY"
+          fi
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         continue-on-error: true
@@ -309,9 +316,7 @@ jobs:
         continue-on-error: true
 
       - name: Run Axe Accessibility Tests
-        uses: chanzuckerberg/axe-scan-action@v3
-        with:
-          url: http://localhost:4173
+        run: npx --yes @axe-core/cli@4.14.0 http://localhost:4173 --exit --chrome-options="--no-sandbox"
         continue-on-error: true
 
   # Job 7: Performance Budget Check (advisory)
