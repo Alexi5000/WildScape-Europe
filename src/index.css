@@ -3,7 +3,11 @@
 @config "../tailwind.config.ts";
 
 @layer base {
-  *, ::before, ::after { border-color: var(--color-gray-200, currentColor); }
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
 /* Import Google Fonts for Natural Typography */
