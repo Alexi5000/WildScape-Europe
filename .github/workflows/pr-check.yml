@@ -82,7 +82,7 @@ jobs:
           fi
 
       - name: Auto-Label PR
-        uses: actions/labeler@v5
+        uses: actions/labeler@v7
         continue-on-error: true
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
