@@ -57,7 +57,7 @@ jobs:
           cat npm-audit.json
 
       - name: Upload Audit Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: npm-audit-results
           path: npm-audit.json
@@ -114,7 +114,7 @@ jobs:
           command: code test
 
       - name: Upload Snyk Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: snyk-results
@@ -236,7 +236,7 @@ jobs:
           echo "License check complete"
 
       - name: Upload License Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: license-report
@@ -273,7 +273,7 @@ jobs:
             --enableRetired
 
       - name: Upload OWASP Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: owasp-dependency-check-report
