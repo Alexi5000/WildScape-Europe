@@ -25,6 +25,9 @@ updates:
       - "dependencies"
       - "automated"
     ignore:
+      # Remove when TypeScript ESLint supports TypeScript 7; 8.71.2 requires <6.1.0.
+      - dependency-name: "typescript"
+        versions: [">=7.0.0 <8.0.0"]
       # Ignore major version updates for stable packages
       - dependency-name: "react"
         update-types: ["version-update:semver-major"]
