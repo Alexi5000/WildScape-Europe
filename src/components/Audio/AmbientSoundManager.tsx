@@ -12,6 +12,7 @@ interface SoundTrack {
 
 export const AmbientSoundManager: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [controlsOpen, setControlsOpen] = useState(false);
   const [volume, setVolume] = useState(0.3);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -90,59 +91,73 @@ export const AmbientSoundManager: React.FC = () => {
 
       {/* Sound control panel */}
       <motion.div
-        className="fixed bottom-6 right-6 z-50 glass-forest p-4 rounded-2xl shadow-lg"
+        className="fixed bottom-20 right-4 z-50 bg-white text-slate-900 p-3 rounded-2xl shadow-lg max-w-[calc(100vw-2rem)]"
         initial={{ opacity: 0, scale: 0.8, y: 100 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 2 }}
       >
-        <div className="flex items-center gap-4">
-          {/* Play/Pause button */}
-          <motion.button
-            onClick={togglePlayback}
-            className="w-12 h-12 rounded-full bg-forest-medium text-white flex items-center justify-center hover:bg-forest-primary transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            disabled={!isLoaded}
-          >
-            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-          </motion.button>
-
-          {/* Volume control */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => handleVolumeChange(volume > 0 ? 0 : 0.3)}
-              className="text-forest-primary hover:text-forest-medium transition-colors"
+        <button
+          type="button"
+          aria-label="Ambient sound controls"
+          aria-expanded={controlsOpen}
+          onClick={() => setControlsOpen(!controlsOpen)}
+        >
+          <Volume2 size={20} />
+        </button>
+        {controlsOpen && (
+          <div className="flex flex-wrap items-center gap-3 mt-3">
+            {/* Play/Pause button */}
+            <motion.button
+              aria-label={isPlaying ? "Pause ambient sound" : "Play ambient sound"}
+              onClick={togglePlayback}
+              className="w-12 h-12 rounded-full bg-forest-medium text-white flex items-center justify-center hover:bg-forest-primary transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={!isLoaded}
             >
-              {volume > 0 ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
+              {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            </motion.button>
 
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.1"
-              value={volume}
-              onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-              className="w-20 h-2 bg-forest-light rounded-lg appearance-none cursor-pointer"
-              style={{
-                background: `linear-gradient(to right, var(--forest-medium) 0%, var(--forest-medium) ${volume * 100}%, var(--forest-light) ${volume * 100}%, var(--forest-light) 100%)`,
-              }}
-            />
+            {/* Volume control */}
+            <div className="flex items-center gap-2">
+              <button
+                aria-label={volume > 0 ? "Mute ambient sound" : "Unmute ambient sound"}
+                onClick={() => handleVolumeChange(volume > 0 ? 0 : 0.3)}
+                className="text-forest-primary hover:text-forest-medium transition-colors"
+              >
+                {volume > 0 ? <Volume2 size={18} /> : <VolumeX size={18} />}
+              </button>
+
+              <input
+                aria-label="Ambient volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={volume}
+                onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                className="w-20 h-2 bg-forest-light rounded-lg appearance-none cursor-pointer"
+                style={{
+                  background: `linear-gradient(to right, var(--forest-medium) 0%, var(--forest-medium) ${volume * 100}%, var(--forest-light) ${volume * 100}%, var(--forest-light) 100%)`,
+                }}
+              />
+            </div>
+
+            {/* Track selector */}
+            <select
+              aria-label="Ambient track"
+              value={currentTrack}
+              onChange={(e) => switchTrack(parseInt(e.target.value))}
+              className="bg-transparent text-forest-primary text-sm border border-forest-light rounded px-2 py-1 focus:outline-none focus:border-forest-medium"
+            >
+              {soundTracks.map((track, index) => (
+                <option key={track.id} value={index} className="bg-white text-forest-primary">
+                  {track.name}
+                </option>
+              ))}
+            </select>
           </div>
-
-          {/* Track selector */}
-          <select
-            value={currentTrack}
-            onChange={(e) => switchTrack(parseInt(e.target.value))}
-            className="bg-transparent text-forest-primary text-sm border border-forest-light rounded px-2 py-1 focus:outline-none focus:border-forest-medium"
-          >
-            {soundTracks.map((track, index) => (
-              <option key={track.id} value={index} className="bg-white text-forest-primary">
-                {track.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        )}
 
         {/* Sound visualization */}
         <AnimatePresence>

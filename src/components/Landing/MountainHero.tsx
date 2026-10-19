@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { Code2 } from "lucide-react";
 import { ScrollIndicator } from "./ScrollIndicator";
 
 interface MountainHeroProps {
   onExploreClick: () => void;
+  onMapClick: () => void;
 }
 
-export const MountainHero = (_props: MountainHeroProps) => {
+export const MountainHero = ({ onExploreClick, onMapClick }: MountainHeroProps) => {
   const destinations = [
     { name: "Norway", highlight: true },
     { name: "Iceland", highlight: false },
@@ -41,24 +42,30 @@ export const MountainHero = (_props: MountainHeroProps) => {
           <span className="text-sm text-[#3E2723] font-medium">WILDSCAPE</span>
         </div>
 
+        <button onClick={onMapClick} className="md:hidden text-sm text-[#3E2723]">
+          Map
+        </button>
+
         <nav className="hidden md:flex items-center gap-8 text-sm text-[#6B5B47]">
-          <a href="#" className="hover:text-[#3E2723] transition-colors">
+          <a href="#destinations" className="hover:text-[#3E2723] transition-colors">
             Destinations
           </a>
-          <a href="#" className="hover:text-[#3E2723] transition-colors">
+          <button onClick={onMapClick} className="hover:text-[#3E2723] transition-colors">
             Map
-          </a>
-          <a href="#" className="hover:text-[#3E2723] transition-colors">
+          </button>
+          <a href="#about" className="hover:text-[#3E2723] transition-colors">
             About
           </a>
-          <a href="#" className="hover:text-[#3E2723] transition-colors">
+          <a href="#contact" className="hover:text-[#3E2723] transition-colors">
             Contact
           </a>
         </nav>
 
         <div className="flex items-center gap-2 text-[#3E2723]">
-          <Phone size={18} />
-          <span className="text-sm font-medium">+47 224-17-97</span>
+          <Code2 size={18} />
+          <a href="https://github.com/Alexi5000/WildScape-Europe" className="text-sm font-medium">
+            Project
+          </a>
         </div>
       </motion.header>
 
@@ -90,8 +97,8 @@ export const MountainHero = (_props: MountainHeroProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
                 >
-                  <a
-                    href="#"
+                  <button
+                    onClick={onExploreClick}
                     className={`block text-base ${
                       dest.highlight
                         ? "text-[#C85A54] font-semibold border-b-2 border-[#C85A54] pb-1"
@@ -99,7 +106,7 @@ export const MountainHero = (_props: MountainHeroProps) => {
                     }`}
                   >
                     {dest.name}
-                  </a>
+                  </button>
                 </motion.div>
               ))}
             </div>

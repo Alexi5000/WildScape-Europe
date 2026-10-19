@@ -87,6 +87,7 @@ export const InfoSections = () => {
             return (
               <motion.div
                 key={section.title}
+                id={`info-${index}`}
                 className={`grid md:grid-cols-2 gap-12 items-center ${isEven ? "" : "md:flex-row-reverse"}`}
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}

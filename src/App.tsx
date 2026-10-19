@@ -167,9 +167,7 @@ function App() {
     if (setSearchFilters) setSearchFilters(filters);
   };
 
-  const handleFilterChange = (filters: SearchFilters) => {
-    if (setSearchFilters) setSearchFilters(filters);
-  };
+  const handleFilterChange = setSearchFilters;
 
   // Show error state with enhanced styling
   if (appError || campsitesError) {
@@ -323,7 +321,10 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <LandingPage onExploreClick={handleLandingExplore} />
+              <LandingPage
+                onExploreClick={handleLandingExplore}
+                onMapClick={() => setCurrentView("map")}
+              />
               <InfoSections />
               <Footer />
             </motion.div>
@@ -406,12 +407,12 @@ function App() {
             >
               {/* Enhanced Map Header */}
               <motion.div
-                className="flex items-center justify-between p-6 glass-forest backdrop-blur-lg border-b border-forest-light"
+                className="flex flex-col gap-4 lg:flex-row items-center justify-between p-6 glass-forest backdrop-blur-lg border-b border-forest-light"
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="flex items-center gap-6">
+                <div className="flex flex-wrap items-center gap-6">
                   <motion.button
                     onClick={() => setCurrentView("explore")}
                     className="text-forest-primary hover:text-forest-medium transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-forest-light rounded"
@@ -476,7 +477,7 @@ function App() {
 
         {/* Time of day indicator */}
         <motion.div
-          className="fixed bottom-6 left-6 z-30 glass-forest px-4 py-2 rounded-full"
+          className="fixed bottom-5 left-20 z-30 pointer-events-none glass-forest px-4 py-2 rounded-full"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
