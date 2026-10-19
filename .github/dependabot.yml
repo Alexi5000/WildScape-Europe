@@ -55,6 +55,7 @@ updates:
       build-tools:
         patterns:
           - "vite*"
+          - "@vitest/*"
           - "@vitejs/*"
           - "postcss"
           - "autoprefixer"
