@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { Campsite } from "@/types/campsite";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Use environment variable or public token
-mapboxgl.accessToken =
-  import.meta.env.VITE_MAPBOX_TOKEN || "pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example";
+const mapToken =
+  import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || import.meta.env.VITE_MAPBOX_TOKEN || "";
+mapboxgl.accessToken = mapToken;
 
 interface Terrain3DMapProps {
   campsites: Campsite[];
@@ -24,9 +24,10 @@ export const Terrain3DMap = ({
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState(!mapToken);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || !mapToken) return;
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -39,7 +40,9 @@ export const Terrain3DMap = ({
       attributionControl: false,
     });
 
+    map.current.on("error", () => setMapError(true));
     map.current.on("load", () => {
+      setMapError(false);
       setMapLoaded(true);
 
       // Add 3D terrain
@@ -212,6 +215,26 @@ export const Terrain3DMap = ({
     clear: "☀️",
     cloudy: "☁️",
   };
+
+  if (mapError) {
+    return (
+      <div role="status" className="p-8 bg-white text-slate-900 rounded-xl">
+        <h2 className="text-xl font-semibold">Map unavailable</h2>
+        <p className="mt-2">
+          The map could not be loaded. You can still browse campsite details below.
+        </p>
+        <ul className="mt-4 space-y-2">
+          {campsites.map((site) => (
+            <li key={site.id}>
+              <button className="underline" onClick={() => onCampsiteSelect(site)}>
+                {site.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full">

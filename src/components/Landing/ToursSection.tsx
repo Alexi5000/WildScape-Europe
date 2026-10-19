@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { TourCard } from "./TourCard";
 
-export const ToursSection = () => {
+export const ToursSection = ({ onMapClick }: { onMapClick: () => void }) => {
   const tours = [
     {
       image:
@@ -42,7 +42,7 @@ export const ToursSection = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-[#E8E3DB]">
+    <section id="destinations" className="relative py-20 bg-[#E8E3DB]">
       {/* Decorative Wave Top */}
       <div className="absolute top-0 left-0 right-0 pointer-events-none transform -translate-y-1">
         <svg viewBox="0 0 1440 60" className="w-full h-auto text-[#F5F2ED]" fill="currentColor">
@@ -67,6 +67,7 @@ export const ToursSection = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
         >
           <motion.button
+            onClick={onMapClick}
             className="px-12 py-4 bg-[#C85A54] text-white rounded-full font-medium text-lg hover:bg-[#A84843] transition-all duration-300 shadow-lg"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}

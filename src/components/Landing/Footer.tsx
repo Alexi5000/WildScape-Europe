@@ -1,6 +1,5 @@
-import { Facebook, Instagram, Twitter } from "./BrandIcons";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Code2, ExternalLink } from "lucide-react";
 
 export const Footer = () => {
   const footerLinks = {
@@ -55,25 +54,20 @@ export const Footer = () => {
             </p>
             <div className="flex gap-4">
               <motion.a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
+                href="https://github.com/Alexi5000/WildScape-Europe"
+                aria-label="WildScape source on GitHub"
+                className="p-3 rounded-full bg-white/10"
                 whileHover={{ scale: 1.1 }}
               >
-                <Facebook size={18} />
+                <Code2 size={18} />
               </motion.a>
               <motion.a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
+                href="https://linkedin.com/in/alexcinovoj"
+                aria-label="Project maintainer on LinkedIn"
+                className="p-3 rounded-full bg-white/10"
                 whileHover={{ scale: 1.1 }}
               >
-                <Instagram size={18} />
-              </motion.a>
-              <motion.a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C85A54] transition-colors"
-                whileHover={{ scale: 1.1 }}
-              >
-                <Twitter size={18} />
+                <ExternalLink size={18} />
               </motion.a>
             </div>
           </div>
@@ -85,7 +79,7 @@ export const Footer = () => {
               {footerLinks.tours.map((link) => (
                 <li key={link}>
                   <a
-                    href="#"
+                    href="#destinations"
                     className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
                   >
                     {link}
@@ -99,10 +93,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-6">Company</h3>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map((link, index) => (
                 <li key={link}>
                   <a
-                    href="#"
+                    href={index === 1 ? "#destinations" : `#info-${[0, 0, 1, 4, 2][index]}`}
                     className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
                   >
                     {link}
@@ -116,29 +110,23 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-6">Contact</h3>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <Phone size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-white/70 text-sm">+47 224-17-97</p>
-                  <p className="text-white/50 text-xs">24/7 Support Available</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <Mail size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />
+              <li className="flex items-start gap-3" id="contact">
+                <Code2 size={18} className="mt-1 flex-shrink-0" />
                 <a
-                  href="mailto:explore@wildscape-europe.com"
-                  className="text-white/70 hover:text-[#C85A54] transition-colors text-sm"
+                  href="https://github.com/Alexi5000/WildScape-Europe/issues"
+                  className="text-white/80 hover:text-white text-sm"
                 >
-                  explore@wildscape-europe.com
+                  Report an issue or ask a question
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#C85A54] mt-1 flex-shrink-0" />
-                <p className="text-white/70 text-sm">
-                  Nordic Wilderness Center
-                  <br />
-                  Oslo, Norway
-                </p>
+                <Mail size={18} className="mt-1 flex-shrink-0" />
+                <a
+                  href="mailto:alex@techtideai.io"
+                  className="text-white/80 hover:text-white text-sm"
+                >
+                  Contact the maintainer
+                </a>
               </li>
             </ul>
           </div>
@@ -150,14 +138,20 @@ export const Footer = () => {
             © 2026 WildScape Europe Release 1.0 by Alex Cinovoj | TechTideAI. Production build.
           </p>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Privacy Policy
+            <a href="#info-2" className="text-white/50 hover:text-white transition-colors">
+              Session Data
             </a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Terms of Service
+            <a
+              href="https://github.com/Alexi5000/WildScape-Europe/blob/main/LICENSE"
+              className="text-white/50 hover:text-white transition-colors"
+            >
+              License
             </a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Cookies
+            <a
+              href="https://github.com/Alexi5000/WildScape-Europe"
+              className="text-white/50 hover:text-white transition-colors"
+            >
+              Source
             </a>
           </div>
         </div>

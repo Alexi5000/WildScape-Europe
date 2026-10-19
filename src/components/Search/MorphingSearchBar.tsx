@@ -67,7 +67,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
       {/* Main search bar */}
       <motion.div className="relative" layout transition={{ duration: 0.3, ease: "easeInOut" }}>
         <motion.div
-          className={`relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden transition-all duration-300 ${
+          className={`relative bg-emerald-950 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden transition-all duration-300 ${
             isExpanded ? "shadow-2xl shadow-emerald-500/20" : "shadow-lg"
           }`}
           animate={{
@@ -84,7 +84,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setIsExpanded(true)}
-              className="flex-1 bg-transparent text-white placeholder-white/60 outline-none text-lg"
+              className="min-w-0 flex-1 bg-transparent text-white placeholder-white/60 outline-none text-lg"
             />
             <motion.button
               className="ml-3 p-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors"
@@ -252,7 +252,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2, delay: 0.1 }}
-              className="absolute top-full left-0 right-0 mt-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-4 z-50"
+              className="absolute top-full left-0 right-0 mt-2 bg-emerald-950 backdrop-blur-xl border border-white/20 rounded-xl p-4 z-50"
             >
               <h4 className="text-white/80 text-sm font-medium mb-3">Popular Searches</h4>
               <div className="space-y-2">
@@ -263,7 +263,7 @@ export const MorphingSearchBar = ({ onSearch, onFilterChange }: MorphingSearchBa
                     whileHover={{ x: 4 }}
                     onClick={() => {
                       setSearchQuery(search);
-                      handleSearch();
+                      onSearch({ query: search, filters });
                     }}
                   >
                     {search}

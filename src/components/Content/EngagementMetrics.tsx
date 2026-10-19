@@ -64,30 +64,40 @@ export const EngagementMetrics: React.FC = () => {
       className="fixed bottom-4 right-4 z-40"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: isVisible ? 1 : 0.7, scale: 1 }}
-      onHoverStart={() => setIsVisible(true)}
-      onHoverEnd={() => setIsVisible(false)}
     >
-      <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-        <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4" />
-          Live Metrics
-        </h4>
+      <div className="bg-white text-slate-900 rounded-xl p-3 shadow-lg max-w-[calc(100vw-2rem)]">
+        <button
+          type="button"
+          aria-expanded={isVisible}
+          onClick={() => setIsVisible(!isVisible)}
+          className="text-sm font-semibold"
+        >
+          {isVisible ? "Close sample metrics" : "Sample metrics"}
+        </button>
+        {isVisible && (
+          <>
+            <h4 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Simulated metrics
+            </h4>
 
-        <div className="grid grid-cols-2 gap-3">
-          {metricItems.map((item, index) => (
-            <motion.div
-              key={item.label}
-              className="text-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <item.icon className={`w-4 h-4 mx-auto mb-1 ${item.color}`} />
-              <div className="text-xs text-white/80">{item.label}</div>
-              <div className="text-sm font-semibold text-white">{item.value}</div>
-            </motion.div>
-          ))}
-        </div>
+            <div className="grid grid-cols-2 gap-3">
+              {metricItems.map((item, index) => (
+                <motion.div
+                  key={item.label}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <item.icon className={`w-4 h-4 mx-auto mb-1 ${item.color}`} />
+                  <div className="text-xs text-slate-600">{item.label}</div>
+                  <div className="text-sm font-semibold text-slate-900">{item.value}</div>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </motion.div>
   );

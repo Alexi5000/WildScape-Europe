@@ -35,6 +35,7 @@ export const AccessibilityControls: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Accessibility controls"
+        aria-expanded={isOpen}
       >
         <Eye className="w-5 h-5" />
       </motion.button>
@@ -42,7 +43,7 @@ export const AccessibilityControls: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute bottom-16 left-0 bg-white rounded-xl shadow-xl p-4 min-w-64"
+            className="absolute bottom-16 left-0 bg-white rounded-xl shadow-xl p-4 w-64 max-w-[calc(100vw-2rem)]"
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -112,6 +113,7 @@ const AccessibilityToggle: React.FC<{
       className={`w-10 h-6 rounded-full transition-colors ${
         checked ? "bg-forest-600" : "bg-gray-300"
       }`}
+      aria-label={label}
       aria-checked={checked}
       role="switch"
     >
