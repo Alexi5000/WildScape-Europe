@@ -364,8 +364,7 @@ npm run type-check
 ### Detailed Guides
 
 - **[CI/CD Setup Guide](../CICD_SETUP.md)** - Complete setup instructions
-- **[Quick Start](../.docs/CICD_QUICKSTART.md)** - 5-minute setup
-- **[Contributing Guide](CONTRIBUTING.md)** - Development workflow
+- **[Contributing Guide](../../CONTRIBUTING.md)** - Development workflow
 
 ### External Resources
 
@@ -400,7 +399,7 @@ To modify workflows:
 
 Need help?
 
-- **Documentation**: Read the full [CI/CD Setup Guide](CICD_SETUP.md)
+- **Documentation**: Read the full [CI/CD Setup Guide](../CICD_SETUP.md)
 - **Issues**: Create issue with `ci/cd` label
 - **Logs**: Check Actions tab for detailed logs
 - **Discussions**: Ask in GitHub Discussions

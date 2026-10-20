@@ -13,7 +13,7 @@ This project follows a clean, organized structure. Before contributing, please f
 - **`/public`** - Static public assets
 - **Root** - Essential configuration only
 
-See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for complete details.
+See the [architecture guide](docs/ARCHITECTURE.md) for the application structure and service boundaries.
 
 ## 🤝 How to Contribute
 
