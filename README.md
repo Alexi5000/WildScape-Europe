@@ -130,3 +130,7 @@ This project is licensed under the Apache License 2.0. See [`LICENSE`](LICENSE) 
 [6]: https://motion.dev/docs/react "Motion for React Documentation"
 [7]: https://threejs.org/docs/ "Three.js Documentation"
 [8]: https://docs.mapbox.com/mapbox-gl-js/ "Mapbox GL JS Documentation"
+
+## Contributing and security
+
+Follow [CONTRIBUTING.md](CONTRIBUTING.md) for development and pull requests. For suspected vulnerabilities, follow [SECURITY.md](SECURITY.md) rather than disclosing an unresolved issue publicly.
