@@ -8,6 +8,16 @@
 
 > **Release 1.0.0 is the stable CloseLight build.** The repository now keeps the product surface rich, the maintenance surface light, and every change close to a repeatable validation gate.
 
+## Why this exists
+
+**What it does.** WildScape Europe is a single-page React 19 and TypeScript application for discovering wild camping destinations across Europe. It generates a deterministic campsite catalogue, supports filtered search and suggestions, simulates the booking lifecycle, shows weather and aurora context, and renders animated landing, map, and dashboard layers with Vite, Zustand, Mapbox GL, Three.js, Framer Motion, GSAP, and Lenis.
+
+**Who it serves.** Travelers planning wilderness trips who want to compare regions, availability, and conditions in one interface, and frontend developers who want a typed, test-covered reference for an immersive discovery UI that runs without live backend services (a Mapbox token is optional: without `VITE_MAPBOX_ACCESS_TOKEN` the map service falls back to a placeholder token in `src/services/mapbox.ts`, while the catalogue, booking, and weather flows use generated data).
+
+**Why Alex built it.** Rationale not recorded in repository history; see Proposed use case below. The repository was created on 2025-06-28 (GitHub `created_at`); its first commits `95b9f83` ("Initial commit") and `2eae775` ("Add files via upload") carry no motivation, and the first descriptive README (commit `4906a30`, 2025-06-28) lists features only. The 1.0.0 release note (commit `0cebda5`, 2026-05-18, [`docs/RELEASE_1_0.md`](docs/RELEASE_1_0.md)) records the current intent: a reference-quality product repository with strict typing, SOLID service boundaries, automated tests, and a repeatable validation gate.
+
+**Real-world use case (2025–2026 evidence).** **Proposed use case.** A traveler planning a late-season trip through Norway and the Alps opens the catalogue, filters by destination and amenities, checks the forecast and aurora likelihood for each candidate, and places a simulated booking, all from a static deployment with no server round-trips. The Vitest suite exercises the booking lifecycle, filtering, and weather behavior against generated data, but the application has not been validated with live campsite inventory or real travelers. The stack it targets shipped in 2025 and 2026: React 19.2[^1], Vite 8[^2], Mapbox GL JS v3.33[^3], and Vitest 5[^4].
+
 ## Release 1.0.0 note
 
 Release 1.0.0 turns WildScape Europe into a state-of-the-art product repository rather than a polished working product application. The build ships with animated README graphics, SOLID service boundaries, strict domain types, deterministic production repositories, Vitest coverage across business behavior, zero-warning linting, production deployment guidance, and a focused documentation map.
@@ -134,3 +144,8 @@ This project is licensed under the Apache License 2.0. See [`LICENSE`](LICENSE) 
 ## Contributing and security
 
 Follow [CONTRIBUTING.md](CONTRIBUTING.md) for development and pull requests. For suspected vulnerabilities, follow [SECURITY.md](SECURITY.md) rather than disclosing an unresolved issue publicly.
+
+[^1]: React team, "React 19.2", react.dev blog, 2025-10-01. https://react.dev/blog/2025/10/01/react-19-2
+[^2]: Vite team, "Vite 8.0 is out!", vite.dev blog, 2026-03-12. https://vite.dev/blog/announcing-vite8
+[^3]: Mapbox, "mapbox-gl-js v3.33.0" release notes, 2026-10-13. https://github.com/mapbox/mapbox-gl-js/releases/tag/v3.33.0
+[^4]: Vitest team, "Vitest 5.0 is out!", vitest.dev blog, 2026-09-28. https://vitest.dev/blog/vitest-5

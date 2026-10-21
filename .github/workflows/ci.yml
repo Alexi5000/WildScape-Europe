@@ -53,6 +53,8 @@ jobs:
   lint:
     name: ESLint & Code Quality
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: setup
     steps:
       - name: Checkout Code
@@ -88,6 +90,8 @@ jobs:
   typecheck:
     name: TypeScript Type Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: setup
     steps:
       - name: Checkout Code
@@ -295,6 +299,8 @@ jobs:
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: [lint, typecheck, build, bundle-analysis, security-audit, test]
     if: always()
     steps:
