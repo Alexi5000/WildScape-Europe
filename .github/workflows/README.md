@@ -107,7 +107,7 @@ pr-{number}.wildscape-europe.vercel.app
 - 🔒 NPM audit for vulnerabilities
 - 🔒 Snyk security analysis
 - 🔒 CodeQL static analysis
-- 🔒 Secret scanning (TruffleHog, GitLeaks)
+- 🔒 Secret scanning (checksum-pinned MIT Gitleaks CLI, full Git history, blocking)
 - 📄 License compliance checking
 - 🛡️ OWASP dependency check
 - 🐳 Container security (if using Docker)
@@ -335,7 +335,7 @@ npm run type-check
 
 ### Security Features
 
-- **Secret Scanning**: TruffleHog + GitLeaks
+- **Secret Scanning**: checksum-pinned MIT Gitleaks CLI (full history, redacted output, blocking)
 - **Dependency Scanning**: NPM audit + Snyk
 - **Code Analysis**: CodeQL
 - **License Compliance**: Automated checks

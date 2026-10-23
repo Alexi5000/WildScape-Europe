@@ -1,7 +1,7 @@
 name: Security Scanning
 
 # Right-sized: this comprehensive scan suite relies on third-party scanners that
-# need credentials (Snyk) or live external services (OWASP NVD, TruffleHog/GitLeaks
+# need credentials (Snyk) or live external services (OWASP NVD, Gitleaks
 # heuristics) which this repository does not provision. To avoid red badges on
 # every push/PR it runs on a schedule and on-demand (workflow_dispatch) only.
 # Lightweight, dependency-free checks (npm audit, CodeQL) remain meaningful and
@@ -16,6 +16,9 @@ on:
 
 env:
   NODE_VERSION: '20'
+
+permissions:
+  contents: read
 
 jobs:
   # Detect whether optional scanner credentials are configured.
@@ -44,10 +47,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -57,7 +60,7 @@ jobs:
           cat npm-audit.json
 
       - name: Upload Audit Results
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: npm-audit-results
           path: npm-audit.json
@@ -87,10 +90,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -98,7 +101,7 @@ jobs:
         run: npm ci --prefer-offline
 
       - name: Run Snyk Test
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@11b673cfb4b0dc0d860a1323caa199d54950dcce # master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -106,7 +109,7 @@ jobs:
           args: --severity-threshold=high --json-file-output=snyk-results.json
 
       - name: Run Snyk Code Analysis
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@11b673cfb4b0dc0d860a1323caa199d54950dcce # master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -114,7 +117,7 @@ jobs:
           command: code test
 
       - name: Upload Snyk Results
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: snyk-results
@@ -124,7 +127,7 @@ jobs:
 
       - name: Run Snyk Monitor
         continue-on-error: true
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@11b673cfb4b0dc0d860a1323caa199d54950dcce # master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -146,58 +149,44 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
         with:
           category: "/language:${{ matrix.language }}"
 
-  # Job 4: Secrets Scanning (heuristic - advisory only)
+  # Job 4: Secrets Scanning (full history, blocking)
   secret-scan:
     name: Secrets & Credentials Scan
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
-      - name: TruffleHog Secrets Scan
-        uses: trufflesecurity/trufflehog@main
-        continue-on-error: true
-        with:
-          path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
-          extra_args: --debug --only-verified
-
-      - name: GitLeaks Scan
-        uses: gitleaks/gitleaks-action@v3
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check for Exposed Secrets
-        continue-on-error: true
+      - name: Install Gitleaks
         run: |
-          echo "Checking for common secret patterns..."
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
 
-          if grep -r -E "(api[_-]?key|password|secret|token|bearer)" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" src/ | grep -v "import\|const\|let\|var\|type\|interface"; then
-            echo "Potential secrets found in code - please review the findings above"
-          else
-            echo "No obvious secrets detected in source code"
-          fi
+      - name: Scan complete Git history for secrets
+        run: '"$RUNNER_TEMP/gitleaks-bin/gitleaks" git --redact --no-banner --log-opts="--all" .'
 
   # Job 5: License Compliance (advisory only)
   license-compliance:
@@ -206,10 +195,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -236,7 +225,7 @@ jobs:
           echo "License check complete"
 
       - name: Upload License Report
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: license-report
@@ -251,10 +240,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -263,7 +252,7 @@ jobs:
 
       - name: OWASP Dependency-Check
         continue-on-error: true
-        uses: dependency-check/Dependency-Check_Action@main
+        uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
         with:
           project: 'WildScape-Europe'
           path: '.'
@@ -273,7 +262,7 @@ jobs:
             --enableRetired
 
       - name: Upload OWASP Report
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: owasp-dependency-check-report
@@ -283,31 +272,38 @@ jobs:
 
   # Job 7: Container Security (if using Docker)
   container-security:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     name: Container Security Scan
     runs-on: ubuntu-latest
     if: false # Enable if using containers
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Build Container Image
         run: docker build -t wildscape-europe:${{ github.sha }} .
 
       - name: Run Trivy Container Scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@8f28faec26515256b6d22074d1d2a8986f4cbd87 # master
         with:
           image-ref: wildscape-europe:${{ github.sha }}
           format: 'sarif'
           output: 'trivy-results.sarif'
 
       - name: Upload Trivy Results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
         with:
           sarif_file: 'trivy-results.sarif'
 
   # Job 8: Security Report Summary
   security-summary:
+    permissions:
+      contents: read
+      issues: write
     name: Security Summary Report
     runs-on: ubuntu-latest
     needs: [dependency-scan, secret-scan, license-compliance]
@@ -315,7 +311,7 @@ jobs:
 
     steps:
       - name: Download All Artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         continue-on-error: true
 
       - name: Generate Security Report
@@ -335,7 +331,7 @@ jobs:
 
       - name: Create Security Issue (if vulnerabilities found)
         if: needs.dependency-scan.result == 'failure'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const title = 'Security Vulnerabilities Detected';
