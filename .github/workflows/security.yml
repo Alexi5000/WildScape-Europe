@@ -1,7 +1,7 @@
 name: Security Scanning
 
 # Right-sized: this comprehensive scan suite relies on third-party scanners that
-# need credentials (Snyk) or live external services (OWASP NVD, TruffleHog/GitLeaks
+# need credentials (Snyk) or live external services (OWASP NVD, Gitleaks
 # heuristics) which this repository does not provision. To avoid red badges on
 # every push/PR it runs on a schedule and on-demand (workflow_dispatch) only.
 # Lightweight, dependency-free checks (npm audit, CodeQL) remain meaningful and
@@ -165,7 +165,7 @@ jobs:
         with:
           category: "/language:${{ matrix.language }}"
 
-  # Job 4: Secrets Scanning (heuristic - advisory only)
+  # Job 4: Secrets Scanning (full history, blocking)
   secret-scan:
     name: Secrets & Credentials Scan
     runs-on: ubuntu-latest
@@ -176,31 +176,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: TruffleHog Secrets Scan
-        uses: trufflesecurity/trufflehog@7582042e4214365f7e18dc4edad30a006aa1427a # main
-        continue-on-error: true
-        with:
-          path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
-          extra_args: --debug --only-verified
-
-      - name: GitLeaks Scan
-        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check for Exposed Secrets
-        continue-on-error: true
+      - name: Install Gitleaks
         run: |
-          echo "Checking for common secret patterns..."
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
 
-          if grep -r -E "(api[_-]?key|password|secret|token|bearer)" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" src/ | grep -v "import\|const\|let\|var\|type\|interface"; then
-            echo "Potential secrets found in code - please review the findings above"
-          else
-            echo "No obvious secrets detected in source code"
-          fi
+      - name: Scan complete Git history for secrets
+        run: '"$RUNNER_TEMP/gitleaks-bin/gitleaks" git --redact --no-banner --log-opts="--all" .'
 
   # Job 5: License Compliance (advisory only)
   license-compliance:
