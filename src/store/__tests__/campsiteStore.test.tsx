@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { useCampsiteStore } from "../campsiteStore";
 
 describe("useCampsiteStore", () => {

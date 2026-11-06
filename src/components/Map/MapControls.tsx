@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Plus, Minus, RotateCcw, Cloud } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { useUIStore } from "@/store/uiStore";
 import type { MapViewState } from "@/types/map";
 
