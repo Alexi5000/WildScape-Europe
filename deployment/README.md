@@ -17,12 +17,12 @@ This folder contains all deployment and DevOps configuration files for WildScape
 ### Docker Deployment
 
 ```bash
-# Build and run with Docker Compose
-docker-compose up -d
+# Build and run with Docker Compose (from the repository root)
+docker compose -f deployment/docker-compose.yml up -d
 
-# Or build manually
-docker build -t wildscape-europe .
-docker run -p 80:80 wildscape-europe
+# Or build manually (from the repository root; the build context must be the root)
+docker build -f deployment/Dockerfile --target production -t wildscape-europe .
+docker run -p 8080:80 wildscape-europe
 ```
 
 ### Using Makefile
@@ -84,7 +84,7 @@ docker ps  # Check container status
 
 ## Troubleshooting
 
-See [../docs/TROUBLESHOOTING.md](../docs/TROUBLESHOOTING.md) for common issues.
+See [../docs/GETTING_STARTED.md#troubleshooting](../docs/GETTING_STARTED.md#troubleshooting) for common issues.
 
 ## Security
 

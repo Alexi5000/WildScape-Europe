@@ -5,14 +5,14 @@ services:
   # Development service
   app-dev:
     build:
-      context: .
+      context: ..
       target: development
-      dockerfile: Dockerfile
+      dockerfile: deployment/Dockerfile
     container_name: wildscape-dev
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - ..:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -28,9 +28,9 @@ services:
   # Production service
   app-prod:
     build:
-      context: .
+      context: ..
       target: production
-      dockerfile: Dockerfile
+      dockerfile: deployment/Dockerfile
     container_name: wildscape-prod
     ports:
       - "8080:80"

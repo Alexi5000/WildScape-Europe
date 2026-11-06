@@ -4,7 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-package-lock.json
+# package-lock.json is required: the image builds with npm ci
 yarn.lock
 pnpm-lock.yaml
 
@@ -78,5 +78,4 @@ Desktop.ini
 .editorconfig
 .prettierrc
 .eslintrc*
-tsconfig.*.json
 

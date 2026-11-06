@@ -1,8 +1,11 @@
 # WildScape Europe - Production Dockerfile
 # Multi-stage build for optimized production image
+#
+# Build from the repository root (the build context must contain package.json and src/):
+#   docker build -f deployment/Dockerfile --target production -t wildscape-europe .
 
 # Stage 1: Build
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 LABEL maintainer="WildScape Europe <support@wildscape-europe.com>"
 LABEL description="Premium camping discovery platform with 3D terrain visualization"
@@ -13,8 +16,9 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production --ignore-scripts && \
+# Install all dependencies: the build (tsc && vite build) needs devDependencies.
+# Only the static dist/ output is copied into the production image.
+RUN npm ci --ignore-scripts && \
     npm cache clean --force
 
 # Copy source code
@@ -27,7 +31,7 @@ RUN npm run build
 FROM nginx:alpine AS production
 
 # Copy custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY deployment/nginx.conf /etc/nginx/nginx.conf
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
@@ -43,13 +47,13 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # Stage 3: Development
-FROM node:18-alpine AS development
+FROM node:22-alpine AS development
 
 WORKDIR /app
 
 # Install development dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy source code
 COPY . .

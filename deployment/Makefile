@@ -37,7 +37,7 @@ setup-wsl: ## Setup WSL development environment
 setup: install ## Initial project setup
 	@echo "$(GREEN)Running initial setup...$(NC)"
 	@if [ ! -f .env ]; then \
-		cp env.example .env; \
+		cp .env.example .env; \
 		echo "$(YELLOW)⚠ Created .env file - please configure it$(NC)"; \
 	fi
 	@echo "$(GREEN)✓ Setup complete$(NC)"
@@ -153,25 +153,25 @@ reset: clean install ## Reset project (clean + install)
 
 docker-build: ## Build Docker image
 	@echo "$(GREEN)Building Docker image...$(NC)"
-	docker build -t wildscape-europe .
+	docker build -f deployment/Dockerfile --target production -t wildscape-europe .
 	@echo "$(GREEN)✓ Docker image built$(NC)"
 
 docker-run: ## Run Docker container
 	@echo "$(GREEN)Starting Docker container...$(NC)"
-	docker run -p 3000:3000 wildscape-europe
+	docker run -p 8080:80 wildscape-europe
 
 docker-up: ## Start Docker Compose services
 	@echo "$(GREEN)Starting Docker Compose services...$(NC)"
-	docker-compose up -d
+	docker-compose -f deployment/docker-compose.yml up -d
 	@echo "$(GREEN)✓ Services started$(NC)"
 
 docker-down: ## Stop Docker Compose services
 	@echo "$(RED)Stopping Docker Compose services...$(NC)"
-	docker-compose down
+	docker-compose -f deployment/docker-compose.yml down
 	@echo "$(GREEN)✓ Services stopped$(NC)"
 
 docker-logs: ## View Docker Compose logs
-	docker-compose logs -f
+	docker-compose -f deployment/docker-compose.yml logs -f
 
 ##@ Git Hooks
 

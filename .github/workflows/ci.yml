@@ -302,12 +302,38 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
+  docker-build:
+    name: Docker Image Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Build production image
+        run: docker build -f deployment/Dockerfile --target production -t wildscape-europe:ci .
+      - name: Smoke test production image
+        run: |
+          docker run -d --name wildscape-smoke -p 8080:80 wildscape-europe:ci
+          for i in $(seq 1 20); do
+            if curl -fsS http://localhost:8080/ | grep -q '<div id="root"'; then
+              echo "Production image serves the app."
+              docker rm -f wildscape-smoke
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs wildscape-smoke
+          exit 1
+      - name: Build development image
+        run: docker build -f deployment/Dockerfile --target development -t wildscape-europe:dev-ci .
+
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs: [lint, typecheck, build, bundle-analysis, security-audit, test]
+    needs: [lint, typecheck, build, bundle-analysis, security-audit, test, docker-build]
     if: always()
     steps:
       - name: Check All Jobs Status
@@ -315,7 +341,8 @@ jobs:
           if [[ "${{ needs.lint.result }}" != "success" ]] || \
              [[ "${{ needs.typecheck.result }}" != "success" ]] || \
              [[ "${{ needs.build.result }}" != "success" ]] || \
-             [[ "${{ needs.test.result }}" != "success" ]]; then
+             [[ "${{ needs.test.result }}" != "success" ]] || \
+             [[ "${{ needs.docker-build.result }}" != "success" ]]; then
             echo "One or more required checks failed"
             exit 1
           fi
